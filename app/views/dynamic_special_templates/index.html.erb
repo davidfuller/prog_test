@@ -1,0 +1,37 @@
+<% content_for(:title) do%>
+	Dynamic Special Templates: MuVi2 Database
+<% end %>
+<h1>Dynamic Special Templates</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Page 16:9</th>
+    <th>Clear Down 16:9</th>
+    <th>Page 4:3</th>
+    <th>Clear Down 4:3</th>
+    <th>Duration (s)</th>
+    <th>Num Fields</th>
+    <th>Demo Image</th>
+  </tr>
+
+<% @dynamic_special_templates.each do |dynamic_special_template| %>
+  <tr>
+    <td><%=h dynamic_special_template.name %></td>
+    <td><%=h dynamic_special_template.page_169 %></td>
+    <td><%=h dynamic_special_template.clear_down_169 %></td>
+    <td><%=h dynamic_special_template.page_43 %></td>
+    <td><%=h dynamic_special_template.clear_down_43 %></td>
+    <td><%=h dynamic_special_template.duration %></td>
+    <td><%=h dynamic_special_template.template_field_joins.count %></td>
+    <td><%=h dynamic_special_template.demo %></td>
+    <td><%= link_to 'Show', dynamic_special_template %></td>
+    <td><%= link_to 'Edit', edit_dynamic_special_template_path(dynamic_special_template) %></td>
+    <td><%= link_to 'Destroy', dynamic_special_template, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Template', new_dynamic_special_template_path %>

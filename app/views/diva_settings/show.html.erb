@@ -1,0 +1,20 @@
+<h1>Diva Setting</h1>
+
+<p>
+  <label>Name:</label><br/>
+  <%=h @diva_setting.name %>
+</p>
+
+<p>
+  <label>Value</label><br/>
+  <%=h @diva_setting.value %>
+</p>
+
+<p>
+  <label>Text (Long) Value</label><br/>
+  <%=h @diva_setting.text_value %>
+</p>
+
+
+<%= link_to 'Edit', edit_diva_setting_path(@diva_setting) %> |
+<%= link_to 'Back', diva_settings_path %>

@@ -1,0 +1,33 @@
+<% content_for(:title) do%>
+	Diva Status: MuVi2 Database
+<% end %>
+<h1>Diva Status Messages</h1>
+
+<table>
+  <tr>
+    <th>Value</th>
+    <th>Message</th>
+    <th>CSS</th>
+    <th>Description</th>
+    <th>Seach</th>
+    <th>Workflow</th>
+  </tr>
+
+<% @diva_statuses.each do |diva_status| %>
+  <tr>
+    <td><%=h diva_status.value %></td>
+    <td><%=h diva_status.message %></td>
+    <td><%=h diva_status.css %></td>
+    <td><%=h diva_status.description %></td>
+    <td><%=h diva_status.seach %></td>
+    <td><%=h diva_status.workflow %></td>
+    <td><%= link_to 'Show', diva_status %></td>
+    <td><%= link_to 'Edit', edit_diva_status_path(diva_status) %></td>
+    <td><%= link_to 'Destroy', diva_status, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Diva Status Message', new_diva_status_path %>

@@ -1,0 +1,29 @@
+<%= link_to 	'Manual add', 
+							new_cross_channel_priority_path(:cross_tx_channel => session[:cross_tx_channel],
+																							:cross_priority_date => session[:cross_priority_date]) %>
+
+<table>
+  <tr>
+    <th>Channel</th>
+		<th>Billed time</th>
+    <th>Display title</th>
+    <th>Original title</th>
+    <th>Lead text</th>
+		<th>Series</th>
+		<th>EIDR</th>
+  </tr>
+
+<% @cross_channel_priorities.each do |cross_channel_priority| %>
+  <tr>
+    <td><%=h cross_channel_priority.channel_display %></td>
+		<td><%=h cross_channel_priority.billed_display %></td>
+		<td><%=h cross_channel_priority.local_title_display %></td>
+		<td><%=h cross_channel_priority.title_display %></td>
+   	<td><%=h cross_channel_priority.lead_text %></td>
+		<td><%=h cross_channel_priority.series_ident %></td>
+		<td><%=h cross_channel_priority.eidr %></td>
+		<td><%= link_to 'Edit', edit_cross_channel_priority_path(cross_channel_priority) %></td>
+  	<td><%= link_to 'Remove', cross_channel_priority, :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

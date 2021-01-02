@@ -1,0 +1,112 @@
+<% content_for(:title) do%>
+	Viafree / Viaplay Priorities: MuVi2 Database
+<% end %>
+
+<%= link_to_function 'Upload Viafree / Viaplay Priorities File' do |page|
+	page['via-upload'].toggle()
+end %>
+<br/>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %> 
+<% display_date = params[:on_air_date] %>
+<%- session[:on_air_date] = params[:on_air_date] %>
+
+<div id= 'via-upload', style = 'display: none;'>
+  <fieldset>
+    <legend>Viafree / Viaplay file</legend>
+    <% form_tag({:action => :upload_via_file}, :multipart => true) do %>
+      <p>
+      Select the Viafree / Viaplay file to process: <br/>
+      This must be a csv file with unicode characters
+      </p>
+      <%= file_field_tag 'via', {:size => 120, :accept => 'text/csv'} %><br/>
+      <%= submit_tag("Process") %>
+    <% end %>
+  </fieldset>
+  <br/>
+</div>
+<fieldset>
+	<legend>Viafree / Viaplay Priorities</legend>
+		<% form_tag on_demands_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+      <p>
+        <label>Viafree / Viaplay File</label>
+        <%= select_tag :on_demand_filename, options_for_select(@on_demand_filenames, params[:on_demand_filename]),
+		                    {:onchange => 'this.form.submit()'} %>
+      </p>
+      <p>
+        <label>Channel</label> 
+        <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
+      </p>
+      <p>
+        <label>TX date</label>
+        <%= calendar_date_select_tag :on_air_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        <%= link_to_function 'Clear',  'document.getElementById("on_air_date").value = ""; document.getElementById("search-form").submit()'%>
+      </p>
+      
+			<%= label_tag :show_all, "Show All (Including those in past)" %>
+			<%= check_box_tag :show_all, value ="1", params[:show_all],{:onclick => 'this.form.submit()'} %> | 
+      <%= label_tag :show_no_media, "Show Priorities Without Media" %>
+      <%= check_box_tag :show_no_media, value ="1", params[:show_no_media],{:onclick => 'this.form.submit()'} %> <br />
+		<% end %>
+</fieldset>
+<br/>
+<%= link_to 'New Priority', new_on_demand_path %> 
+<br/>
+<%= will_paginate @on_demands %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+    <th>Code</th>
+    <th>Media</th>
+    <th>Service</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>Navigation</th>
+    <th>Message</th>
+    <th>Scheduling</th>
+    <th>Priority</th>
+    <th>Devices</th>
+    <th>Channels</th>
+  </tr>
+
+<% @on_demands.each do |on_demand| %>
+  <% if !on_demand.has_portrait_media %>
+    <tr id = 'missing_od_media'>
+  <% else %>
+    <tr>
+  <% end %>
+    <td><b><%= link_to h(on_demand.name), on_demand_path(on_demand, :index_search => params[:search], :index_page => params[:page], 
+                                                                    :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                                    :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %></b></td>
+    <td><%=h on_demand.title %></td>
+    <td><%=h on_demand.country_code %></td>
+    <td><%=h on_demand.has_portrait_media_display %></div></td>
+    <td><%=h on_demand.service.name unless on_demand.service.nil? %></td>
+    <td><%=h on_demand.start_date.to_s(:broadcast_date) unless on_demand.start_date.nil? %></td>
+    <td><%=h on_demand.end_date_date_only.to_s(:broadcast_date) unless on_demand.end_date.nil? %></td>
+    <td><%=h on_demand.navigation %></td>
+    <td><%=h on_demand.message %></td>
+    <td><%=h on_demand.scheduling_message %></td>
+    <td><%=h on_demand.priority %></td>
+    <td><%=h on_demand.device_display %></td>
+    <td><%=h on_demand.channel_csv %></td>
+    <%= "</div>" if on_demand.has_portrait_media %>
+    <td><%= link_to 'Show', on_demand_path(on_demand, :index_search => params[:search], :index_page => params[:page], :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                      :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %></td>
+    <td><%= link_to 'Edit', edit_on_demand_path(on_demand,  :index_search => params[:search], :index_page => params[:page], :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                            :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %></td>
+    <td><%= link_to 'Destroy', on_demand_path(on_demand,  :search => params[:search], :page => params[:page], :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                          :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @on_demands %><br />
+<%= link_to 'New Priority', new_on_demand_path %>

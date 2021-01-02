@@ -1,0 +1,41 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<%= f.hidden_field :source %>
+<%= f.hidden_field :promo_id %>
+<%= f.hidden_field :trailer_id %>
+<%= f.hidden_field :special_preview_id %>
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :filename %><br />
+  <%= f.text_field :filename %>
+</p>
+<p>
+  <%= f.label :has_audio %><br />
+  <%= f.check_box :has_audio %>
+</p>
+<p>
+  <%= f.label :audio_filename %><br />
+  <%= f.text_field :audio_filename %>
+</p>
+<p>
+  <%= f.label :media_folder_id %><br />
+  <%= f.collection_select (:media_folder_id, @folders, :id, :name)   %>
+</p>
+<p>
+  <%= f.label :first_use %><br />
+	<%= f.calendar_date_select :first_use, {:month_year => :label, :minute_interval => 1} %>
+</p>
+<p>
+  <%= f.label :last_use %><br />
+	<%= f.calendar_date_select :last_use,  {:month_year => :label, :minute_interval => 1} %>
+</p>
+<p>
+  <%= f.label :media_type_id %><br />
+  <%= f.collection_select (:media_type_id, @media_types, :id, :name, :prompt => 'Select a type')   %>
+</p>
+<p>
+  <%= f.label :status_id %><br />
+  <%= f.collection_select (:status_id, @statuses, :id, :message, :prompt => 'Select status')   %>
+</p>

@@ -1,0 +1,24 @@
+<h1>Editing automated_dynamic_special_field</h1>
+
+<% form_for(@automated_dynamic_special_field) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :the_value %><br />
+    <%= f.text_field :the_value %>
+  </p>
+  <p>
+    <%= f.label :automated_dynamic_special_id %><br />
+    <%= f.text_field :automated_dynamic_special_id %>
+  </p>
+  <p>
+    <%= f.label :template_field_join_id %><br />
+    <%= f.text_field :template_field_join_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @automated_dynamic_special_field %> |
+<%= link_to 'Back', automated_dynamic_special_fields_path %>

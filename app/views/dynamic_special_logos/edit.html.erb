@@ -1,0 +1,14 @@
+<h1>Editing Logo</h1>
+
+<% form_for(@dynamic_special_logo) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @dynamic_special_logo %> |
+<%= link_to 'Back', dynamic_special_logos_path %>

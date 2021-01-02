@@ -1,0 +1,20 @@
+<h1>Editing playlist_filename</h1>
+
+<% form_for(@playlist_filename) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </p>
+  <p>
+    <%= f.label :schedule_date %><br />
+    <%= f.date_select :schedule_date %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @playlist_filename %> |
+<%= link_to 'Back', playlist_filenames_path %>

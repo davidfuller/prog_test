@@ -1,0 +1,44 @@
+<h1></h1>
+
+<fieldset>
+	<legend>Common words and their translations</legend>
+		<% form_tag commons_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+		
+			<%= select_tag :language, options_for_select(@languages.insert(0,"All"), 
+											params[:language]),{:onchange => 'this.form.submit()'} %> 
+		<% end %>
+</fieldset>
+		<% session[:commons_language] = params[:language] %>
+<p>
+<%= link_to 'New word', new_common_path %>
+</p>
+
+<table>
+  <tr>
+		<th id = 'lang'>English</th>
+		<% if @danish %><th  id = 'lang'>Danish</th><% end %>
+    <% if @swedish %><th id = 'lang'>Swedish</th><% end %>
+    <% if @norwegian %><th id = 'lang'>Norwegian</th><% end %>
+    <% if @hungarian %><th id = 'lang'>Hungarian</th><% end %>
+  </tr>
+
+<% @commons.each do |common| %>
+
+	<tr>
+		<td id = 'lang'><%=h common.english %></td>
+		<% if @danish %><td id = 'lang'><%=h common.danish %></td><% end %>
+		<% if @swedish %><td id = 'lang'><%=h common.swedish %></td><% end %>
+		<% if @norwegian %><td id = 'lang'><%=h common.norwegian %></td><% end %>
+		<% if @hungarian %><td id = 'lang'><%=h common.hungarian %></td><% end %>
+	  <td><%= link_to 'Edit', edit_common_path(common) %></td>
+    <td><%= link_to 'Destroy', common, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

@@ -1,0 +1,22 @@
+<h1>Listing Playlist Filenames</h1>
+
+<table>
+  <tr>
+    <th>Filename</th>
+    <th>Channel</th>
+  </tr>
+
+<% @playlist_filenames.each do |playlist_filename| %>
+  <tr>
+    <td><%=h playlist_filename.filename %></td>
+    <td><%=h playlist_filename.channel.name unless playlist_filename.channel.nil? %></td>
+    <td><%= link_to 'Show', playlist_filename %></td>
+    <td><%= link_to 'Edit', edit_playlist_filename_path(playlist_filename) %></td>
+    <td><%= link_to 'Destroy', playlist_filename, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New playlist_filename', new_playlist_filename_path %>

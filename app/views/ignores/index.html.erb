@@ -1,0 +1,16 @@
+<h1>Words to ignore in comparing titles</h1>
+
+<table>
+  
+<% @ignores.each do |ignore| %>
+  <tr>
+    <td><div id="word"><%=h ignore.word %></div></td>
+    <td><%= link_to 'Edit', edit_ignore_path(ignore) %></td>
+    <td><%= link_to 'Delete', ignore, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New word', new_ignore_path %>

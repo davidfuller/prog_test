@@ -1,0 +1,28 @@
+
+
+<% if dynamic_special.special_fields.count > 0 %>
+
+<table>
+	
+  <tr>
+    <th>Number</th>
+    <th>Description</th>
+    <th>Default Text</th>
+  </tr>	
+
+ <% dynamic_special.special_fields.each do |special_field| %>
+		<tr>
+			<td><%=h special_field.number %></td>
+			<td><%=h special_field.description %></td>
+			<td><%=h special_field.default_text %></td>		
+			<% if show_links %>	
+  			<td><%= link_to 'Edit', edit_special_field_path(special_field, :source => 'dynamic') %></td>
+	      <td><%= link_to 'Destroy', special_field_path(special_field, :source => 'dynamic'), :confirm => 'Are you sure?',:method => :delete %></td>
+	    <% end %>
+		</tr>
+	<% end %>
+</table>
+
+<% else %>
+No fields for this special <br />
+<% end %> 

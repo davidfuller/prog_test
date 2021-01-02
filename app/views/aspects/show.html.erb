@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @aspect.name %>
+</p>
+
+<p>
+  <b>Code:</b>
+  <%=h @aspect.code %>
+</p>
+
+<p>
+  <b>File Suffix:</b>
+  <%=h @aspect.file_suffix %>
+</p>
+
+
+<%= link_to 'Edit', edit_aspect_path(@aspect) %> |
+<%= link_to 'Back', aspects_path %>

@@ -1,0 +1,19 @@
+<h1>New On Demand Scheduling Message</h1>
+
+<% form_for(@on_demand_scheduling) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :message %><br />
+    <%= f.text_field :message %>
+  </p>
+  <td>
+    <%= f.label :default %><br />
+    <%= f.check_box :default %>
+  </td>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', on_demand_schedulings_path %>

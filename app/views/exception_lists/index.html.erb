@@ -1,0 +1,58 @@
+<h1>Listing Exceptions</h1>
+
+<% content_for(:title) do%>
+	Exceptions: MuVi2 Database
+<% end %>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% if Useful.date?(params[:start_date]) %>
+<% 	start_display = params[:start_date]%>
+<% else %>
+<%	start_display = format_date_time(Date.today,"%B %e, %Y") %>
+<% end %>
+
+<fieldset>
+	<legend>Exceptions</legend>
+		<% form_tag exception_lists_path, :method =>'get' do %>
+		<%= calendar_date_select_tag :start_date, start_display, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<% end %>
+</fieldset>
+
+<br/>
+
+<%= link_to 'Export to CSV/Excel ', exception_lists_path(:start_date => start_display, :format => :csv) %><br/>
+
+<%= will_paginate @exception_lists %>
+
+
+
+<table>
+  <tr>
+    <th>Entry time</th>
+    <th>Channel name</th>
+    <th>Message</th>
+    <th>Existing title</th>
+    <th>Clipsource title</th>
+    <th>EIDR</th>
+    <th>House number</th>
+  </tr>
+
+<% @exception_lists.each do |exception_list| %>
+  <tr>
+    <td><%=h exception_list.entry_time %></td>
+    <td><%=h exception_list.channel_name %></td>
+    <td><%=h exception_list.message %></td>
+    <td><%=h exception_list.existing_title %></td>
+    <td><%=h exception_list.clipsource_title %></td>
+    <td><%=h exception_list.eidr %></td>
+    <td><%=h exception_list.house_number %></td>
+    <td><%= link_to 'Show', exception_list %></td>
+    <td><%= link_to 'Edit', edit_exception_list_path(exception_list) %></td>
+    <td><%= link_to 'Destroy', exception_list, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @promos %>
+<%= link_to 'New Exception', new_exception_list_path %>

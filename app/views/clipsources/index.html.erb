@@ -1,0 +1,22 @@
+<h1>Listing Clipsource EIDR replacements</h1>
+
+<table>
+  <tr>
+    <th>Replace this (at start)</th>
+    <th>...with</th>
+  </tr>
+
+<% @clipsources.each do |clipsource| %>
+  <tr>
+    <td><%=h clipsource.from %></td>
+    <td><%=h clipsource.to %></td>
+    <td><%= link_to 'Show', clipsource %></td>
+    <td><%= link_to 'Edit', edit_clipsource_path(clipsource) %></td>
+    <td><%= link_to 'Destroy', clipsource, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Clipsource EIDR replacement', new_clipsource_path %>

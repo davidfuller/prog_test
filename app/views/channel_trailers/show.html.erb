@@ -1,0 +1,18 @@
+<p>
+  <b>Channel:</b>
+  <%=h @channel_trailer.channel_id %>
+</p>
+
+<p>
+  <b>Trailer:</b>
+  <%=h @channel_trailer.trailer_id %>
+</p>
+
+<p>
+  <b>Enable:</b>
+  <%=h @channel_trailer.enable %>
+</p>
+
+
+<%= link_to 'Edit', edit_channel_trailer_path(@channel_trailer) %> |
+<%= link_to 'Back', channel_trailers_path %>

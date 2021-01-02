@@ -1,0 +1,28 @@
+<p>
+  <b>System:</b>
+  <%=h @diva_task.system_id %>
+</p>
+
+<p>
+  <b>Task type:</b>
+  <%=h @diva_task.task_type %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @diva_task.name %>
+</p>
+
+<p>
+  <b>Task index:</b>
+  <%=h @diva_task.task_index %>
+</p>
+
+<p>
+  <b>Completed:</b>
+  <%=h @diva_task.completed %>
+</p>
+
+
+<%= link_to 'Edit', edit_diva_task_path(@diva_task) %> |
+<%= link_to 'Back', diva_tasks_path %>

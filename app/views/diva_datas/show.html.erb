@@ -1,0 +1,87 @@
+<% content_for(:title) do%>
+	Diva Data: MuVi2 Database
+<% end %>
+
+<h1>Diva Data</h1>
+<h2>Media Details</h2>
+
+<% if @diva_data.trailer %>
+<p>
+  <label>Trailer:</label><br/>
+  <%=h @diva_data.trailer.house_with_title %>
+</p>
+<% end %>
+<p>
+  <label>System ID</label><br/>
+  <%=h @diva_data.system_id %>
+</p>
+
+<p>
+  <label>Diva House Number</label><br/>
+  <%=h @diva_data.diva_house_number %>
+</p>
+
+<p>
+  <label>Diva Duration</label><br/>
+  <%=h @diva_data.diva_duration %>
+</p>
+
+<p>
+  <label>TV Standard</label><br/>
+  <%=h @diva_data.tv_standard %>
+</p>
+
+<p>
+  <label>Diva Status</label><br/>
+  <%=h @diva_data.diva_status.message if @diva_data.diva_status%>
+</p>
+
+<%= link_to_function 'Hide/Show XML String' do |page|
+	page['xml-string'].toggle()
+end %>
+<br/>
+
+<div id= 'xml-string', style = 'display: none;'>
+  <p>
+    <label>XML String</label><br/>
+    <%=h @diva_data.xml_string %>
+  </p>
+</div>
+
+
+<h2>Transfer to Clarity</h2>
+<p>
+  <label>Workflow Job ID</label><br/>
+  <%=h @diva_data.job_id %>
+</p>
+<p>
+  <label>Workflow created at</label><br/>
+  <%=h @diva_data.job_created.to_s(:broadcast_datetime) if @diva_data.job_created %>
+</p>
+<p>
+  <label>Workflow started at</label><br/>
+  <%=h @diva_data.job_started.to_s(:broadcast_datetime) if @diva_data.job_started %>
+</p>
+<p>
+  <label>Workflow completed at</label><br/>
+  <%=h @diva_data.job_completed.to_s(:broadcast_datetime) if @diva_data.job_completed %>
+</p>
+<p>
+  <label>Workflow status</label><br/>
+  <%=h @diva_data.status %>
+</p>
+
+<%= link_to_function 'Hide/Show Workflow XML String' do |page|
+	page['workflow-xml-string'].toggle()
+end %>
+<br/>
+
+<div id= 'workflow-xml-string', style = 'display: none;'>
+  <p>
+    <label>Workflow XML String</label><br/>
+    <%=h @diva_data.job_xml_string %>
+  </p>
+</div>
+
+<%= link_to 'Edit', edit_diva_data_path(@diva_data) %> |
+<%= link_to 'Back', :back %>

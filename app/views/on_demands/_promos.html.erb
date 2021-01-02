@@ -1,0 +1,18 @@
+<%= will_paginate @promos %>
+
+<table id = 'search_table'>
+<% @promos.each do |promo| %>
+	<tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+	    <td><%= h promo.name %></td>
+		<td><%= h promo.description %></td>
+    <td><%= link_to 'Add', add_promo_on_demand_path({ :on_demand_id => @on_demand.id, :promo_id => promo.id, :search => params[:search], :show_media => true, :source => source, 
+                                                      :index_search => params[:index_search], :index_page => params[:page], 
+                                                      :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                      :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]})%> </td>
+	</tr>
+<% end %>
+
+</table>
+<br/>
+
+<%= will_paginate @promos %>

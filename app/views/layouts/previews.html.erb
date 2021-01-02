@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		<title>MuVi2 Viasat Programme Database</title>
+		<%= stylesheet_link_tag "programme", "scaffold", :media => "all" %>
+		<%= javascript_include_tag :defaults %>
+
+	</head>
+	<body id="store">
+		<div id="banner">
+			<%= image_tag("logo.png") %>
+			<%= @page_title || "ClarityGen Web Application" %>
+		</div> 
+		<div id="columns">
+			<div id="side">
+				<p>Version 2.0</p>
+				<%= link_to 'Home', root_url%><br /> 
+				
+				<h4>Preview Images</h4>
+					<%= link_to 'Scan Images', previews_path %><br/>
+					<%= link_to 'Images', preview_jpegs_path %>
+			
+			</div> 
+			<div id="main">
+				<p style="color: green">
+					<% if flash[:notice] != nil %>
+						<% flash[:notice].split(". ").each do |fl| %>
+							<%= fl %> <br />
+						<% end %>
+					<% end %>
+				</p>
+				<%= yield :layout %>
+			</div>
+		</div>
+	</body>
+</hmtl>

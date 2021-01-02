@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @bug.name %>
+</p>
+
+<p>
+  <b>Page number:</b>
+  <%=h @bug.page_number %>
+</p>
+
+<p>
+  <b>Channel:</b>
+  <%=h @bug.channel_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_bug_path(@bug) %> |
+<%= link_to 'Back', bugs_path %>

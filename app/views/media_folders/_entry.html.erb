@@ -1,0 +1,24 @@
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name, :size => 70 %>
+</p>
+<p>
+  <%= f.label :folder %><br />
+  <%= f.text_field :folder, :size => 70 %>
+</p>
+<p>
+  <%= f.label :channel_id %><br />
+  <%= f.collection_select (:channel_id, @channels, :id, :name, :prompt => true)   %>
+</p>
+<p>
+  <%= f.label :aspect_id %><br />
+  <%= f.collection_select (:aspect_id, @aspects, :id, :name, :prompt => true)   %>
+</p>
+<p>
+  <%= f.label :clip %><br />
+  <%= f.check_box :clip %>
+</p>
+<p>
+  <%= f.label :system %><br />
+  <%= f.check_box :system %>
+</p>

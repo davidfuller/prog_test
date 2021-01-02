@@ -1,0 +1,80 @@
+<% content_for(:title) do%>
+	Media Past Last Use: MuVi2 Database
+<% end %>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% if Useful.date?(params[:last_use_date]) %>
+<% 	last_use_display = params[:last_use_date]%>
+<% else %>
+<%	last_use_display = format_date_time(Date.today,"%B %e, %Y") %>
+<% end %>
+<% 	six_months_time = format_date_time(Date.parse(last_use_display).to_datetime.advance(:months => 6, :hours => 5),"%B %e, %Y %I:%M %p") %>
+
+<fieldset>
+<legend>Media Files</legend>
+	<% form_tag media_files_past_last_use_path, :method =>'get' do %>
+		<p>
+			<%= text_field_tag :search, params[:search], :size => 45 %>
+			<%= submit_tag "Search", :name => nil %>
+		</p>
+		<table>
+		<tr><td>Last Use before</td>
+				<td><%= calendar_date_select_tag :last_use_date, last_use_display, {:month_year => :label, :after_close => 'this.form.submit()'} %></td>
+		</tr>
+		<tr><td>Media Type</td>
+				<td><%= select_tag :media_type_display, options_for_select(@media_type_display, params[:media_type_display]),{:onchange => 'this.form.submit()'}%>	</td>
+		</tr>
+		</table>
+	<% end %>
+</fieldset>
+<br/>
+
+<% session[:last_use_media_type_display] = params[:media_type_display] %>
+
+<br/>
+
+<%= will_paginate @media_files %>
+
+
+<% form_tag :action => :change_last_use do %>
+<table>
+	<tr>
+		<th></th>
+		<th>Name</th>
+		<th>Filename</th>
+		<th>First Use</th>
+		<th>Last Use</th>
+	</tr>
+
+	<% @media_files.each do |media_file| %>
+		  <tr>
+				<td><%= check_box_tag "media_file_ids[]", media_file.id, false , :class => 'fred' %></td>
+		    <td><b><%=h media_file.name %></b></td>
+				<td><%=h media_file.filename %></td>
+				<td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil?%></td>
+				<td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
+	
+		    <td width = '50'><%= link_to 'Details', media_file %></td>
+		    <td width = '50'><%= link_to 'Edit', edit_media_file_path(media_file) %></td>
+		    <td width = '50'><%= link_to 'Destroy', media_file, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+
+	<% end %>
+	</table>
+	<br/>
+	<%= will_paginate @media_files %>
+
+
+	<span class = 'info_text'>
+		Set last use dates of selected media file	<br/>
+	</span>
+	<%= calendar_date_select_tag :new_last_use, six_months_time, {:size => '45', :month_year => :label, :time => true, :minute_interval => 1} %>
+	<%= submit_tag "Add all checked", :confirm => "This will update the last use date on all the selected media files. \n\n" +
+																								"This cannot be undone. \n\nAre you sure you want to do this?" %>
+
+<% end %>
+
+<span class = 'link_button'>
+<%= link_to_function 'Check all', "$$('input.fred').each(function(checkbox) { checkbox.checked = true; });" %>
+<%= link_to_function 'Uncheck all', "$$('input.fred').each(function(checkbox) { checkbox.checked = false; });" %>
+</span>

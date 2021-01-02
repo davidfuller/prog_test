@@ -1,0 +1,16 @@
+<h1>Editing media file details</h1>
+
+<% form_for(@media_file) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<% if @media_file.source == 'promo'%>
+<%= link_to 'Back', promo_path(@media_file.promo_id) %>
+<% else %>
+<%= link_to 'Back', media_files_path_with_type %>
+<% end %>

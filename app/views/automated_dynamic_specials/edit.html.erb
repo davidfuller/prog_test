@@ -1,0 +1,17 @@
+<% content_for(:title) do%>
+	Editing Automated Dynamic Special: MuVi2 Database
+<% end %>
+<h1>Editing Automated Dynamic Special</h1>
+
+<% form_for(@automated_dynamic_special) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals => {:f => f} %>
+  
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @automated_dynamic_special %> |
+<%= link_to 'Back', automated_dynamic_specials_path %>

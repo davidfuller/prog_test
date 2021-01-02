@@ -1,0 +1,36 @@
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="60" />
+<% end %>
+<h1>Unready Media Files</h1>
+<p>This page will automatically refresh every 60 seconds</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Filename</th>
+    <th>Media type</th>
+    <th>Media folder</th>
+		<th>Status</th>
+  </tr>
+
+<% @media_files.each do |media_file| %>
+  <tr>
+    <td><%=h media_file.name %></td>
+    <td><%=h media_file.filename %></td>
+    <td><%=h media_file.media_type.name unless media_file.media_type.nil? %></td>
+    <td><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %></td>
+		<td><%=h media_file.status_display%></td>
+    <% if media_file.trailer %>
+      <td><%= link_to 'Show', trailer_path(media_file.trailer) %></td>
+    <% elsif media_file.special_preview %>
+      <td><%= link_to 'Show', special_preview_path(media_file.special_preview) %></td>
+    <% else %>
+		  <td><%= link_to 'Show', promo_path(media_file.first_promo_id) unless media_file.first_promo_id == 0 %></td>
+    <% end %>
+
+  </tr>
+<% end %>
+</table>
+
+<br />
+

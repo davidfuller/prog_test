@@ -1,0 +1,24 @@
+<h1>Editing jpeg</h1>
+
+<% form_for(@jpeg) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </p>
+  <p>
+    <%= f.label :jpeg_folder_id %><br />
+    <%= f.text_field :jpeg_folder_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @jpeg %> |
+<%= link_to 'Back', jpegs_path %>

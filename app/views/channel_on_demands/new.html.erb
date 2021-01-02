@@ -1,0 +1,23 @@
+<h1>New channel_on_demand</h1>
+
+<% form_for(@channel_on_demand) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :channel_id %><br />
+    <%= f.text_field :channel_id %>
+  </p>
+  <p>
+    <%= f.label :on_demand_id %><br />
+    <%= f.text_field :on_demand_id %>
+  </p>
+  <p>
+    <%= f.label :enable %><br />
+    <%= f.check_box :enable %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', channel_on_demands_path %>

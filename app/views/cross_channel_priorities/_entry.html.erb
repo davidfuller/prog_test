@@ -1,0 +1,34 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<%= f.hidden_field :cross_priority_date %>
+
+<p>
+	<%= f.label :tx_channel_id, 'TX Channel' %><br />
+	<%= f.collection_select (:tx_channel_id, @channels, :id, :name, {:prompt => true})   %>
+</p>
+
+<p>
+	<%= f.label :channel_id, "Channel to Promote" %><br />
+	<%= f.collection_select (:channel_id, @channels, :id, :name, {:prompt => true})   %>
+</p>
+
+<p>
+	<%= f.label :billed, "Time / Date" %><br />
+	<%= f.calendar_date_select :billed, {:month_year => :label, :minute_interval => 5} %>
+</p>
+<p>
+	<%= f.label :title_id %><br />
+	<%= f.collection_select (:title_id, @titles, :id, :english, :prompt => 'Select a title')   %>
+</p>
+<p>
+	<%= f.label :series_ident, "Series Ident" %><br />
+	<%= f.text_field :series_ident %>
+</p>
+<p>
+	<%= f.label :eidr, "EIDR" %><br />
+	<%= f.text_field :eidr, :size => 60 %>
+</p>
+<p>
+	<%= f.label :lead_text %><br />
+	<%= f.text_field :lead_text %>
+</p>

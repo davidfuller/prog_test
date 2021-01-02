@@ -1,0 +1,72 @@
+<% content_for(:title) do%>
+	House Numbers: MuVi2 Database
+<% end %>
+<p id = 'admin_link'>
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin').each { |a| a.toggle }
+		end %>
+</p>
+<fieldset>
+	<legend>House Numbers</legend>
+		<% form_tag houses_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>	
+		<% end %>
+</fieldset>
+
+<p class = 'link_button'>
+	<%= link_to 'New house number', new_house_path %>
+	<span class = 'admin', style = 'display: none;'> |
+		<%= link_to 'Add series idents to all house numbers', add_all_series_ident_houses_path , :confirm => "Are you sure? This may take a while."%>
+	</span>
+</p>
+
+<%= will_paginate @houses %>
+
+<table>
+  <tr>
+		<th>English Title</th>
+		<th>House Number</th>
+		<th>Series Ident</th>
+		<th>EIDR</th>
+		<th>Year</th>
+		<th>EOP</th>
+  </tr>
+
+<% @houses.each do |house| %>
+
+  <tr>
+		<td>
+			<% if house.series_ident && house.series_ident.title %>
+				<%= h house.series_ident.title.english %>
+			<% else %>
+				<%= "No title" %>
+			<% end %>
+		</td>
+		<td><%=h house.house_number %></td>
+		<td><%=h house.series_ident.number if house.series_ident %></td>
+		<% if house.series_ident && house.series_ident.eidr_url %>
+			<td><%= link_to house.series_ident.eidr, house.series_ident.eidr_url, :target => "_blank" %></td>
+		<% else %>		
+			<td><%=h house.series_ident.eidr if house.series_ident %></td>
+		<% end %>
+		<td><%=h house.series_ident.year_number if house.series_ident %></td>	
+		<td>
+			<% if house.title %>
+				<%= h house.title.eop_display %>
+			<% else %>
+				<%= "No EOP" %>
+			<% end %>
+		</td>
+		
+    <td><%= link_to 'Edit', edit_house_path(house) %></td>
+    <td><%= link_to 'Delete', house, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= will_paginate @houses %>

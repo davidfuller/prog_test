@@ -1,0 +1,25 @@
+<%= f.hidden_field :source %>
+<%= f.hidden_field :trailer_id %>
+
+<p>
+  <%= f.label :system_id %><br />
+  <%= f.text_field :system_id %>
+</p>
+<p>
+  <%= f.label :diva_house_number %><br />
+  <%= f.text_field :diva_house_number %>
+</p>
+<p>
+  <%= f.label :diva_duration %><br />
+  <%= f.text_field :diva_duration %>
+</p>
+<p>
+  <%= f.label :tv_standard %><br />
+  <%= f.text_field :tv_standard %>
+</p>
+<p>
+  <%= f.label :diva_status_id %><br />
+  <%= f.collection_select (:diva_status_id, @diva_statuses, :id, :message, :prompt => 'Select a status')   %>
+</p>
+  
+  

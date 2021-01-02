@@ -1,0 +1,36 @@
+<p>
+  <b>Entry time:</b>
+  <%=h @exception_list.entry_time %>
+</p>
+<p>
+  <b>Message:</b>
+  <%=h @exception_list.message %>
+</p>
+<p>
+  <b>Channel name:</b>
+  <%=h @exception_list.channel_name %>
+</p>
+
+<p>
+  <b>Existing title:</b>
+  <%=h @exception_list.existing_title %>
+</p>
+
+<p>
+  <b>Clipsource title:</b>
+  <%=h @exception_list.clipsource_title %>
+</p>
+
+<p>
+  <b>EIDR:</b>
+  <%=h @exception_list.eidr %>
+</p>
+
+<p>
+  <b>House number:</b>
+  <%=h @exception_list.house_number %>
+</p>
+
+
+<%= link_to 'Edit', edit_exception_list_path(@exception_list) %> |
+<%= link_to 'Back', exception_lists_path %>

@@ -1,0 +1,24 @@
+<h1>Editing diva_poll</h1>
+
+<% form_for(@diva_poll) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :media_search %><br />
+    <%= f.text_field :media_search %>
+  </p>
+  <p>
+    <%= f.label :workflow_start %><br />
+    <%= f.text_field :workflow_start %>
+  </p>
+  <p>
+    <%= f.label :workflow %><br />
+    <%= f.text_field :workflow %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @diva_poll %> |
+<%= link_to 'Back', diva_polls_path %>

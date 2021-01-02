@@ -1,0 +1,17 @@
+<% content_for(:title) do%>
+	Diva Status: MuVi2 Database
+<% end %>
+<h1>Editing Diva Status</h1>
+
+<% form_for(@diva_status) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @diva_status %> |
+<%= link_to 'Back', diva_statuses_path %>

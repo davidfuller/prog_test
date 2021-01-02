@@ -1,0 +1,58 @@
+<p>
+  <b>Event:</b>
+  <%=h @playlist_line.event %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%=h @playlist_line.start %>
+</p>
+
+<p>
+  <b>Rounded:</b>
+  <%=h @playlist_line.rounded %>
+</p>
+
+<p>
+  <b>Timecode:</b>
+  <%=h @playlist_line.timecode %>
+</p>
+
+<p>
+  <b>Duration:</b>
+  <%=h @playlist_line.duration %>
+</p>
+
+<p>
+  <b>Source:</b>
+  <%=h @playlist_line.source %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @playlist_line.material_type %>
+</p>
+
+<p>
+  <b>Material ID:</b>
+  <%=h @playlist_line.house_no %>
+</p>
+
+<p>
+  <b>Part:</b>
+  <%=h @playlist_line.part %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%=h @playlist_line.title %>
+</p>
+
+<p>
+  <b>Long title:</b>
+  <%=h @playlist_line.long_title %>
+</p>
+
+
+<%= link_to 'Edit', edit_playlist_line_path(@playlist_line) %> |
+<%= link_to 'Back', playlist_lines_path %>

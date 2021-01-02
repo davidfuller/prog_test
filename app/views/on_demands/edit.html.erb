@@ -1,0 +1,63 @@
+<% content_for(:title) do%>
+	Edit Viafree / Viaplay Priority: MuVi2 Database
+<% end %>
+
+<h1>Editing Viafree / Viaplay Priority</h1>
+<%  if params[:search].blank? && session[:info]
+    if session[:info].blank?
+      search = ''
+    else
+      search = session[:info][:search]
+    end
+	else
+		search = params[:search]
+	end %>
+		
+<% session[:info] =   { :on_demand_id => @on_demand.id,
+											 	:search => search,
+						            :page => params[:page],
+					 	          } %>
+					
+
+<% form_for(@on_demand) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  
+  <%= render :partial => 'channels', :locals	=> {:f => f} 	%>
+  
+  <%= render :partial => 'promo_wrapper', :locals => {:max_num => 2, :source => :edit, :search => search } %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @on_demand %> |
+<%= link_to 'Viafree / Viaplay Priorities', on_demands_path(:search => params[:index_search], :page => params[:index_page], 
+                                                            :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                            :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %> |
+<%= link_to 'Back', :back %>
+
+<p>
+  <%= link_to_function 'Toggle Promo Search' do |page|
+		page['search_od'].toggle()
+	end %><br />
+
+  <% if search %>
+    <div id ='search_od' >
+  <% else %>
+    <div id ='search_od' , style = "display: none;" >
+  <% end %>
+    <div id ='on_demand_search_panel'>
+      <h1>Promos</h1>
+      <% path = edit_on_demand_path %>
+      <% form_tag path, :method =>'get' do %>
+      <p>
+        <%= text_field_tag :search, search, :size => 45 %>
+        <%= submit_tag "Search", :name => nil %>
+      </p>			
+      <% end %>
+      <%= render :partial => 'promos', :locals => {:include_add => false, :source => :edit} %>
+    </div>
+  </div>
+</p>

@@ -1,0 +1,49 @@
+<h1>Channels</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+		<th>Format</th>
+    <th>Press code</th>
+		<th>Domain</th>
+		<th>Path</th>
+    <th>Playlist code</th>
+		<th>BSS Code</th>
+    <th>Language</th>
+		<th>Spreadsheet Prefix</th>
+		<th>Logo Filename</th>
+		<th>Circle</th>
+		<th>Encoding</th>
+		<th>Dynamic Branding</th>
+		<th>Clipsource Domain</th>
+		<th>Clipsource Path</th>
+		<th>Clipsource Suffix</th>
+  </tr>
+
+<% @channels.each do |channel| %>
+  <tr>
+    <td><%=h channel.name %></td>
+		<td><%=h channel.hd_display%></td>
+    <td><%=h channel.press_code %></td>
+		<td><%=h channel.domain %></td>
+		<td><%=h channel.path %></td>
+    <td><%=h channel.playlist_code %></td>
+    <td><%=h channel.bss_name %></td>
+    <td><%=h channel.language.name unless channel.language.nil? %></td>
+		<td><%=h channel.prefix %></td>
+		<td><%=h channel.logo_filename %></td>
+		<td><%=h channel.circle_logo %></td>
+		<td><%=h channel.encoding %></td>
+		<td><%=h channel.has_dynamic_branding %></td>
+  	<td><%=h channel.clipsource_domain %></td>
+		<td><%=h channel.clipsource_path %></td>
+		<td><%=h channel.clipsource_suffix %></td>
+    <td><%= link_to 'Edit', edit_channel_path(channel) %></td>
+    <td><%= link_to 'Delete', channel, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New channel', new_channel_path %>

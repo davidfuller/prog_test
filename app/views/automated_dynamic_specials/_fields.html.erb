@@ -1,0 +1,42 @@
+
+
+<% if automated_dynamic_special_fields.count > 0 %>
+
+<table>
+	<tr>
+    <th>Field No</th>
+    <th>Field Name</th>
+    <th>Field Type</th>
+    <th></th>
+    <th>Value</th>
+  </tr>	
+
+ <% automated_dynamic_special_fields.each do |field| %>
+    <% template = field.template_field_join %>
+		<tr>
+      <td><%=h template.field %></td>
+      <% if template.dynamic_special_field%>
+			  <td><%=h template.dynamic_special_field.name %></td>
+        <% if template.dynamic_special_field.dynamic_special_image_spec%>
+          <td><%=h template.dynamic_special_field.dynamic_special_image_spec.name %></td>
+          <% field_type = template.dynamic_special_field.dynamic_special_image_spec %>
+        <% end %>
+      <% end %>
+      <td><%= image_tag(field.dynamic_special_logo_url, :size => '50x50') if field.dynamic_special_logo_url %></td>
+      <% if template.fixed %>
+        <td><%=h field.the_value %></td>
+      <% else %>
+        <td><%= render :partial => 'field', :locals	=> { :field => field, :field_type => field_type } %></td>
+      <% end %>
+      
+      <% if show_links %>	
+  			<td><%= link_to 'Edit', edit_template_field_join_path(template, :source => 'template') %></td>
+	      <td><%= link_to 'Destroy', template_field_join_path(template, :source => 'template'), :confirm => 'Are you sure?',:method => :delete %></td>
+	    <% end %>
+		</tr>
+	<% end %>
+</table>
+
+<% else %>
+No fields for this template <br />
+<% end %> 

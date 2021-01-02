@@ -1,0 +1,38 @@
+<% content_for(:title) do%>
+	Diva Status: MuVi2 Database
+<% end %>
+<h1>Dva Status</h1>
+
+<p>
+  <label>Value</label><br/>
+  <%=h @diva_status.value %>
+</p>
+
+<p>
+  <label>Message</label><br/>
+  <%=h @diva_status.message %>
+</p>
+
+<p>
+  <label>CSS</label><br/>
+  <%=h @diva_status.css %>
+</p>
+
+<p>
+  <label>Description</label><br/>
+  <%=h @diva_status.description %>
+</p>
+
+<p>
+  <label>Seach</label><br/>
+  <%=h @diva_status.seach %>
+</p>
+
+<p>
+  <label>Workflow</label><br/>
+  <%=h @diva_status.workflow %>
+</p>
+
+
+<%= link_to 'Edit', edit_diva_status_path(@diva_status) %> |
+<%= link_to 'Back', :back %>

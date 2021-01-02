@@ -1,0 +1,31 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special Fields: MuVi2 Database
+<% end %>
+<h1>Automated Dynamic Special Fields</h1>
+
+<table>
+  <tr>
+    <th>Value ID</th>
+    <th>Value</th>
+    <th>Display</th>
+    <th>Automated Dynamic Special</th>
+    <th>Field No.</th>
+  </tr>
+
+<% @automated_dynamic_special_fields.each do |automated_dynamic_special_field| %>
+  <tr>
+    <td><%=h automated_dynamic_special_field.the_id %></td>
+    <td><%=h automated_dynamic_special_field.the_value %></td>
+    <td><%=h automated_dynamic_special_field.the_display %></td>
+    <td><%=h automated_dynamic_special_field.automated_dynamic_special.name if automated_dynamic_special_field.automated_dynamic_special %></td>
+    <td><%=h automated_dynamic_special_field.template_field_join.field if automated_dynamic_special_field.template_field_join %></td>
+    <td><%= link_to 'Show', automated_dynamic_special_field %></td>
+    <td><%= link_to 'Edit', edit_automated_dynamic_special_field_path(automated_dynamic_special_field) %></td>
+    <td><%= link_to 'Destroy', automated_dynamic_special_field, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Field', new_automated_dynamic_special_field_path %>

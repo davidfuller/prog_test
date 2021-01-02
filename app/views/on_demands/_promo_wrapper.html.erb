@@ -1,0 +1,78 @@
+<p>
+  <% if @on_demand.promo && @on_demand.promo.portrait_media_files.count > 0 %>
+    <table>
+      <tr>
+        <label>Promo</label><br/>
+        <td id= 'title-text'><b>Name:</b></td>
+        <td id= 'title-text'><%= h @on_demand.promo.name %></td>
+        <td><%= link_to 'Show', @on_demand.promo %></td>
+        <td><%= link_to 'Edit', edit_promo_path(@on_demand.promo) %></td>
+        <td><div title = "Use Unlink to clear this promo but not delete the underlying promo from the database"><%= link_to 'Unlink', 
+                                            unlink_promo_on_demand_path({ :on_demand_id => @on_demand.id, :search => params[:search], :source => source,
+                                                                    :index_search => params[:index_search], :index_page => params[:index_page], 
+                                                                    :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                                    :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]}), 
+                                                                    :confirm => 'Are you sure?', :method => :delete %></div></td>
+        <% if @on_demand.promo.total_count == 1%>
+          <td><div title = "Use Destroy to totally delete promo from the database"><%= link_to 'Destroy', 
+                                            delete_promo_on_demand_path({ :on_demand_id => @on_demand.id, :search => params[:search], :source => source,
+                                                                    :index_search => params[:index_search], :index_page => params[:index_page], 
+                                                                    :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                                    :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]}), 
+                                                                    :confirm => 'Are you sure?', :method => :delete %></td>
+        <% end %>
+      </tr>
+      <tr>
+        <td id= 'title-text'><b>Description:</b></td>
+        <td id= 'title-text'><%= h @on_demand.promo.description %></td>
+      </tr>
+      <tr>
+        <td><%= 'This promo is linked to ' + pluralize(@on_demand.promo.portrait_media_files.count, ' item') %></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td><b>First Use: </b><%= h @on_demand.promo.first_use.to_s(:broadcast_datetime)%></td>
+        <td><b>Last Use: </b><%= h @on_demand.promo.last_use.to_s(:broadcast_datetime)%></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <label><%= pluralize(@on_demand.promo.portrait_media_files.count, 'portrait media file') %><br/>
+          <%= link_to_function 'Hide/Show ' do |page|
+            page['promo-media'].toggle()
+          end %>
+        </td>
+      </tr>
+    </table>
+    <% if @show_media %>
+      <div id= 'promo-media'>
+    <% elsif @on_demand.promo.portrait_media_files.count > max_num %>
+      <div id= 'promo-media', style = 'display: none;'>
+    <% else %>
+      <div id= 'promo-media'>
+    <% end %>
+    <%= render :partial => 'media', :locals	=> {:promo => @on_demand.promo, :heading => false, 
+    :details => true, :source => source} if @on_demand.promo %>
+    </div>
+	<% else %>
+    <label>Promo</label><br/>
+    No portrait promo media has been used for this On Demand Item<br/>
+    <br/>
+    <% if @promos.count > 0 %>
+      <% my_search = params[:search] || search %>
+      <% if my_search.nil? %>
+      <% else %>
+        <%= 'The title <b>' + my_search + '</b> has ' + pluralize(@promos.count, 'portrait promo') %> <br/>
+        Use the search section below if you want to add an existing promo<br/>
+        <br/>
+        Alternatively you can...<br/>
+      <% end %>
+    <% end %>
+    <%= link_to 'Create New Promo', create_promo_on_demand_path({ :on_demand_id => @on_demand.id, :search => params[:search], :source => source,
+                                                                  :index_search => params[:index_search], :index_page => params[:index_page], 
+                                                                  :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                                  :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]}) %>
+  <% end %>
+</p>

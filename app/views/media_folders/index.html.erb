@@ -1,0 +1,30 @@
+<h1>Media Folders</h1>
+
+<%= link_to 'New media folder', new_media_folder_path %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Folder</th>
+    <th>Channel</th>
+		<th>Aspect Ratio</th>
+    <th>Clip</th>
+    <th>System</th>
+  </tr>
+
+<% @media_folders.each do |media_folder| %>
+  <tr>
+    <td><%=h media_folder.name %></td>
+    <td><%=h media_folder.folder %></td>
+    <td><%=h media_folder.channel.name unless media_folder.channel.nil? %></td>
+    <td><%=h media_folder.aspect.name unless media_folder.aspect.nil? %></td>
+    <td><%=h media_folder.clip %></td>
+    <td><%=h media_folder.system %></td>
+    <td><%= link_to 'Edit', edit_media_folder_path(media_folder) %></td>
+    <td><%= link_to 'Destroy', media_folder, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+

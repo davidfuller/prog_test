@@ -1,0 +1,16 @@
+<% content_for(:title) do%>
+	New Dynamic Special Template: MuVi2 Database
+<% end %>
+<h1>New Template</h1>
+
+<% form_for(@dynamic_special_template) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', dynamic_special_templates_path %>

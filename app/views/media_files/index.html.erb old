@@ -1,0 +1,49 @@
+<% content_for(:title) do%>
+	Media Files: MuVi2 Database
+<% end %>
+<fieldset>
+<legend>Media Files</legend>
+
+<% form_tag media_files_path, :method =>'get' do %>
+	<p>
+		<%= text_field_tag :search, params[:search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %>
+	</p>
+		<%= select_tag :media_type_display, options_for_select(@media_type_display, params[:media_type_display]),{:onchange => 'this.form.submit()'}%><br/>
+<br/>
+<% end %>
+</fieldset>
+<br/>
+
+<% session[:media_type_display] = params[:media_type_display] %>
+
+<%= link_to 'New Media File', new_media_file_path %> | <%= link_to 'Media past last use date', media_files_past_last_use_path %>
+<%= will_paginate @media_files %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Filename</th>
+    <th>Media type</th>
+    <th>Media folder</th>
+		<th>Status</th>
+    <th>First use</th>
+    <th>Last use</th>
+  </tr>
+
+<% @media_files.each do |media_file| %>
+  <tr>
+    <td><%=h media_file.name %></td>
+    <td><%=h media_file.filename %></td>
+    <td><%=h media_file.media_type.name unless media_file.media_type.nil? %></td>
+    <td><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %></td>
+		<td><%=h media_file.status_display%>
+    <td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %></td>
+    <td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
+    <td><%= link_to 'Edit', edit_media_file_path(media_file) %></td>
+    <td><%= link_to 'Destroy', media_file, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @media_files %>
+
+

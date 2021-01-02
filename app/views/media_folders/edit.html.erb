@@ -1,0 +1,13 @@
+<h1>Editing Media Folder</h1>
+
+<% form_for(@media_folder) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render(:partial => 'entry', :locals => {:f => f} )%>
+	
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', media_folders_path %>

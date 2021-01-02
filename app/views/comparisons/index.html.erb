@@ -1,0 +1,66 @@
+<%= render :partial => 'shared/color' %>
+
+
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin').each { |a| a.toggle }
+		end %>
+
+
+<h1>Comparison of Playlist with Press File</h1>
+<h2><%= h page_date_heading(@comparisons[0].rounded) if @comparisons[0] != nil %></h2>
+
+<% form_tag comparisons_path, :method =>'get' do %>	
+	<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%>
+	<%= select_tag :filename, options_for_select(@filenames, params[:filename]),{:onchange => 'this.form.submit()'} %>
+	<%= submit_tag "View", :name => nil %>
+<% end %>
+
+<% session[:show_comparison] = params[:show] %>
+<% session[:filename] = params[:filename] %>
+
+<div id ='comparison_table'>
+
+<table>
+  <tr>
+		<th></th>
+    <th>Time</th>
+   	<th>Schedule title</th>
+	<th>Channel</th>
+    <th>House no</th>
+    <th>Original title</th>
+    <th>Local title</th>
+	<th>Series Ident</th>
+	<th class = 'admin' style = 'display:none;'>Code</th>
+	<th class = 'admin' style = 'display:none;'>Press ID</th>
+	</tr>
+
+<% form_tag :action => :add_multiple do%>
+	<%= hidden_field_tag :source, 'playlist_comparison' %>
+	<% @comparisons.each do |comparison| %>
+		<tr class = "<%= comparison.comparison_code %>", title = "<%= comparison.code_display %>">
+			<td><%= check_box_tag "comparison_ids[]", comparison.id, false , :class => 'fred' %></td>
+			<td><%=h comparison.rounded.to_s(:broadcast) %></td>
+			<td><%=h comparison.long_title %></td>
+			<td><%=h comparison.channel.name unless comparison.channel.nil? %></td>
+			<td><%=h comparison.house_no %></td>
+			<td><%=h comparison.original_title %></td>
+			<td><%=h comparison.danish_title %></td>
+			<td><%=h comparison.series_ident %></td>
+			<td class = 'admin' style = 'display:none;'><%=h comparison.comparison_code %></td>
+			<td class = 'admin' style = 'display:none;'><%=h comparison.press_id %></td>
+			<td>
+				<%= render :partial => 'shared/links', :locals => {:comparison => comparison, :source => :playlist_comparison } %>
+			</td>
+		</tr>
+	<% end %>
+	<%= submit_tag "Auto Add all checked"%>
+	<span class = 'link_button'>
+	<%= link_to_function 'Check all', "$$('input.fred').each(function(checkbox) { checkbox.checked = true; });" %>
+	<%= link_to_function 'Uncheck all', "$$('input.fred').each(function(checkbox) { checkbox.checked = false; });" %>
+	</span>
+<% end %>
+</table>
+
+</div>
+
+<br />

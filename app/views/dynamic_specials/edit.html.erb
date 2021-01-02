@@ -1,0 +1,15 @@
+<h1>Editing Dynamic Special</h1>
+
+<% form_for(@dynamic_special) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals => {:f => f} %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= render :partial => 'fields', :locals	=> {:dynamic_special => @dynamic_special, :show_links => false} %>
+
+<%= link_to 'Show', @dynamic_special %> |
+<%= link_to 'Back', dynamic_specials_path %>

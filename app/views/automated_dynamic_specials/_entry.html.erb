@@ -1,0 +1,17 @@
+  <%= calendar_date_select_includes "custom", :locale=>'uk' %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :channel_id, 'Channel' %><br />
+    <%= f.collection_select (:channel_id, @channels, :id, :name, {:prompt => 'Choose a channel'})%>
+  </p>
+  <p>
+    <%= f.label :last_use %><br />
+    <%= f.calendar_date_select :last_use, {:month_year => :label} %><br/>
+  </p>
+  <p>
+    <%= f.label :dynamic_special_template_id, 'Template' %><br />
+    <%= f.collection_select (:dynamic_special_template_id, @templates, :id, :name, {:prompt => 'Choose a template'})%>
+  </p>

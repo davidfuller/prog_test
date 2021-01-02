@@ -1,0 +1,27 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special: MuVi2 Database
+<% end %>
+<h1>Automated Dynamic Specials</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Channel</th>
+    <th>Dynamic special template</th>
+  </tr>
+
+<% @automated_dynamic_specials.each do |automated_dynamic_special| %>
+  <tr>
+    <td><%=h automated_dynamic_special.name %></td>
+    <td><%=h automated_dynamic_special.channel_name %></td>
+    <td><%=h automated_dynamic_special.template_name %></td>
+    <td><%= link_to 'Show', automated_dynamic_special %></td>
+    <td><%= link_to 'Edit', edit_automated_dynamic_special_path(automated_dynamic_special) %></td>
+    <td><%= link_to 'Destroy', automated_dynamic_special, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Automated Dynamic Special', new_automated_dynamic_special_path %>

@@ -1,0 +1,57 @@
+<h1>Editing playlist_line</h1>
+
+<% form_for(@playlist_line) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :event %><br />
+    <%= f.text_field :event %>
+  </p>
+  <p>
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start %>
+  </p>
+
+  <p>
+    <%= f.label :rounded %><br />
+    <%= f.datetime_select :rounded %>
+  </p>
+
+  <p>
+    <%= f.label :duration %><br />
+    <%= f.datetime_select :duration %>
+  </p>
+  <p>
+    <%= f.label :source %><br />
+    <%= f.text_field :source %>
+  </p>
+  <p>
+    <%= f.label :material_type %><br />
+    <%= f.text_field :material_type %>
+  </p>
+
+  <p>
+    <%= f.label :material_id %><br />
+    <%= f.text_field :material_id %>
+  </p>
+
+  <p>
+    <%= f.label :part %><br />
+    <%= f.text_field :part %>
+  </p>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :long_title %><br />
+    <%= f.text_field :long_title %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @playlist_line %> |
+<%= link_to 'Back', playlist_lines_path %>

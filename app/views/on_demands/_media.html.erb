@@ -1,0 +1,66 @@
+<% if promo.portrait_media_files.count > 0 %>
+
+<table class = 'media_table' width = '90%'>
+	<% if heading %>
+	  <tr class = 'media' >
+      <th>Name</th>
+      <th>Filename</th>
+      <th>Media Type</th>
+		  <% if details %>
+	      <th>Media folder</th>
+	      <th>First use</th>
+	      <th>Last use</th>
+		  <% end %>
+		  <th>Status</th>
+		  <th></th>
+		  <th></th>
+		  <th></th>
+		  <th></th>
+    </tr>
+	<% end %>
+
+	<% promo.portrait_media_files.each do |media_file| %>
+  	<% if media_file.has_audio %>
+	  	<tr class = 'audio' >
+	  <% else %>
+	    <tr class = 'media' >
+	  <% end %>
+			<td width = '180' >
+				<% if media_file.jpeg_exist? %>
+				  <% if media_file.portrait? %>
+					  <%= link_to image_tag(media_file.jpeg_url, :size => "60x108"), media_file_path(media_file, :source => source, :promo_id => promo, :upload => 'false') %>
+					<% else %>
+					  <%= link_to image_tag(media_file.jpeg_url, :size => "160x90"), media_file_path(media_file, :source => source, :promo_id => promo, :upload => 'false') %>
+					<% end %>
+				<% end %>
+			</td>
+			<td colspan = '3' width = '50%'>
+				<b><%=h media_file.media_type.name unless media_file.media_type.nil?%> Name: </b><%=h media_file.name %><br/>
+				<b>Filename: </b><%=h media_file.filename %><br/>
+  			<% if details %>
+    			<% if media_file.has_audio %>
+    			  <b>Audio Filename: </b><%=h media_file.audio_filename %><br/>
+   			  <% end %>
+			  	<b>Folder: </b><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %><br/>
+			  	<b>First Use: </b><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %><br/>
+			  	<b>Last Use: </b><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %><br/>
+				<% end %>
+				<div class = "<%= media_file.status_css %>"><b>Status: </b><%=h media_file.status.message unless media_file.status.nil?%></div>
+			</td>
+			<td><%= link_to 'Details', media_file_path(media_file, :source => source, :promo_id => promo, :upload => 'false')%></td>
+      <td><%= link_to 'Upload', media_file_path(media_file, :source => source, :promo_id => promo, :on_demand_id => @on_demand.id, :upload => 'true', 
+                                                            :index_search => params[:index_search], :index_page => params[:index_page], 
+                                                            :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                            :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media])%></td>
+			<td><%= link_to 'Edit', edit_media_file_path(media_file, :source => source, :promo_id => promo) %></td>
+	    <td><%= link_to 'Destroy', media_file_path(media_file, :source => source, :promo_id => promo, :on_demand_id => @on_demand.id) , :confirm => 'Are you sure?',:method => :delete %></td>
+		</tr>
+	<% end %>
+</table>
+
+<% else %>
+	<table><tr><td>No Clips or Stills created for this promo. 
+		<%= link_to 'Add', promo_path(promo) %>
+		</td></tr>
+	</table>
+<% end %>

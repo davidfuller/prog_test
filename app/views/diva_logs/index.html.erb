@@ -1,0 +1,46 @@
+<% content_for(:title) do%>
+	Diva Logs: MuVi2 Database
+<% end %>
+<h1>Diva Logs</h1>
+
+<fieldset>
+	<legend>Diva Logs</legend>
+		<% form_tag diva_logs_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+		<% end %>
+</fieldset>
+<br/>
+
+<%= will_paginate @diva_logs %>
+
+<table>
+  <tr>
+    <th>Time</th>
+    <th>Action</th>
+    <th>Trailer</th>
+    <th>Net Message</th>
+    <th>Data Message</th>
+    <th>Status</th>
+  </tr>
+
+<% @diva_logs.each do |diva_log| %>
+  <tr>
+    <td><%=h diva_log.updated_at.localtime.to_s(:broadcast_datetime_no_year) %></td>
+    <td><%=h diva_log.action %></td> 
+    <td><%=h diva_log.trailer.house_number if diva_log.trailer %></td>
+    <td><%=h diva_log.net_message %></td>
+    <td><%=h diva_log.data_message %></td>
+    <td><%=h diva_log.diva_status.message if diva_log.diva_status%>
+    <td><%= link_to 'Show', diva_log %></td>
+    <td><%= link_to 'Edit', edit_diva_log_path(diva_log) %></td>
+    <td><%= link_to 'Destroy', diva_log, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @trailers %>
+<%= link_to 'New Diva Log', new_diva_log_path %>

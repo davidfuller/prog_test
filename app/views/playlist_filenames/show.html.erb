@@ -1,0 +1,13 @@
+<p>
+  <b>Filename:</b>
+  <%=h @playlist_filename.filename %>
+</p>
+
+<p>
+  <b>Schedule date:</b>
+  <%=h @playlist_filename.schedule_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_playlist_filename_path(@playlist_filename) %> |
+<%= link_to 'Back', playlist_filenames_path %>

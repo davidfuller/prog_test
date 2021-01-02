@@ -1,0 +1,33 @@
+<% content_for(:title) do%>
+	Dynamic Special Logos: MuVi2 Database
+<% end %>
+<h1>Dynamic Special Logos</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Filename</th>
+    <th>Display filename</th>
+    <th></th>
+    <th>Type</th>
+    <th>Language</th>
+  </tr>
+
+<% @dynamic_special_logos.each do |dynamic_special_logo| %>
+  <tr>
+    <td><%=h dynamic_special_logo.name %></td>
+    <td><%=h dynamic_special_logo.filename %></td>
+    <td><%=h dynamic_special_logo.display_filename %></td>
+    <td><%= image_tag(dynamic_special_logo.display_url, :size => '50x50') if dynamic_special_logo.display_url %></td>
+    <td><%=h dynamic_special_logo.dynamic_special_image_spec.name if dynamic_special_logo.dynamic_special_image_spec %></td>
+    <td><%=h dynamic_special_logo.language.name if dynamic_special_logo.language %></td>
+    <td><%= link_to 'Show', dynamic_special_logo %></td>
+    <td><%= link_to 'Edit', edit_dynamic_special_logo_path(dynamic_special_logo) %></td>
+    <td><%= link_to 'Destroy', dynamic_special_logo, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Logo', new_dynamic_special_logo_path %>

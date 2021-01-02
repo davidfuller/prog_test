@@ -1,0 +1,17 @@
+<% content_for(:title) do%>
+	Edit Dynamic Special Field: MuVi2 Database
+<% end %>
+<h1>Editing Dynamic Special Field</h1>
+
+<% form_for(@dynamic_special_field) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @dynamic_special_field %> |
+<%= link_to 'Back', :back %>

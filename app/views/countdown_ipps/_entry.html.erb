@@ -1,0 +1,19 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<p>
+	
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :channel_id, "IPP Transmission Channel" %><br />
+  <%= f.collection_select (:channel_id, @channels, :id, :name)   %>
+</p>
+<p>
+  <%= f.label :first_use %><br />
+	<%= f.calendar_date_select :first_use, {:month_year => :label, :minute_interval => 1} %>
+</p>
+<p>
+  <%= f.label :last_use %><br />
+	<%= f.calendar_date_select :last_use,  {:month_year => :label, :minute_interval => 1} %>
+</p>

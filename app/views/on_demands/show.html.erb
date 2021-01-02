@@ -1,0 +1,156 @@
+<% content_for(:title) do%>
+  Viafree / Viaplay Priority: MuVi2 Database
+<% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="20" />
+<% end %>
+
+<%  if params[:search].blank? && session[:info]
+    if session[:info].blank?
+      search = ''
+    else
+      search = session[:info][:search]
+    end
+	else
+		search = params[:search]
+	end %>
+		
+<% session[:info] =   { :on_demand_id => @on_demand.id,
+											 	:search => search,
+						            :page => params[:page],
+					 	          } %>
+					
+
+<h1>Viafree / Viaplay Priority</h1>
+
+<p>
+  <label>Name</label></br>
+  <%=h @on_demand.name %>
+</p>
+
+<p>
+  <label>Title</label><br/>
+  <%=h @on_demand.title %>
+</p>
+<p>
+  <label>Code</label><br/>
+  <%=h @on_demand.country_code %>
+</p>
+<p>
+  <label>Service</label><br/>
+  <%=h @on_demand.service.name if @on_demand.service %>
+</p>
+<p>
+  <label>Navigation</label><br/>
+  <%=h @on_demand.navigation %>
+</p>
+
+<p>
+  <label>Message</label><br/>
+  <%=h @on_demand.message %>
+</p>
+
+<p>
+  <label>Scheduling</label><br/>
+  <%= @on_demand.scheduling_message %>
+</p>
+
+<p>
+  <label>Priority</label><br/>
+  <%=h @on_demand.priority %>
+</p>
+
+<p><div title = "Additional information includes start and end dates, channels, the import filename, the time the file was uploaded and whether it is used for ECPs, Menus and IPPs">
+  <%= link_to_function 'Toggle Additional Information' do |page|
+      page['additional-info'].toggle()
+    end %></div>
+  <div id = 'additional-info' , style = "display: none;" >
+    <table>
+      <tr>
+        <td>
+          <label>Start date</label><br/>
+          <%=h @on_demand.start_date.to_s(:broadcast_date) %>
+        </td>
+        <td>
+          <label>End date</label><br/>
+          <%=h @on_demand.end_date_date_only.to_s(:broadcast_date) %>
+        </td>
+      </tr>
+    </table>
+    <label>Channels Enabled</label><br/>
+    <table>
+      <tr>
+        <th>Channel</th>
+        <th>Enable</th>
+      </tr>
+
+      <% @on_demand.channel_on_demands.each do |channel_on_demand| %>
+        <tr>
+          <td><%=h channel_on_demand.channel.name %></td>
+          <td><%=h channel_on_demand.enabled_text %></td>
+        </tr>
+      <% end %>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <label>Import Filename</label><br/>
+          <%=h @on_demand.on_demand_file.filename if @on_demand.on_demand_file%>
+        </td>
+        <td>
+          <label>Uploaded at</label><br/>
+          <%=h @on_demand.on_demand_file.uploaded.to_s(:broadcast_datetime) if @on_demand.on_demand_file%>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <label>ECP</label><br/>
+          <%=h @on_demand.ecp_display %>
+        </td>
+        <td>
+          <label>Menu</label><br/>
+          <%=h @on_demand.menu_display %>
+        </td>
+        <td>
+          <label>IPP</label><br/>
+          <%=h @on_demand.ipp_display %>
+        </td>
+      </tr>
+    </table>
+    <br/>
+  </div>
+</p>
+
+<%= render :partial => 'promo_wrapper', :locals => {:max_num => 2, :source => :show, :search => search } %>
+
+<%= link_to 'Edit', edit_on_demand_path(@on_demand) %> |
+<%= link_to 'Viafree / Viaplay Priorities', on_demands_path(:search => params[:index_search], :page => params[:index_page], 
+                                                            :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
+                                                            :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %> |
+<%= link_to 'Back', :back %>
+
+<p>
+  <%= link_to_function 'Toggle Promo Search' do |page|
+		page['search_od'].toggle()
+	end %><br />
+
+  <% if search %>
+    <div id ='search_od' >
+  <% else %>
+    <div id ='search_od' , style = "display: none;" >
+  <% end %>
+    <div id ='on_demand_search_panel'>
+      <h1>Promos</h1>
+      <% path = on_demand_path %>
+      <% form_tag path, :method =>'get' do %>
+      <p>
+        <%= text_field_tag :search, search, :size => 45 %>
+        <%= submit_tag "Search", :name => nil %>
+      </p>			
+      <% end %>
+      <%= render :partial => 'promos', :locals => {:include_add => false, :source => :show } %>
+    </div>
+  </div>
+</p>

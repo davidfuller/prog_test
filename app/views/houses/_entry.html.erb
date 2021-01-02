@@ -1,0 +1,19 @@
+<%= f.hidden_field :source %>
+<%= f.hidden_field :schedule_comparison_id %>
+<%= f.hidden_field :comparison_id %>
+<%= f.hidden_field :press_id %>
+
+<p>
+  <%= f.label :house_number %><br />
+  <%= f.text_field :house_number %>
+</p>
+<p id = 'series_ident'>
+	<%=	f.label :series_ident_id %><br />
+	<%= f.text_field :series_ident_id %><br /><br />
+	<label> Associated Title</label><br />
+	<%= render :partial => 'shared/associated', :locals => {:series_ident => @house.series_ident} %><br/>
+	<%= link_to_function 'Toggle Title Search' do |page|
+		page['search_title'].toggle()
+	end %>
+</p>
+

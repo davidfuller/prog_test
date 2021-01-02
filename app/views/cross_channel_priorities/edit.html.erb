@@ -1,0 +1,13 @@
+<h1>Editing Cross Channel Priority</h1>
+
+<% form_for(@cross_channel_priority) do |f| %>
+  <%= f.error_messages %>
+	
+  <%= render :partial => 'entry', :locals => {:f => f} %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', cross_channel_priorities_path %>

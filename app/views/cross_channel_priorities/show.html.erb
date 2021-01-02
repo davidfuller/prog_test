@@ -1,0 +1,43 @@
+<p>
+  <b>Billed:</b>
+  <%=h @cross_channel_priority.billed %>
+</p>
+
+<p>
+  <b>Original title:</b>
+  <%=h @cross_channel_priority.original_title %>
+</p>
+
+<p>
+  <b>Local title:</b>
+  <%=h @cross_channel_priority.local_title %>
+</p>
+
+<p>
+  <b>Lead text:</b>
+  <%=h @cross_channel_priority.lead_text %>
+</p>
+
+<p>
+  <b>Channel:</b>
+  <%=h @cross_channel_priority.channel_id %>
+</p>
+
+<p>
+  <b>Tx channel:</b>
+  <%=h @cross_channel_priority.tx_channel_id %>
+</p>
+
+<p>
+  <b>Press:</b>
+  <%=h @cross_channel_priority.press_id %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%=h @cross_channel_priority.title_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_cross_channel_priority_path(@cross_channel_priority) %> |
+<%= link_to 'Back', cross_channel_priorities_path %>

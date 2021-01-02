@@ -1,0 +1,22 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special: MuVi2 Database
+<% end %>
+<h1>Automated Dynamic Special</h1>
+<table>
+  <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h @automated_dynamic_special.name %></td><td rowspan = '3'></tr>
+  <tr><td class='dynamic_special_bold'>Channel</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.channel_name %></td></tr>
+  <tr><td class='dynamic_special_bold'>Last Use</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.last_use.to_s(:broadcast_date) unless @automated_dynamic_special.last_use.nil?%></td></tr>
+</table>
+<br />
+
+<h2>Template</h2>
+<%= render :partial => 'template', :locals	=> { :show_links => true} %>
+
+<%= link_to 'Edit', edit_automated_dynamic_special_path(@automated_dynamic_special) %> |
+<%= link_to 'Back', automated_dynamic_specials_path %>
+<% if @automated_dynamic_special.dynamic_special_template.demo%>
+  <p>
+    <h2>Demo Image</h2>
+    <%= image_tag(@automated_dynamic_special.dynamic_special_template.demo, :size => '420x300') %>
+  </p>
+<% end %>

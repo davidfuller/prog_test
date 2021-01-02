@@ -1,0 +1,31 @@
+<h1>New diva_task</h1>
+
+<% form_for(@diva_task) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :system_id %><br />
+    <%= f.text_field :system_id %>
+  </p>
+  <p>
+    <%= f.label :task_type %><br />
+    <%= f.text_field :task_type %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :task_index %><br />
+    <%= f.text_field :task_index %>
+  </p>
+  <p>
+    <%= f.label :completed %><br />
+    <%= f.datetime_select :completed %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', diva_tasks_path %>

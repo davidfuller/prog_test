@@ -1,0 +1,12 @@
+<h1>Editing Diva Setting</h1>
+
+<% form_for(@diva_setting) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @diva_setting %> |
+<%= link_to 'Back', diva_settings_path %>

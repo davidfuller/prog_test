@@ -1,0 +1,43 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name, :size => 80 %>
+</p>
+<p>
+  <%= f.label :channel_id %><br />
+  <%= f.collection_select (:channel_id, @channels, :id, :name)   %>
+</p>
+<p>
+  <%= f.label 'Sponsor Name (leave blank for no sponsor)' %><br />
+  <%= f.text_field :sponsor %>
+</p>
+<p>
+  <%= f.label 'Sponsor Reference' %><br />
+  <%= f.text_field :sponsor_reference %>
+</p>
+<p>
+  <%= f.label 'Page 16:9 (0 if 16:9 not required)' %><br />
+  <%= f.text_field :page %>
+</p>
+<p>
+  <%= f.label 'Clear Down Page 16:9 (0 if 16:9 not required)' %><br />
+  <%= f.text_field :clear_down_page_number %>
+</p>
+<p>
+  <%= f.label 'Page 4:3 (0 if 4:3 not required)' %><br />
+  <%= f.text_field :page_43 %>
+</p>
+<p>
+  <%= f.label 'Clear Down Page 4:3 (0 if 4:3 not required)' %><br />
+  <%= f.text_field :clear_down_page_number_43 %>
+</p>
+<p>
+  <%= f.label 'Clear down duration (whole seconds)' %><br />
+  <%= f.text_field :clear_down_duration %>
+</p>
+<p>
+  <%= f.label :last_use %><br />
+  <%= f.calendar_date_select :last_use, {:month_year => :label} %><br/>
+</p>
+
+

@@ -1,0 +1,69 @@
+	<p>
+	  <%= f.label :name %><br />
+	  <%= f.text_field :name %>
+	</p>
+	<p>
+	  <%= f.check_box :hd %>
+		<%= f.label :hd, "HD" %>
+	</p>
+	<p>
+	  <%= f.label :press_code %><br />
+	  <%= f.text_field :press_code %>
+	</p>
+	<p>
+	  <%= f.label :domain %><br />
+	  <%= f.text_field :domain %>
+	</p>
+	<p>
+	  <%= f.label :path %><br />
+	  <%= f.text_field :path %>
+	</p>
+	<p>
+	  <%= f.label :playlist_code %><br />
+	  <%= f.text_field :playlist_code %>
+	</p>
+	<p>
+	  <%= f.label :bss_name, "BSS Code" %><br />
+	  <%= f.text_field :bss_name %>
+	</p>
+	<p>
+	  <%= f.label :language_id %><br />
+	  <%= f.collection_select (:language_id, @languages, :id, :name)   %>
+	</p>
+	<p>
+	  <%= f.label :prefix, "Spreadsheet Prefix" %><br />
+	  <%= f.text_field :prefix %>
+	</p>
+	<p>
+	  <%= f.label :logo_filename, "Logo filename" %><br />
+	  <%= f.text_field :logo_filename %>
+	</p>
+	
+	
+	<p>
+		<%= f.check_box :circle_logo %>
+		<%= f.label :circle_logo, "Has circle logo" %><br />
+		Tick this if the channel has a circular logo, like TV3D and TV3 Puls.<br/>
+		Un-tick this if the channel has a 'wide' logo like TV1000
+	</p>
+	<p>
+	  <%= f.label :encoding %><br />
+	  <%= f.select (:encoding, @encodings)   %>
+	</p>
+	<p>
+		<%= f.check_box :has_dynamic_branding %>
+		<%= f.label :has_dynamic_branding, "Has dynamic branding" %><br />
+	</p>
+	<p>
+	  <%= f.label :clipsource_domain %><br />
+	  <%= f.text_field :clipsource_domain %>
+	</p>
+	<p>
+	  <%= f.label :clipsource_path %><br />
+	  <%= f.text_field :clipsource_path, :size=>"120" %>
+	</p>
+	<p>
+	  <%= f.label :clipsource_suffix %><br />
+	  <%= f.text_field :clipsource_suffix %>
+	</p>
+	

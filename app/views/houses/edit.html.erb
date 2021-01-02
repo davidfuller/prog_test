@@ -1,0 +1,36 @@
+<h1>Editing house number</h1>
+
+
+<% form_for(@house) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+	<p>
+	  <%= f.submit 'Update' %>
+	</p>
+		
+<% end %>
+
+
+<%= link_to 'Back', :back %>
+
+<% if params[:search].nil? %>
+	<div id ='search_title' , style = "display: none;" >
+<% else %>
+	<div id ='search_title'>
+<% end %>
+<h1>Programme Titles</h1>
+<% form_tag edit_house_path, :method =>'get' do %>
+<p>
+	<%= text_field_tag :search, params[:search]||@house.english_title, :size => 45 %>
+	<%= hidden_field_tag :source, @house.source %>
+	<%= hidden_field_tag :schedule_comparison_id, @house.schedule_comparison_id %>
+	<%= hidden_field_tag :comparison_id, @house.comparison_id %>
+	<%= hidden_field_tag :press_id, @house.press_id %>
+	<%= submit_tag "Search", :name => nil %>
+</p>			
+<% end %>
+
+<%= render :partial => 'shared/titles', :locals => {:include_add => false } %>
+</div>

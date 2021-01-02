@@ -1,0 +1,38 @@
+<% content_for(:title) do%>
+	Diva Polls: MuVi2 Database
+<% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="300" />
+<% end %>
+<h1>Diva Polls</h1>
+
+<%= will_paginate @diva_polls %>
+<table>
+  <tr>
+    <th>Time</th>
+    <th colspan="2" >Media Search</th>
+    <th colspan="2" >Workflow Start</th>
+    <th colspan="2" >Workflow Update</th>
+    <th></th>
+  </tr>
+
+<% @diva_polls.each do |diva_poll| %>
+  <tr>
+    <td><%=h diva_poll.updated_at.localtime.to_s(:broadcast_datetime_no_year) %></td>
+    <td><%=h diva_poll.media_search %></td>
+    <td><%=h truncate(diva_poll.media_details, :length => 18) %></td>
+    <td><%=h diva_poll.workflow_start %></td>
+    <td><%=h truncate(diva_poll.workflow_start_details, :length => 18) %></td>
+    <td><%=h diva_poll.workflow %></td>
+    <td><%=h truncate(diva_poll.workflow_details, :length => 18) %></td>
+    <td><%= link_to 'Show', diva_poll %></td>
+    <td><%= link_to 'Edit', edit_diva_poll_path(diva_poll) %></td>
+    <td><%= link_to 'Destroy', diva_poll, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @diva_polls %>
+
+<%= link_to 'New Diva Poll', new_diva_poll_path %>

@@ -1,0 +1,20 @@
+<% content_for(:title) do%>
+	Showing File for Viafree / Viaplay Priorities: MuVi2 Database
+<% end %>
+
+<h1>On Demand Filename</h1>
+
+<p>
+  <b>Filename:</b>
+  <%=h @on_demand_file.filename %>
+</p>
+
+<p>
+  <b>Uploaded:</b>
+  <%=h @on_demand_file.uploaded.to_s(:broadcast_datetime) %>
+</p>
+
+
+<%= link_to 'Edit', edit_on_demand_file_path(@on_demand_file) %> |
+<%= link_to 'On Demand Files', on_demand_files_path %> |
+<%= link_to 'Back', :back %>

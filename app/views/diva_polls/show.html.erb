@@ -1,0 +1,31 @@
+<% content_for(:title) do%>
+	Diva Polls: MuVi2 Database
+<% end %>
+
+<h1>Diva Poll Data</h1>
+
+<p>
+  <label>Updated at</label><br/>
+  <%=h @diva_poll.updated_at.localtime.to_s(:broadcast_datetime_seconds)%>
+</p>
+<p>
+  <label>Media Search</label><br/>
+  <%=h @diva_poll.media_search %><br/>
+  <%=h @diva_poll.media_details %>
+</p>
+
+<p>
+  <label>Workflow Start</label><br/>
+  <%=h @diva_poll.workflow_start %><br/>
+  <%=h @diva_poll.workflow_start_details %>
+</p>
+
+<p>
+  <label>Workflow Update</label><br/>
+  <%=h @diva_poll.workflow %><br/>
+  <%=h @diva_poll.workflow_details %>
+</p>
+
+
+<%= link_to 'Edit', edit_diva_poll_path(@diva_poll) %> |
+<%= link_to 'Back', :back %>

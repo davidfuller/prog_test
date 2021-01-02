@@ -1,0 +1,37 @@
+
+
+<% if dynamic_special_template.template_field_joins.count > 0 %>
+
+<table>
+	<tr>
+    <th>Field No</th>
+    <th>Field Name</th>
+    <th>Field Type</th>
+    <th>Default</th>
+    <th>Fixed</th>
+    <th>Dropdown</th>
+  </tr>	
+
+ <% dynamic_special_template.template_field_joins.each do |template| %>
+		<tr>
+			<td><%=h template.field %></td>
+      <% if template.dynamic_special_field%>
+			  <td><%=h template.dynamic_special_field.name %></td>
+        <% if template.dynamic_special_field.dynamic_special_image_spec%>
+          <td><%=h template.dynamic_special_field.dynamic_special_image_spec.name %></td>
+        <% end %>
+      <% end %>
+      <td><%=h template.default_value %></td>
+      <td><%=h template.fixed %></td>
+      <td><%=h template.dropdown %></td>
+			<% if show_links %>	
+  			<td><%= link_to 'Edit', edit_template_field_join_path(template, :source => 'template') %></td>
+	      <td><%= link_to 'Destroy', template_field_join_path(template, :source => 'template'), :confirm => 'Are you sure?',:method => :delete %></td>
+	    <% end %>
+		</tr>
+	<% end %>
+</table>
+
+<% else %>
+No fields for this template <br />
+<% end %> 

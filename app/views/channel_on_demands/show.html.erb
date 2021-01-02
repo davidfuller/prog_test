@@ -1,0 +1,18 @@
+<p>
+  <b>Channel:</b>
+  <%=h @channel_on_demand.channel_id %>
+</p>
+
+<p>
+  <b>On demand:</b>
+  <%=h @channel_on_demand.on_demand_id %>
+</p>
+
+<p>
+  <b>Enable:</b>
+  <%=h @channel_on_demand.enable %>
+</p>
+
+
+<%= link_to 'Edit', edit_channel_on_demand_path(@channel_on_demand) %> |
+<%= link_to 'Back', channel_on_demands_path %>

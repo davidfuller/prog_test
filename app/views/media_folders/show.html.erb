@@ -1,0 +1,28 @@
+<p>
+  <b>Name:</b>
+  <%=h @media_folder.name %>
+</p>
+
+<p>
+  <b>Folder:</b>
+  <%=h @media_folder.folder %>
+</p>
+
+<p>
+  <b>Channel:</b>
+  <%=h @media_folder.channel_id %>
+</p>
+
+<p>
+  <b>Clip:</b>
+  <%=h @media_folder.clip %>
+</p>
+
+<p>
+  <b>System:</b>
+  <%=h @media_folder.system %>
+</p>
+
+
+<%= link_to 'Edit', edit_media_folder_path(@media_folder) %> |
+<%= link_to 'Back', media_folders_path %>

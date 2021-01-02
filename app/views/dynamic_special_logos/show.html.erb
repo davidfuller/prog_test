@@ -1,0 +1,28 @@
+<p>
+  <b>Name:</b>
+  <%=h @dynamic_special_logo.name %>
+</p>
+
+<p>
+  <b>Filename:</b>
+  <%=h @dynamic_special_logo.filename %>
+</p>
+
+<p>
+  <b>Display filename:</b>
+  <%=h @dynamic_special_logo.display_filename %>
+</p>
+
+<p>
+  <b>Dynamic special image spec:</b>
+  <%=h @dynamic_special_logo.dynamic_special_image_spec_id %>
+</p>
+
+<p>
+  <b>Language:</b>
+  <%=h @dynamic_special_logo.language_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_dynamic_special_logo_path(@dynamic_special_logo) %> |
+<%= link_to 'Back', dynamic_special_logos_path %>

@@ -1,0 +1,17 @@
+<div id ='channel_panel'>
+  <label>Channels Enabled</label><br/>
+  
+  <table id = 'channel_table'>
+    <tr>
+      <th>Channel</th>
+      <th>Enable</th>
+    </tr>
+    <% @on_demand.channel_on_demands.each do |channel_on_demand| %>
+      <tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td><%=h channel_on_demand.channel.name %></td>
+        <td><%= check_box_tag "channel_on_demand_ids[]", channel_on_demand.id, channel_on_demand.enable, :class => channel_on_demand.channel.language.name %></td>
+      </tr>
+    <% end %>
+  </table><br />
+  
+</div>

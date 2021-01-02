@@ -1,0 +1,25 @@
+<h1>Settings</h1>
+<h2>Field Positions for Playlist file</h2>
+
+<% form_for(@playlist_position_setting) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </p>
+  <p>
+    <%= f.label :length %><br />
+    <%= f.text_field :length %>
+  </p>
+	<p>
+    <%= f.label :item %><br />
+    <%= f.text_field :item %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', playlist_position_settings_path %>

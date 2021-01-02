@@ -1,0 +1,18 @@
+<% form_for (field) do |f| %>
+  <%= hidden_field_tag(:automated_dynamic_special, @automated_dynamic_special.id) %>
+  <%= hidden_field_tag(:field_type, field_type.id) %>
+
+  <% if @logo_sets.empty?%>
+    <%= f.text_field :the_value %>
+  <% else %>
+    <% sets = @logo_sets.select { |m| m[:spec].id == field_type.id } %>
+    <% if sets.empty?%>
+      <%= f.text_field :the_value %>
+    <% else %>
+      <% logos = sets[0][:logos] %>
+
+      <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}) %>
+    <% end %>
+  <% end %>
+  <%= f.submit "Update" %>
+<% end %>

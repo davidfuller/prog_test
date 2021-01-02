@@ -1,0 +1,40 @@
+<h1>Bugs</h1>
+
+<%- session[:bug_channel] = params[:channel] %>
+
+<% form_tag bugs_path, :method =>'get' do %>
+		Channel <%= select_tag :channel, options_for_select(@channel_display.insert(0,"All"), 
+														params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
+<% end %>
+
+<table>
+  <tr>
+    <th></th>
+    <th colspan = 3 >Page Number</th>
+		<th></th>
+  </tr>
+	
+<tr>
+    <th>Name</th>
+    <th>4x3</th>
+		<th>16x9</th>
+		<th>HD</th>
+    <th>Channel</th>
+  </tr>
+
+<% @bugs.each do |bug| %>
+  <tr>
+    <td><%=h bug.name %></td>
+    <td><%=h bug.page_number %></td>
+    <td><%=h bug.widescreen %></td>
+    <td><%=h bug.hidef %></td>
+    <td><%=h bug.channel.name unless bug.channel.nil?%></td>
+    <td><%= link_to 'Edit', edit_bug_path(bug) %></td>
+    <td><%= link_to 'Delete', bug, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New bug', new_bug_path %>

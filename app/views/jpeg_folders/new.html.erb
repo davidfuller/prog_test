@@ -1,0 +1,15 @@
+<h1>New jpeg_folder</h1>
+
+<% form_for(@jpeg_folder) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', jpeg_folders_path %>

@@ -1,0 +1,44 @@
+<h1>Editing comparison</h1>
+
+<% form_for(@comparison) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start %>
+  </p>
+  <p>
+    <%= f.label :rounded %><br />
+    <%= f.datetime_select :rounded %>
+  </p>
+  <p>
+    <%= f.label :long_title %><br />
+    <%= f.text_field :long_title %>
+  </p>
+  <p>
+    <%= f.label :house_no %><br />
+    <%= f.text_field :house_no %>
+  </p>
+  <p>
+    <%= f.label :press_start %><br />
+    <%= f.datetime_select :press_start %>
+  </p>
+  <p>
+    <%= f.label :original_title %><br />
+    <%= f.text_field :original_title %>
+  </p>
+  <p>
+    <%= f.label :danish_title %><br />
+    <%= f.text_field :danish_title %>
+  </p>
+  <p>
+    <%= f.label :contained %><br />
+    <%= f.check_box :contained %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @comparison %> |
+<%= link_to 'Back', comparisons_path %>

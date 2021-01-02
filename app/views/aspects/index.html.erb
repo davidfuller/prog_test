@@ -1,0 +1,24 @@
+<h1>Listing aspects</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Code</th>
+		<th>File Suffix</th>
+  </tr>
+
+<% @aspects.each do |aspect| %>
+  <tr>
+    <td><%=h aspect.name %></td>
+    <td><%=h aspect.code %></td>
+		<td><%=h aspect.file_suffix %></td>
+    <td><%= link_to 'Show', aspect %></td>
+    <td><%= link_to 'Edit', edit_aspect_path(aspect) %></td>
+    <td><%= link_to 'Destroy', aspect, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New aspect', new_aspect_path %>

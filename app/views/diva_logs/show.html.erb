@@ -1,0 +1,62 @@
+<% content_for(:title) do%>
+	Diva Logs: MuVi2 Database
+<% end %>
+
+<h1>Diva Log Data</h1>
+
+<p>
+  <label>Trailer</label><br/>
+  <% if @diva_log.trailer %>
+    <%=h @diva_log.trailer.house_number %><br/>
+    <%=h @diva_log.trailer.house_number %>
+  <% end %>
+</p>
+
+<p>
+  <label>Updated at</label><br/>
+  <%=h @diva_log.updated_at.localtime.to_s(:broadcast_datetime_seconds)%>
+</p>
+
+<p>
+  <label>Action</label><br/>
+  <%=h @diva_log.action %>
+</p>
+
+<p>
+  <label>URI</label><br/>
+  <%=h @diva_log.uri %>
+</p>
+
+<p>
+  <label>Xml Sent</label><br/>
+  <%=h @diva_log.xml_sent %>
+</p>
+
+<p>
+  <label>Net Message</label><br/>
+  <%=h @diva_log.net_message %>
+</p>
+
+<p>
+  <label>Xml Received</label><br/>
+  <%=h @diva_log.xml_received %>
+</p>
+
+<p>
+  <label>Filename</label><br/>
+  <%=h @diva_log.filename %>
+</p>
+
+<p>
+  <label>Data message</label><br/>
+  <%=h @diva_log.data_message %>
+</p>
+
+<p>
+  <label>Status</label><br>
+  <b>At time of log: </b><%=h @diva_log.diva_status.message if @diva_log.diva_status %><br/>
+  <b>Now: </b><%=h @diva_log.trailer.diva_status if @diva_log.trailer %>
+</p>
+
+<%= link_to 'Edit', edit_diva_log_path(@diva_log) %> |
+<%= link_to 'Back', :back %>

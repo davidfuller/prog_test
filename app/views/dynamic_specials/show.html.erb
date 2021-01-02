@@ -1,0 +1,20 @@
+<h1>Dynamic Special</h1>
+<table>
+  <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h @dynamic_special.name %></td></tr>
+  <tr><td class='dynamic_special_bold'>Channel</td><td class='dynamic_special_text'><%=h @dynamic_special.channel_name %></td></tr>
+  <tr><td class='dynamic_special_bold'>Sponsor</td><td class='dynamic_special_text'><%=h @dynamic_special.sponsor %></td></tr>
+  <tr><td class='dynamic_special_bold'>Sponsor Reference</td><td class='dynamic_special_text'><%=h @dynamic_special.sponsor_reference %></td></tr>
+  <tr><td class='dynamic_special_bold'>Page 16:9</td><td class='dynamic_special_text'><%=h @dynamic_special.page %></td><td class='dynamic_special_bold'>Page 4:3</td><td class='dynamic_special_text'><%=h @dynamic_special.page_43 %></td></tr>
+  <tr><td class='dynamic_special_bold'>Clear Down Page 16:9</td><td class='dynamic_special_text'><%=h @dynamic_special.clear_down_page_number %></td><td class='dynamic_special_bold'>Clear Down Page 4:3</td><td class='dynamic_special_text'><%=h @dynamic_special.clear_down_page_number_43 %></td></tr>
+  <tr><td class='dynamic_special_bold'>Duration (s)</td><td class='dynamic_special_text'><%=h @dynamic_special.clear_down_duration %></td></tr>
+  <tr><td class='dynamic_special_bold'>Last Use</td><td class='dynamic_special_text'><%=h @dynamic_special.last_use.to_s(:broadcast_date) unless @dynamic_special.last_use.nil?%></td></tr>
+</table>
+<br />
+<%= render :partial => 'fields', :locals	=> {:dynamic_special => @dynamic_special, :show_links => true} %>
+ 
+<%= link_to 'Add field', new_special_field_path(:source => 'dynamic', 
+                                                :dynamic_special_id => @dynamic_special, 
+                                                :number => @dynamic_special.next_field_number) %> | 
+
+<%= link_to 'Back', dynamic_specials_path %>
+

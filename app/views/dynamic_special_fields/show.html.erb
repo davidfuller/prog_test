@@ -1,0 +1,16 @@
+<% content_for(:title) do%>
+	Dynamic Special Field: MuVi2 Database
+<% end %>
+<p>
+  <b>Name:</b>
+  <%=h @dynamic_special_field.name %>
+</p>
+
+<p>
+  <b>Dynamic special image spec:</b>
+  <%=h @dynamic_special_field.dynamic_special_image_spec_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_dynamic_special_field_path(@dynamic_special_field) %> |
+<%= link_to 'Back', :back %>

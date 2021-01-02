@@ -1,0 +1,59 @@
+<fieldset>
+<legend>Countdown IPPs</legend>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+
+<% form_tag countdown_ipps_path, :method =>'get' do %>
+	<p>
+		<%= text_field_tag :search, params[:search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %>
+	</p>
+		Channel <%= select_tag :channel, options_for_select(@channel_display.insert(0,"All"), 
+														params[:channel]),{:onchange => 'this.form.submit()'}%><br />
+		Last use date after<br />
+		<%= calendar_date_select_tag :countdown_date, params[:countdown_date], {:month_year => :label, :after_close => 'this.form.submit()'} %> <br/>
+		<%= label_tag :show_files, "Show media files" %>
+		<%= check_box_tag :show_files, value ="1", params[:show_files],{:onclick => 'this.form.submit()'} %>
+<br/>
+
+<% end %>
+</fieldset>
+
+<p>
+<%= link_to 'New Countdown IPP', new_countdown_ipp_path %>
+</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Channel</th>
+  </tr>
+
+<% @countdown_ipps.each do |countdown_ipp| %>
+  <tr class = "countdown">
+    <td><%=h countdown_ipp.name %></td>
+    <td><%=h countdown_ipp.channel.name %></td>
+    <td><%= link_to 'Show', countdown_ipp %></td>
+    <td><%= link_to 'Edit', edit_countdown_ipp_path(countdown_ipp) %></td>
+    <td><%= link_to 'Destroy', countdown_ipp, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% if params[:show_files] %>
+	<table>
+		<% countdown_ipp.media_files.each do |media_file| %>
+			<tr>
+			  <td width = '20'></td>
+			  <td><%=h media_file.filename %></td>
+			  <td><%=h media_file.media_folder.folder %></td>
+			  <td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %></td>
+			  <td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
+			</tr>
+		<% end %>
+	<table>
+<% end %>
+
+<% end %>
+</table>
+
+<br />
+

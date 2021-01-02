@@ -1,0 +1,31 @@
+<h1>Editing common</h1>
+
+<% form_for(@common) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :english %><br />
+    <%= f.text_field :english %>
+  </p>
+  <p>
+    <%= f.label :danish %><br />
+    <%= f.text_field :danish %>
+  </p>
+  <p>
+    <%= f.label :swedish %><br />
+    <%= f.text_field :swedish %>
+  </p>
+  <p>
+    <%= f.label :norwegian %><br />
+    <%= f.text_field :norwegian %>
+  </p>
+  <p>
+    <%= f.label :hungarian %><br />
+    <%= f.text_field :hungarian %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', commons_path %>

@@ -1,0 +1,44 @@
+<h1>Editing diva_log</h1>
+
+<% form_for(@diva_log) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :action %><br />
+    <%= f.text_field :action %>
+  </p>
+  <p>
+    <%= f.label :trailer_id %><br />
+    <%= f.text_field :trailer_id %>
+  </p>
+  <p>
+    <%= f.label :uri %><br />
+    <%= f.text_field :uri %>
+  </p>
+  <p>
+    <%= f.label :xml_sent %><br />
+    <%= f.text_area :xml_sent %>
+  </p>
+  <p>
+    <%= f.label :net_message %><br />
+    <%= f.text_field :net_message %>
+  </p>
+  <p>
+    <%= f.label :xml_received %><br />
+    <%= f.text_area :xml_received %>
+  </p>
+  <p>
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </p>
+  <p>
+    <%= f.label :data_message %><br />
+    <%= f.text_field :data_message %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @diva_log %> |
+<%= link_to 'Back', diva_logs_path %>

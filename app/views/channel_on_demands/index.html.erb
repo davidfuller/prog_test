@@ -1,0 +1,24 @@
+<h1>Listing channel_on_demands</h1>
+
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>On demand</th>
+    <th>Enable</th>
+  </tr>
+
+<% @channel_on_demands.each do |channel_on_demand| %>
+  <tr>
+    <td><%=h channel_on_demand.channel_id %></td>
+    <td><%=h channel_on_demand.on_demand_id %></td>
+    <td><%=h channel_on_demand.enable %></td>
+    <td><%= link_to 'Show', channel_on_demand %></td>
+    <td><%= link_to 'Edit', edit_channel_on_demand_path(channel_on_demand) %></td>
+    <td><%= link_to 'Destroy', channel_on_demand, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New channel_on_demand', new_channel_on_demand_path %>

@@ -1,0 +1,13 @@
+<h1>Editing exception_list</h1>
+
+<% form_for(@exception_list) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render(:partial => 'entry', :locals => {:f => f} )%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @exception_list %> |
+<%= link_to 'Back', exception_lists_path %>

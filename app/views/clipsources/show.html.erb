@@ -1,0 +1,14 @@
+<h1>Clipsource EIDR Replacement</h1>
+<p>
+  <b>EIDR replace this (at start)</b><br/>
+  <%=h @clipsource.from %>
+</p>
+
+<p>
+  <b>...with this</b><br/>
+  <%=h @clipsource.to %>
+</p>
+
+
+<%= link_to 'Edit', edit_clipsource_path(@clipsource) %> |
+<%= link_to 'Back', clipsources_path %>

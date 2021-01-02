@@ -1,0 +1,16 @@
+<% content_for(:title) do%>
+	Editing Files for Viafree / Viaplay Priorities: MuVi2 Database
+<% end %>
+<h1>Editing On Demand Filenames</h1>
+
+<% form_for(@on_demand_file) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @on_demand_file %> |
+<%= link_to 'On Demand Files', on_demand_files_path %> |
+<%= link_to 'Back', :back %>

@@ -1,0 +1,47 @@
+<p>
+  <b>Name:</b>
+  <%=h @countdown_ipp.name %>
+</p>
+
+<p>
+  <b>IPP Transmission Channel:</b>
+  <%=h @countdown_ipp.channel.name %>
+</p>
+
+<p>
+  <b>First use:</b>
+  <%=h @countdown_ipp.first_use.to_s(:broadcast_datetime) unless @countdown_ipp.first_use.nil? %></td>
+</p>
+
+<p>
+  <b>Last use:</b>
+  <%=h @countdown_ipp.last_use.to_s(:broadcast_datetime) unless @countdown_ipp.last_use.nil? %></td>
+</p>
+<table>
+	<tr>
+    <th>Name</th>
+    <th>Filename</th>
+    <th>Media folder name</th>
+    <th>Media folder</th>
+    <th>First use</th>
+    <th>Last use</th>
+  </tr>
+
+	<% @countdown_ipp.media_files.each do |media_file| %>
+		<tr>
+		  <td><%=h media_file.name %></td>
+		  <td><%=h media_file.filename %></td>
+		  <td><%=h media_file.media_folder.name unless media_file.media_folder.nil? %></td>
+		  <td><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %></td>
+		  <td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %></td>
+		  <td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
+		</tr>
+	<% end %>
+<table>
+<br/>
+<p>	
+	<%= link_to "Create Media File Details (cels)", :action => :create_media_files, :id => @countdown_ipp %></td>
+</p>
+
+<%= link_to 'Edit', edit_countdown_ipp_path(@countdown_ipp) %> |
+<%= link_to 'Back', countdown_ipps_path %>

@@ -1,0 +1,24 @@
+<h1>Listing channel_trailers</h1>
+
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Trailer</th>
+    <th>Enable</th>
+  </tr>
+
+<% @channel_trailers.each do |channel_trailer| %>
+  <tr>
+    <td><%=h channel_trailer.channel_id %></td>
+    <td><%=h channel_trailer.trailer_id %></td>
+    <td><%=h channel_trailer.enable %></td>
+    <td><%= link_to 'Show', channel_trailer %></td>
+    <td><%= link_to 'Edit', edit_channel_trailer_path(channel_trailer) %></td>
+    <td><%= link_to 'Destroy', channel_trailer, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New channel_trailer', new_channel_trailer_path %>

@@ -1,0 +1,72 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<table>
+  <tr>
+    <td>
+      <%= f.label :order %><br />
+      <%= f.text_field :order, :size => 5 %>
+    </td>
+    <td>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </td>
+    <td>
+      <%= f.label :title %><br />
+      <%= f.text_field :title %>
+    </td>
+    <td>
+      <%= f.label :country_code, "Country Code" %><br />
+      <%= f.text_field :country_code %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= f.label :service_id %><br />
+      <%= f.collection_select (:service_id, @services, :id, :name)   %>
+    </td>
+    <td>
+      <%= f.label :start_date %><br />
+      <%= f.calendar_date_select :start_date, {:month_year => :label} %><br/>
+    </td>
+    <td>
+      <%= f.label :end_date %><br />
+      <%= f.calendar_date_select :end_date, {:month_year => :label} %><br/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= f.label :navigation %><br />
+      <%= f.text_field :navigation %>
+    </td>
+    <td>
+      <%= f.label :message %><br />
+      <%= f.text_field :message %>
+    </td>
+    <td>
+      <%= f.label :priority %><br />
+      <%= f.text_field :priority %>
+    </td>
+    <td>
+      <%= f.label :on_demand_scheduling_id, "Scheduling" %><br />
+      <%= f.collection_select (:on_demand_scheduling_id, @scheduling_messages, :id, :message) %>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <%= f.label :ecp, 'ECP' %><br />
+      <%= f.check_box :ecp %>
+    </td>
+    <td>
+      <%= f.label :menu %><br />
+      <%= f.check_box :menu %>
+    </td>
+    <td>
+      <%= f.label :ipp, 'IPP' %><br />
+      <%= f.check_box :ipp %>
+    </td>
+  </tr>
+</table>
+
+

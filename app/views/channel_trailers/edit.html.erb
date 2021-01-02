@@ -1,0 +1,24 @@
+<h1>Editing channel_trailer</h1>
+
+<% form_for(@channel_trailer) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :channel_id %><br />
+    <%= f.text_field :channel_id %>
+  </p>
+  <p>
+    <%= f.label :trailer_id %><br />
+    <%= f.text_field :trailer_id %>
+  </p>
+  <p>
+    <%= f.label :enable %><br />
+    <%= f.check_box :enable %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @channel_trailer %> |
+<%= link_to 'Back', channel_trailers_path %>

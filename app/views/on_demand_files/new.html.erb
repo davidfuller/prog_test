@@ -1,0 +1,14 @@
+<% content_for(:title) do%>
+	New File for Viafree / Viaplay Priorities: MuVi2 Database
+<% end %>
+<h1>New On Demand Filename</h1>
+
+<% form_for(@on_demand_file) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', :back %>

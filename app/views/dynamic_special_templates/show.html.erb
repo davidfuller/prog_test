@@ -1,0 +1,25 @@
+<% content_for(:title) do%>
+	Dynamic Special Template: MuVi2 Database
+<% end %>
+<h1>Dynamic Special Template</h1>
+<table>
+  <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h @dynamic_special_template.name %></td></tr>
+  <tr><td class='dynamic_special_bold'>Page 16:9</td><td class='dynamic_special_text'><%=h @dynamic_special_template.page_169 %></td><td class='dynamic_special_bold'>Page 4:3</td><td class='dynamic_special_text'><%=h @dynamic_special_template.page_43 %></td></tr>
+  <tr><td class='dynamic_special_bold'>Clear Down 16:9</td><td class='dynamic_special_text'><%=h @dynamic_special_template.clear_down_169 %></td><td class='dynamic_special_bold'>Clear Down 4:3</td><td class='dynamic_special_text'><%=h @dynamic_special_template.clear_down_43 %></td></tr>
+  <tr><td class='dynamic_special_bold'>Duration (seconds)</td><td class='dynamic_special_text'><%=h @dynamic_special_template.duration %></td></tr>
+</table>
+<br />
+<%= render :partial => 'fields', :locals	=> {:dynamic_special_template => @dynamic_special_template, :show_links => true} %>
+
+<%= link_to 'Add field', new_template_field_join_path( :source => 'template', 
+                                                          :dynamic_special_template_id => @dynamic_special_template, 
+                                                          :number => @dynamic_special_template.next_field_number) %> | 
+<%= link_to 'Edit', edit_dynamic_special_template_path(@dynamic_special_template) %> |
+<%= link_to 'Templates', dynamic_special_templates_path %> |
+<%= link_to 'Back', :back %><br/>
+<% if @dynamic_special_template.demo%>
+  <p>
+    <h2>Demo Image</h2>
+    <%= image_tag(@dynamic_special_template.demo, :size => '420x300') %>
+  </p>
+<% end %>

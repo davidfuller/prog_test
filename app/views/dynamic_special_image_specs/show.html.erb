@@ -1,0 +1,38 @@
+<% content_for(:title) do%>
+	Dynamic Special Field Specification: MuVi2 Database
+<% end %>
+<p>
+  <b>Name:</b>
+  <%=h @dynamic_special_image_spec.name %>
+</p>
+
+<p>
+  <b>Has Image:</b>
+  <%=h @dynamic_special_image_spec.image %>
+</p>
+
+<p>
+  <b>Height:</b>
+  <%=h @dynamic_special_image_spec.height %>
+</p>
+
+<p>
+  <b>Width:</b>
+  <%=h @dynamic_special_image_spec.width %>
+</p>
+
+<p>
+  <b>Resizable:</b>
+  <%=h @dynamic_special_image_spec.resizable %>
+</p>
+<p>
+  <b>Display Folder:</b>
+  <%=h @dynamic_special_image_spec.display_folder %>
+</p>
+<p>
+  <b>Is Logo:</b>
+  <%=h @dynamic_special_image_spec.logo %>
+</p>
+
+<%= link_to 'Edit', edit_dynamic_special_image_spec_path(@dynamic_special_image_spec) %> |
+<%= link_to 'Back', dynamic_special_image_specs_path %>

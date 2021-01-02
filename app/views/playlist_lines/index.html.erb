@@ -1,0 +1,50 @@
+<h1>Playlist</h1>
+
+
+<h2><%= h page_date_heading(@heading_date)%></h2>
+
+<% session[:show] = params[:show] %>
+<% session[:filename] = params[:filename] %>
+
+<% form_tag playlist_lines_path, :method =>'get' do %>	
+	<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%>
+	<%= select_tag :filename, options_for_select(@filenames, @selected_file.to_s),{:onchange => 'this.form.submit()'} %>
+	<%= submit_tag "Search", :name => nil %> <%= link_to 'Compare with Press File', comparison_path_with_filter_and_filename %>
+<% end %>
+
+<%= will_paginate @playlist_lines %>
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Start</th>
+    <th>Rounded</th>
+		<th>Timecode</th>
+    <th>Duration</th>
+    <th>Source</th>
+    <th>Type</th>
+    <th>House No</th>
+    <th>Part</th>
+    <th>Long title</th>
+  </tr>
+
+<% @playlist_lines.each do |playlist_line| %>
+  <tr>
+    <td><%=h playlist_line.event %></td>
+    <td><%=h playlist_line.start.to_s(:broadcast) unless playlist_line.start.nil? %></td>
+    <td><%=h playlist_line.rounded.to_s(:broadcast) unless playlist_line.rounded.nil? %></td>
+		<td><%=h playlist_line.timecode.to_s(:broadcast) unless playlist_line.timecode.nil? %></td>
+    <td><%=h playlist_line.duration.to_s(:broadcast) unless playlist_line.duration.nil? %></td>
+    <td><%=h playlist_line.source %></td>
+    <td><%=h playlist_line.material_type %></td>
+    <td><%=h playlist_line.house_no %></td>
+    <td><%=h playlist_line.part %></td>
+    <td><%=h playlist_line.long_title %></td>
+    <td><%= link_to 'Show', playlist_line %></td>
+    <td><%= link_to 'Edit', edit_playlist_line_path(playlist_line) %></td>
+    <td><%= link_to 'Destroy', playlist_line, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @playlist_lines %>

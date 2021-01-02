@@ -1,0 +1,17 @@
+<% content_for(:title) do%>
+	Editing Dynamic Special Field Specification: MuVi2 Database
+<% end %>
+<h1>Editing Field Spec</h1>
+
+<% form_for(@dynamic_special_image_spec) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @dynamic_special_image_spec %> |
+<%= link_to 'Back', dynamic_special_image_specs_path %>

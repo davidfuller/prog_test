@@ -1,0 +1,177 @@
+<% if comparison.comparison_code.to_sym == :in_db %>
+	Already in database
+<% elsif comparison.comparison_code == 'not_db_no_series' || comparison.comparison_code == 'not_db_no_series_local_blank' %>
+	<%= link_to "Auto add", :action => :add_title_series, :id => comparison %><br />
+	<%= link_to 'Add to Titles', :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id] %><br />
+	<%= link_to 'Create New Title', :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :new_title => true %>
+
+<% elsif comparison.comparison_code == 'not_db_no_series_fix_local' %>
+	<%= link_to 'Fix local title', { :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id] }, :title => 'Edit to fix local title and add series to title' %><br />
+	<%= link_to 'Create New Title',{ :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :new_title => true }, :title => 'Create a new title and add series to it' %>
+
+<% elsif comparison.comparison_code == 'not_db_no_series_fix_local_multiple' %>
+	<%= link_to 'Fix local title', { :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id] }, :title => 'Choose which title, fix local title and add series to it' %><br />
+	<%= link_to 'Create New Title',{ :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :new_title => true }, :title => 'Create a new title and add series to it' %>
+
+
+
+
+<% elsif comparison.comparison_code == 'not_db_no_series_multiple' || comparison.comparison_code == 'not_db_no_series_local_blank_multiple' %>
+
+	<%= link_to 'Add to Titles', {:controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id]}, :title => 'Edit the title, sort out discrepancies and add series to title' %><br />
+	<%= link_to 'Create New Title', {:controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :new_title => true}, :title => 'Create a new title and add series to it' %>
+
+<% elsif comparison.comparison_code == 'not_db_all_match' %>					
+	<%= link_to "Add House Number", :action => :add_series, :id => comparison %><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+				:action => :new_from_comparison, :id => comparison %>
+
+<% elsif comparison.comparison_code == 'not_db_fix_english' %>
+<%= link_to 'Fix English title', {:controller => 'titles', :action => 'edit_title_house_or_series_known', 
+		:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+		:schedule_comparison_id => params[:id], :series_ident => comparison.series_ident}, :title => 'Fix the English title' %><br />
+
+<% elsif comparison.comparison_code == 'not_db_fix_local' %>
+<%= link_to 'Fix local title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+		:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+		:schedule_comparison_id => params[:id], :series_ident => comparison.series_ident %><br />
+
+<% elsif comparison.comparison_code == 'not_db_local_blank' %>
+	<%= link_to "Add local title", :action => :add_local_title, :id => comparison %><br/>
+	<%= link_to 'Edit title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+			:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+			:schedule_comparison_id => params[:id], :series_ident => comparison.series_ident %><br />
+	
+<% elsif comparison.comparison_code == 'not_db_fix_year' %>
+	<%= link_to 'Fix year', edit_from_comparison_series_ident_path(:id => comparison.press_id, :source => :playlist_comparison, 
+																	:series_ident => comparison.series_ident), 
+																	:title => 'Correct the year' %><br />
+
+<% elsif comparison.comparison_code == 'not_db_fix_english_year' %>
+	<%= link_to 'Fix English title',{ :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+			:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+			:schedule_comparison_id => params[:id], :series_ident => comparison.series_ident },
+			:title => "Edit the English title" %><br />
+	<%= link_to 'Fix year', edit_from_comparison_series_ident_path(:id => comparison.press_id, :source => :playlist_comparison, 
+																		:series_ident => comparison.series_ident),
+																		:title => 'Correct the year' %><br />
+
+
+<% elsif comparison.comparison_code == 'not_db_no_match_contained'%>
+	<%= link_to "Auto add", :action => :add_title_series, :id => comparison %><br />
+	<%= link_to 'Add to Titles', :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id] %><br />
+
+<% elsif comparison.comparison_code == 'not_db_no_match'%>
+	<%= link_to "Find Title in Press listing", :controller => :press_lines, 
+		:action => :index, :search => comparison.original_title_as_param,
+		:press_date => comparison.start.to_s(:broadcast_date_full_month),
+		:source => 'Comparison', 
+		:channel => comparison.channel.name%><br/>
+
+	<%= link_to "Auto add", {:action => :add_title_series, :id => comparison}, :confirm => 'Are you sure?' %><br />
+	<%= link_to 'Add to Titles', :controller => 'titles', :action => 'new_from_press', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id] %><br />
+	<%= link_to "Manually add House Number", :controller => :houses, 
+					:action => :new_from_comparison, :id => comparison %>
+	
+
+<% elsif comparison.comparison_code == 'no_press'%>
+	<%= link_to "Find Title in Press listing", :controller => :press_lines, 
+				:action => :index, :search => comparison.original_title_as_param,
+				:press_date => comparison.start.to_s(:broadcast_date_full_month),
+				:source => 'Comparison', 
+				:channel => comparison.channel.name%><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+				:action => :new_from_comparison, :id => comparison %>
+
+<% elsif comparison.comparison_code == 'in_db_fix_series' %>
+	<%= link_to "Fix Series Number", :action => :add_series, :id => comparison %><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+				:action => :new_from_comparison, :id => comparison %>
+	
+<% elsif comparison.comparison_code == 'in_db_local_blank' %>
+	<%= link_to "Add local title", :action => :add_local_title, :id => comparison %><br/>
+	<%= link_to 'Edit title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :house_number => comparison.house_no %><br />
+	
+<% elsif comparison.comparison_code == 'in_db_fix_english' %>
+	<%= link_to 'Fix English title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+				:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+				:schedule_comparison_id => params[:id], :house_number => comparison.house_no %><br />
+	
+<% elsif comparison.comparison_code == 'in_db_fix_local' %>
+	<%= link_to 'Fix local title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+					:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+					:schedule_comparison_id => params[:id], :house_number => comparison.house_no %><br />
+
+<% elsif comparison.comparison_code == 'in_db_fix_year' %>
+	<%= link_to 'Fix year', edit_from_comparison_series_ident_path(:id => comparison.press_id, :source => :playlist_comparison, 
+																	:series_ident => comparison.series_ident),
+																	:title => 'Correct the year' %><br />
+<% elsif comparison.comparison_code == 'in_db_fix_english_year' %>
+	<%= link_to 'Fix English title', :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+			:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+			:schedule_comparison_id => params[:id], :house_number => comparison.house_no %><br />
+	<%= link_to 'Fix year', edit_from_comparison_series_ident_path(:id => comparison.press_id, :source => :playlist_comparison, 
+																:series_ident => comparison.series_ident) %><br />
+
+<% elsif comparison.comparison_code == 'in_db_no_press' %>
+	<%= link_to "Edit House Number", { :controller => :houses, 
+										 :action => :new_from_comparison, :id => comparison },
+										 :title => 'Edit/check house number details' %>
+
+<% elsif comparison.comparison_code == 'in_db_no_press_local_blank' %>
+	<%= link_to 'Edit title', { :controller => 'titles', :action => 'edit_title_house_or_series_known', 
+								:id => comparison.press_id, :source => :playlist_comparison, :channel => comparison.channel_name,
+								:schedule_comparison_id => params[:id], :house_number => comparison.house_no }, 
+								:title => 'Edit title to fix blank local title' %><br />
+	<%= link_to "Edit House Number", { :controller => :houses, 
+										 :action => :new_from_comparison, :id => comparison },
+										 :title => 'Edit/check house number details' %>
+
+	
+<% elsif comparison.found_title %>
+	<%= link_to "Add House Number", :action => :add_series, :id => comparison %><br/>
+					
+<% elsif comparison.found_title %>
+	<%= link_to "Add House Number to Title", :action => :add, :id => comparison %><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+	:action => :new_from_comparison, :id => comparison %>
+<% elsif comparison.contained %>
+	<%= link_to "Add Title and House Number", :action => :add, :id => comparison %><br/>
+	<%= link_to "Find Title in Press listing", :controller => :press_lines, 
+	:action => :index, :search => comparison.original_title_as_param,
+	:press_date => comparison.start.to_s(:broadcast_date_full_month),
+	:source => 'Comparison',
+	:channel => comparison.channel.name %><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+	:action => :new_from_comparison, :id => comparison %>
+<% else %>
+	<%= link_to "Find Title in Press listing", :controller => :press_lines, 
+	:action => :index, :search => comparison.original_title_as_param,
+	:press_date => comparison.start.to_s(:broadcast_date_full_month),
+	:source => 'Comparison', 
+	:channel => comparison.channel.name%><br/>
+	<%= link_to "Manually add House Number", :controller => :houses, 
+	:action => :new_from_comparison, :id => comparison %>
+<% end %>

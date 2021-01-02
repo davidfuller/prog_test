@@ -1,0 +1,11 @@
+<h1>New Diva Data</h1>
+
+<% form_for(@diva_data) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', :back %>

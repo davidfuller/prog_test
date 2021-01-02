@@ -1,0 +1,24 @@
+<h1>Listing channel_special_previews</h1>
+
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Special preview</th>
+    <th>Enable</th>
+  </tr>
+
+<% @channel_special_previews.each do |channel_special_preview| %>
+  <tr>
+    <td><%=h channel_special_preview.channel_id %></td>
+    <td><%=h channel_special_preview.special_preview_id %></td>
+    <td><%=h channel_special_preview.enable %></td>
+    <td><%= link_to 'Show', channel_special_preview %></td>
+    <td><%= link_to 'Edit', edit_channel_special_preview_path(channel_special_preview) %></td>
+    <td><%= link_to 'Destroy', channel_special_preview, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New channel_special_preview', new_channel_special_preview_path %>

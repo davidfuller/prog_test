@@ -1,0 +1,62 @@
+<p>
+  <b>Name:</b>
+  <%=h @channel.name %>
+</p>
+
+<p>
+	<b>HD:</b>
+	<%=h @channel.hd_display%>
+</p>
+	
+<p>
+  <b>Press code:</b>
+  <%=h @channel.press_code %>
+</p>
+
+<p>
+	<b>Domain</b>
+	<%=h @channel.domain %>
+</p>
+
+<p>
+	<b>Path</b>
+	<%=h @channel.path %>
+</p>
+
+<p>
+  <b>Playlist code:</b>
+  <%=h @channel.playlist_code %>
+</p>
+
+<p>
+	<b>BSS Name</b>
+	<%=h @channel.bss_name %>
+</p>
+
+<p>
+  <b>Language:</b>
+	<%=h @channel.language.name unless @channel.language.nil? %>
+</p>
+
+<p>
+	<b>Spreadsheet Prefix</b>
+	<%=h @channel.prefix %>
+</p>
+
+<p>
+	<b>Logo Filename</b>
+	<%=h @channel.logo_filename %>
+</p>
+
+<p>
+	<b>Has circle logo</b>
+	<%=h @channel.circle_logo %>
+</p>
+
+<%= link_to 'Edit', edit_channel_path(@channel) %> |
+<%= link_to 'Back', channels_path %>
+
+
+
+
+

@@ -1,0 +1,79 @@
+<% content_for(:title) do%>
+	Cross Channel Programme Selection: MuVi2 Database
+<% end %>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<h1>Cross Channel Programme Selection</h1>
+<% form_tag cross_channel_priorities_path, :method =>'get' do %>
+		<%= text_field_tag :cross_search, params[:cross_search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %><br/>
+		TX Channel
+		<%= select_tag 	:cross_tx_channel, 
+										options_for_select(@tx_channel_display, 
+										params[:cross_tx_channel]),
+										{:onchange => 'this.form.submit()'}%>
+		From
+		<% tx_display_date = params[:cross_priority_date] %>
+		<%- session[:cross_priority_date] = tx_display_date %>
+		<%- session[:cross_tx_channel] = params[:cross_tx_channel] %>
+		<%- session[:cross_search] = params[:cross_search] %>
+		
+		<%= calendar_date_select_tag 	:cross_priority_date, 
+																	tx_display_date, 
+																	{:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<%= link_to 'Previous day', 
+									cross_channel_priorities_with_date(session[:xchannel_press_date], previous_day(tx_display_date)) %> | 
+		<%= link_to 'Next day', 
+									cross_channel_priorities_with_date(session[:xchannel_press_date], next_day(tx_display_date)) %>
+		
+		<div class = "cross_channel_header">
+		<%= render :partial => 'list', :locals	=> {:show_edit => false} %>
+		</div>
+
+
+		<h1>Press File</h1>
+		<% display_date = params[:press_date]||format_date_time(Date.today,"%B %e, %Y") %>
+		<%- session[:xchannel_press_date] = display_date %>
+		<%- session[:xchannel_press_channel] = params[:channel] %>
+		<%- session[:cross_press_search] = params[:search] %>
+		<%= text_field_tag :search, params[:search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %><br/>
+		Promo Channel
+		<%= select_tag :channel, options_for_select(@press_channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+		On
+		<%= calendar_date_select_tag :press_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<% if session[:xchannel_press_date] %>
+		<%= link_to 'Previous day', 
+									cross_channel_priorities_with_date(previous_day(session[:xchannel_press_date]), tx_display_date) %> | 
+		<%= link_to 'Next day', 
+									cross_channel_priorities_with_date(next_day(session[:xchannel_press_date]), tx_display_date) %>
+		<% end %>
+<br/>
+<% end %>
+
+<div class = "cross_channel_press">
+<table>
+  <tr>
+    <th>Billed time</th>
+    <th>Display title</th>
+    <th>Original title</th>
+		<th>Lead text</th>
+		<th>EIDR</th>
+ </tr>
+
+<% @press_lines.each do |press_line| %>
+  <tr>
+		<td><%=h format_date_time(press_line.start, "%d/%m/%y %H:%M") %></td>
+    <td width = '200'><%=h press_line.display_title %></td>
+    <td width = '200'><%=h press_line.original_title %></td>
+    <td width = '100'><%=h press_line.lead_text %></td>
+    <td width =' 250'><%=h press_line.eidr %></td>
+	<td><%= link_to 'Add', add_xchannel_priority(press_line, params[:cross_tx_channel]), :title => 'Add this programme as a cross channel priority' %></td>
+		
+  </tr>
+<% end %>
+</table>
+</div>
+<br />
+
