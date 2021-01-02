@@ -1,0 +1,2 @@
+module DynamicSpecialImageSpecsHelper
+end

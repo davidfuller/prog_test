@@ -1,0 +1,2 @@
+module JpegFoldersHelper
+end

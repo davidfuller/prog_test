@@ -1,0 +1,2 @@
+module AutomatedDynamicSpecialFieldsHelper
+end

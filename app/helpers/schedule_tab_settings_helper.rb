@@ -1,0 +1,2 @@
+module ScheduleTabSettingsHelper
+end

@@ -1,0 +1,2 @@
+module DivaPollsHelper
+end

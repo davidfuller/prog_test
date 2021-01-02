@@ -1,0 +1,2 @@
+module DynamicSpecialTemplatesHelper
+end

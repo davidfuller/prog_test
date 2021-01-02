@@ -1,0 +1,2 @@
+module CrossChannelPrioritiesHelper
+end

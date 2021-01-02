@@ -1,0 +1,2 @@
+module CountdownIppsHelper
+end

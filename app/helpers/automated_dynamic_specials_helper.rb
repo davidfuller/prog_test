@@ -1,0 +1,2 @@
+module AutomatedDynamicSpecialsHelper
+end

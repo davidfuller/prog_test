@@ -1,0 +1,2 @@
+module DivaTasksHelper
+end
