@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  filename: MyString
+  import_date: 2010-01-13
+
+two:
+  filename: MyString
+  import_date: 2010-01-13

@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  billed: 2010-06-23 10:45:38
+  original_title: MyString
+  local_title: MyString
+  lead_text: MyString
+  channel_id: 1
+  tx_channel_id: 
+  press_id: 1
+  title_id: 1
+
+two:
+  billed: 2010-06-23 10:45:38
+  original_title: MyString
+  local_title: MyString
+  lead_text: MyString
+  channel_id: 1
+  tx_channel_id: 
+  press_id: 1
+  title_id: 1

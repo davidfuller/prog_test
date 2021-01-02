@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  start: 2010-02-20 23:16:33
+  house_no: MyString
+  title: MyString
+  series_title: MyString
+
+two:
+  start: 2010-02-20 23:16:33
+  house_no: MyString
+  title: MyString
+  series_title: MyString

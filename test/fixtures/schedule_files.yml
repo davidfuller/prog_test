@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  channel_id: 1
+  start: 2010-02-25 09:11:23
+  end: 2010-02-25 09:11:23
+
+two:
+  name: MyString
+  channel_id: 1
+  start: 2010-02-25 09:11:23
+  end: 2010-02-25 09:11:23

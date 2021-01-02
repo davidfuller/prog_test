@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  event: 1
+  start: 2009-10-07 10:38:57
+  duration: 2009-10-07 10:38:57
+  source: MyString
+  material_type: MyString
+  material_id: MyString
+  title: MyString
+  long_title: MyString
+
+two:
+  event: 1
+  start: 2009-10-07 10:38:57
+  duration: 2009-10-07 10:38:57
+  source: MyString
+  material_type: MyString
+  material_id: MyString
+  title: MyString
+  long_title: MyString

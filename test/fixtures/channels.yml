@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  press_code: MyString
+  playlist_code: MyString
+  language_id: 1
+
+two:
+  name: MyString
+  press_code: MyString
+  playlist_code: MyString
+  language_id: 1

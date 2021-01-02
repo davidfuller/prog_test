@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  folder: MyString
+  channel_id: 1
+  clip: false
+  system: false
+
+two:
+  name: MyString
+  folder: MyString
+  channel_id: 1
+  clip: false
+  system: false

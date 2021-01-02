@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  the_value: MyString
+  automated_dynamic_special_id: 1
+  template_field_join_id: 1
+
+two:
+  the_value: MyString
+  automated_dynamic_special_id: 1
+  template_field_join_id: 1

@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  filename: MyString
+  media_folder_id: 1
+  first_use: 2010-02-17 15:23:38
+  last_use: 2010-02-17 15:23:38
+
+two:
+  name: MyString
+  filename: MyString
+  media_folder_id: 1
+  first_use: 2010-02-17 15:23:38
+  last_use: 2010-02-17 15:23:38

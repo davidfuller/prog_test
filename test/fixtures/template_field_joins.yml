@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  field: 1
+  dynamic_special_template_id: 1
+  dynamic_special_field_id: 1
+
+two:
+  field: 1
+  dynamic_special_template_id: 1
+  dynamic_special_field_id: 1

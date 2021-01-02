@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  page_169: 1
+  clear_down_169: 1
+  page_43: 1
+  clear_down_43: 1
+  duration: 1
+
+two:
+  name: MyString
+  page_169: 1
+  clear_down_169: 1
+  page_43: 1
+  clear_down_43: 1
+  duration: 1

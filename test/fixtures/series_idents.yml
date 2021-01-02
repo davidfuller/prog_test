@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  number: MyString
+  title_id: 1
+  year_number: MyString
+  description: MyString
+
+two:
+  number: MyString
+  title_id: 1
+  year_number: MyString
+  description: MyString

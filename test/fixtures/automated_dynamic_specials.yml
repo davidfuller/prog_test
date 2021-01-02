@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  channel_id: 1
+  last_use: 2020-12-16 16:49:22
+  dynamic_special_template_id: 1
+
+two:
+  name: MyString
+  channel_id: 1
+  last_use: 2020-12-16 16:49:22
+  dynamic_special_template_id: 1

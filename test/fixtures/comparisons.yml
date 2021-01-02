@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  start: 2009-10-26 00:22:20
+  rounded: 2009-10-26 00:22:20
+  long_title: MyString
+  house_no: MyString
+  press_start: 2009-10-26 00:22:20
+  original_title: MyString
+  danish_title: MyString
+  contained: false
+
+two:
+  start: 2009-10-26 00:22:20
+  rounded: 2009-10-26 00:22:20
+  long_title: MyString
+  house_no: MyString
+  press_start: 2009-10-26 00:22:20
+  original_title: MyString
+  danish_title: MyString
+  contained: false

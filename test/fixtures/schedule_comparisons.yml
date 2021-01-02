@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  start: 2010-03-01 14:41:31
+  title: MyString
+  house_number: MyString
+  series_number: MyString
+  press_start: MyString
+  original_title: MyString
+  local_title: MyString
+  contained: false
+  found_house: false
+  found_series: false
+  found_title: false
+
+two:
+  start: 2010-03-01 14:41:31
+  title: MyString
+  house_number: MyString
+  series_number: MyString
+  press_start: MyString
+  original_title: MyString
+  local_title: MyString
+  contained: false
+  found_house: false
+  found_series: false
+  found_title: false

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  channel_id: 1
+  first_use: 2010-02-18 16:22:51
+  last_use: 2010-02-18 16:22:51
+
+two:
+  name: MyString
+  channel_id: 1
+  first_use: 2010-02-18 16:22:51
+  last_use: 2010-02-18 16:22:51

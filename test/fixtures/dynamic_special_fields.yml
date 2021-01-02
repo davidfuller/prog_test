@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  dynamic_special_image_spec_id: 1
+
+two:
+  name: MyString
+  dynamic_special_image_spec_id: 1

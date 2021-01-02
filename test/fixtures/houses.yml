@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  house_number: MyString
+  title_id: 1
+
+two:
+  house_number: MyString
+  title_id: 1

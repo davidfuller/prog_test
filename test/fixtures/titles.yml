@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  english: MyString
+  danish: MyString
+  swedish: MyString
+  norwegian: MyString
+  hungarian: MyString
+
+two:
+  english: MyString
+  danish: MyString
+  swedish: MyString
+  norwegian: MyString
+  hungarian: MyString
