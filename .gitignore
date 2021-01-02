@@ -287,3 +287,11 @@ app/models/.svn/text-base/promo.rb.svn-base
 app/models/.svn/text-base/schedule_comparison.rb.svn-base
 app/models/.svn/text-base/schedule_file.rb.svn-base
 app/models/.svn/text-base/schedule_line.rb.svn-base
+app/models/.svn/text-base/schedule_tab_setting.rb.svn-base
+app/models/.svn/text-base/series_ident.rb.svn-base
+app/models/.svn/text-base/series_number.rb.svn-base
+app/models/.svn/text-base/status.rb.svn-base
+app/models/.svn/text-base/title.rb.svn-base
+app/views/.svn/all-wcprops
+app/views/.svn/entries
+**/.svn/
