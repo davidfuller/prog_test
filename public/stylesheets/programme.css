@@ -1,0 +1,574 @@
+/* Styles for main page */
+/* Colour Glossary
+	Light Blue #D7E4EC banner background and side text
+	Dark Blue #00367C Side bar and some text
+	Light Grey #D1D1D1 Alt table columns
+	Light Red #EA7983 Used for error rows
+*/
+/* Alt for testing
+	Light red #ebd5d5
+	Dark red #7a0000
+	
+	
+*/
+
+#banner { 
+	background: #ebd5d5; 
+	padding-top: 10px; 
+	padding-bottom: 10px; 
+	border-bottom: 2px solid; 
+	font: 40px "Verdana", sans-serif; 
+	color: #7a0000; 
+	text-align: center;
+}
+
+#banner img { 
+	float: left;
+}ebd5d5
+
+#columns { 
+	background: #7a0000;
+}
+
+#main { 
+	position: relative;
+	font-family: "Verdana", sans-serif; 
+	margin-left: 18em; 
+	padding-top: 4ex; 
+	padding-left: 2em; 
+	background: white;
+}
+
+#main a {
+	font-size: 10px;
+	color: #7a0000;
+	text-decoration: none;
+}
+
+#main a:hover {
+	color:  #ebd5d5;
+	background: #7a0000;
+}
+
+#side { 
+	float: left; 
+	padding-top: 1em; 
+	padding-left: 1em; 
+	padding-bottom: 100em; 
+	width: 17em; 
+	background: #7a0000;
+	color: #ebd5d5;
+}
+
+#side h3, h4 { 
+	color:  #ebd5d5;
+	font-size: medium;
+	margin-bottom: 3px;
+}
+	
+#side a { 
+	color: #ebd5d5; 
+	font-size: small;
+	text-decoration: none;
+}
+
+#side a:hover { 
+	color: white;
+	background: #7a0000;
+	text-decoration: underline;
+}
+
+#store .missing {
+	background: #FCA3A3;
+}
+
+#store .contained {
+	background: #FFFDB7;
+}
+
+
+
+/*The colours for the comparisons screens*/
+
+#store .in_db_local_blank {
+	background: #FFFED4;	
+}
+
+#store .in_db_no_eidr {
+	background: #FFFED4;	
+}
+
+#store .in_db_fix_local {
+	background: #E6E4A5;	
+}
+
+#store .in_db_fix_english {
+	background: #CFCD94;	
+}
+
+#store .in_db_fix_series {
+	background: #CCFF99;	
+}
+
+#store .in_db_house_series_mismatch {
+	background: #C5E6A1;
+}
+
+#store .in_db_fix_year {
+	background: #E6FFCC;	
+}
+
+#store .in_db_fix_english_year {
+	background: #CCFF33;	
+}
+
+#store .not_db_no_series {
+	background: #FEE1D2;	
+}
+
+#store .in_db_no_press {
+	background: #FFC299;	
+}
+
+#store .in_db_no_press_local_blank {
+	background: #FFE0CC;	
+}
+
+#store .not_db_no_series_multiple {
+	background: #ADD6FF;	
+}
+
+#store .not_db_no_match {
+	background: #FF8080;	
+}
+
+#store .not_db_no_match_contained {
+	background: #D5C3B9;	
+}
+
+#store .not_db_no_series_local_blank {
+	background: #FEE7DB;	
+}
+
+#store .not_db_no_series_local_blank_multiple {
+	background: #99CCFF;	
+}
+
+#store .not_db_no_series_fix_local {
+	background: #FEEDE4;	
+}
+
+#store .not_db_no_series_fix_local_multiple {
+	background: #CEC0B8;	
+}
+
+#store .not_db_all_match {
+	background: #FFFDB7;	
+}
+
+#store .not_db_fix_english {
+	background: #FFC266;	
+}
+
+#store .not_db_fix_local {
+	background: #FFDAA3;	
+}
+
+#store .not_db_local_blank {
+	background: #FFE9C8;	
+}
+
+#store .not_db_fix_year {
+	background: #B2A38C;	
+}
+
+#store .not_db_fix_english_year {
+	background: #AD8533;	
+}
+
+
+#store .no_press {
+	background: #FF6666;	
+}
+
+
+/*================================*/
+
+
+#store .titled {
+	background: #FEE1D2;
+}
+
+#store .titled_contained {
+	background: #ebd5d5;
+}
+
+#store .heading {
+	background: #CCC;
+	font-weight: bold;
+}
+
+#store .error {
+	color: white;
+	background: red;
+}
+
+#store .not_loaded {
+	background: orange;
+}
+
+#store .waiting {
+	color: #900;
+}
+
+#store .processing {
+	color: #906;
+}
+
+#store .ready {
+	color: green;
+}
+
+#store ul {
+	list-style-type: none;
+	text-indent: 0px;
+	padding: 1px;
+	font-size: 10px;
+	border: 1px solid #DDD;	
+}
+
+#store .countdown{
+	color: #7a0000;
+}
+
+#store .countdown td{
+	padding-right: 1em;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+}
+
+#store .countdown a{
+	font-size: 10px;
+	font-weight: normal;
+}
+
+#store li {
+	width: 300px;
+}
+
+#store h1, h2 { 
+	color:  #7a0000; 
+	font-size: medium;
+  	font-family: verdana, arial, helvetica, sans-serif;
+}
+
+#store h3 { 
+	color:  #7a0000; 
+	font-size: 10px;
+	line-height: 0px;
+}
+
+#store table {
+	border-collapse: collapse;
+}
+
+
+#store td, th {
+	padding-right: 1em;
+	font-size: 10px;
+	text-align: left;
+	vertical-align: top;
+}
+
+#store td .day_heading {
+	color: #7a0000;
+	font-weight: bold;
+}
+
+#store .comparison_date td {
+	font-size: 12px;
+}
+
+#store .comparison_date th {
+	font-size: 12px;
+	color: #7a0000;
+	font-weight: bold;
+}
+
+#word {
+	font-size: large;
+	width: 100px;
+}
+
+#lang {
+	width: 150px;
+}
+
+#link a {
+	font-size: 10px;
+	text-decoration: none;
+}
+
+#link a:hover{
+	color: #7a0000;
+	background: #ebd5d5;
+	text-decoration: underline;
+}
+
+#store fieldset {
+	width: 600px;
+}
+
+#store fieldset legend{
+	color:  #7a0000; 
+	font-size: medium;
+	font-weight: bold;
+}
+
+.link_button a {
+	font-size: 10px;
+	text-decoration: none;
+	color: #7a0000;
+}
+
+.link_button a:hover{
+	background: #ebd5d5;
+	text-decoration: underline;
+}
+
+.info_text {
+	font-size: 11px;
+	color: #7a0000;
+}
+
+#colour_key  {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: +2;
+}
+
+#colour_key li  {
+	width: 400px;
+}
+
+#colour_key li a {
+	font-weight: normal;
+	position: relative;
+	left: 30px;
+}
+
+.schedule_comparison_header {
+	height: 10em;
+}
+
+.original_title {
+	font-style: italic;
+	color: red;
+	padding-left: 10px;
+}
+
+#main .original_title a{
+	font-style: normal;
+	font-size: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#main label{
+	font-weight: bold;
+	color:	#7a0000;
+}
+
+#title_fieldset fieldset {
+	width: 475px;
+}
+
+#title_fieldset label{
+	font-weight: normal;
+}
+
+.folder_link a {
+	color: black;
+	font-size: 14px;
+	text-decoration: none;
+}
+
+.folder_link a:hover{
+	color: #7a0000;
+	background: #ebd5d5;
+	text-decoration: underline;
+}
+
+.pagination {
+	font-size: 10px;
+}
+.current {
+	font-weight: bold;
+}
+#store .media {
+	background: #DCF0FF;
+}
+
+#store .audio {
+	background: #dbffe4;
+}
+
+
+#store .media_table {
+	margin-left: 1em;
+}
+
+#store .table_name {
+	width: 100px;
+}
+
+#store .table_description {
+	width: 200px;
+}
+
+#store .table_date {
+	width: 60px;
+}
+
+.cross_channel_header{
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 30px;
+	width: 80%;
+	height: 200px;
+	background: #ebd5d5;
+	border: 1px solid #7a0000;
+	overflow: auto;
+}
+.cross_channel_press{
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 30px;
+	width: 80%;
+	height: 200px;
+	background: white;
+	border: 1px solid #7a0000;
+	overflow: auto;
+}
+.list-line-odd{
+	background-color: white;
+}
+
+#search_title {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	margin-top:20px;
+	width: 90%;
+	background: #ebd5d5;
+}
+
+#channel_panel {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	margin-top:20px;
+	width: 250px;
+	background: #ebd5d5;
+}
+
+#on_demand_search_panel {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	margin-top:20px;
+	width: 80%;
+	background: #ebd5d5;
+}
+
+#search_table{
+	border: 1px solid #7a0000;
+	width: 100%;
+}
+
+#channel_table{
+  border: 1px solid #7a0000;
+  width: 100%;
+}
+
+
+#description {
+	position: relative;
+	color: #7a0000;
+}
+
+#value {
+	position: absolute;
+	left: 130px;
+	width: 500px;
+}
+
+#series_ident input{
+	width: 180px;
+}
+
+#new_promo_message{
+	color: #7a0000;
+	font-style: italic;
+}
+
+#admin_link {
+	text-align: right;
+	padding-right: 15px;
+}
+
+#promo_list ul {
+	position: relative;
+	top: -10px;
+	border: 0px solid blue;
+}
+
+#comparison_table{
+	position: relative;
+	top: 10px;
+}
+
+.hint {
+	width :500px;
+	background: #FFF0F5;
+	border: 1px solid #7a0000;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	position: relative;
+	left: 80px;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+.hint_link {
+	position: relative;
+	left: 0px;
+}
+
+#store #missing_od_media {
+	background: #ebd5d5;	
+}
+
+#store #title-text {
+  font-size: 14px;
+}
+
+#store .dynamic_special_bold {
+  font-weight: bold;
+  font-size: 12px;
+  color: #7a0000;
+}
+#store .dynamic_special_title {
+  font-weight: bold;
+  font-size: 12px;
+}
+#store .dynamic_special_text {
+  font-size: 12px;
+}
