@@ -1,0 +1,28 @@
+<h1>Settings</h1>
+<h2>Tab for Press file</h2>
+
+<% form_for(@press_tab_setting) do |f| %>
+  <%= f.error_messages %>
+
+  
+  <p>
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </p>
+  
+  <p>
+    <%= f.label :clipsource_position %><br />
+    <%= f.text_field :clipsource_position %>
+  </p>
+
+	<p>
+    <%= f.label :item %><br />
+    <%= f.text_field :item %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', press_tab_settings_path %>

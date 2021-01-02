@@ -1,0 +1,84 @@
+<%= render :partial => 'shared/color' %>
+
+
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin').each { |a| a.toggle }
+		end %>
+
+<div class = 'schedule_comparison_header'>
+<h1>Comparison of Schedule with Press File for 
+
+<% if @file %>
+	<%=h @file.channel.name %></h1>
+	<table class = "comparison_date">
+		<tr><th>From</th><td><%=h @file.start.to_s(:broadcast_datetime) if @file.start%></td></tr>
+		<tr><th>To</th><td><%=h @file.end.to_s(:broadcast_datetime) if @file.end %></td></tr>
+	</table><br />
+<% else %>
+	</h1>
+<% end %>
+
+	<% form_tag schedule_comparisons_path, :method =>'get' do %>	
+		<%= select_tag :show, options_for_select(@filter_display, params[:show]),
+													{:onchange => 'this.form.submit()'}%>
+		<%= select_tag :schedule_filename, options_for_select(@filenames, params[:schedule_filename]),
+		                      {:onchange => 'this.form.submit()'} %><br/>
+		<%= submit_tag "Recalculate" %>
+		<span class = 'hint_link'><%= link_to_function 'Show/Hide Hint' do |page|
+				page.select('.hint').each { |a| a.toggle } 
+			end   %></span>
+	<% end %>
+
+<% session[:show_schedule_comparison] = params[:show] %>
+<% session[:schedule_comparison_filename] = params[:schedule_filename] %>
+</div>
+
+<div class = 'hint' style = 'display:none;'><%= render :partial => 'shared/hint', :locals => {:show => params[:show]} %></div>
+<div class = 'schedule_comparison'>
+<table>
+  <tr>
+		<th></th>
+    <th>Start</th>
+    <th>Title</th>
+		<th>Channel</th>
+    <th>House</th>
+    <th>Series</th>
+    <th>EIDR</th>
+    <th>Year</th>
+    <th>Original title</th>
+    <th>Local title</th>
+  </tr>
+<% form_tag :controller => 'comparisons', :action => :add_multiple do%>
+<%= hidden_field_tag :source, 'schedule_comparison' %>
+	<% @schedule_comparisons.each do |schedule_comparison| %>
+	  <tr class = "<%= schedule_comparison.comparison_code %>", title = "<%= schedule_comparison.code_display %>">
+		<td><%= check_box_tag "comparison_ids[]", schedule_comparison.id, false , :class => 'checks' %></td>
+	    <td><%=h schedule_comparison.start.to_s(:broadcast_datetime) %></td>
+	    <td><%=h schedule_comparison.title %></td>
+			<td><%=h schedule_comparison.channel.name unless schedule_comparison.channel.nil? %></td>
+	    <td><%=h schedule_comparison.house_number %></td>
+	    <td><%=h schedule_comparison.series_ident %></td>
+	    <% if schedule_comparison.eidr_url %>
+	    	<td><%= link_to schedule_comparison.eidr, schedule_comparison.eidr_url, :target => "_blank" %></td>
+	    <% else %>
+	    	<td><%=h schedule_comparison.eidr %></td>
+			<% end %>
+	    <td><%=h schedule_comparison.year %></td>
+	    <td><%=h schedule_comparison.original_title %></td>
+	    <td><%=h schedule_comparison.local_title %></td>
+	 	<td class = 'admin' style = 'display:none;'><%=h schedule_comparison.comparison_code %></td>
+		<td class = 'admin' style = 'display:none;'><%=h schedule_comparison.press_id %></td>
+		<td>
+			<%= render :partial => 'shared/links', :locals => {:comparison => schedule_comparison, :source => :schedule_comparison } %>
+		</td>
+	</tr>
+	<% end %>
+<br/>
+	<%= submit_tag "Add all checked"%>
+	<span class = 'link_button'>
+	<%= link_to_function 'Check all', "$$('input.checks').each(function(checkbox) { checkbox.checked = true; });" %>
+	<%= link_to_function 'Uncheck all', "$$('input.checks').each(function(checkbox) { checkbox.checked = false; });" %>
+	</span>
+<% end %>	
+</table>
+</div>

@@ -1,0 +1,73 @@
+<% content_for(:title) do%>
+	Promo Media: MuVi2 Database
+<% end %>
+
+<p id = 'admin_link'>
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin').each { |a| a.toggle }
+		end %>
+</p>
+
+<fieldset>
+	<legend>Promo Media</legend>
+		<% form_tag promos_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+		<% end %>
+		<% if params[:details] == 'true'%>
+			<%= link_to 'Hide details', promos_path(:search => params[:search], :details => 'false')%>
+		<% else %>
+			<%= link_to 'Show details and images', promos_path(:search => params[:search], :details => 'true')%>
+		<% end %>
+</fieldset>
+
+<br/>
+<%= link_to 'New promo', new_promo_path %> | <%= link_to 'Promo Media not ready' , media_files_unready_path %> |
+<%= link_to 'Promos past last use date', promo_past_last_use_path %>
+<span class = 'admin', style = "display: none;"> |
+<%= link_to 'Add series idents to all', add_all_series_idents_promos_path %> |
+<%= link_to 'Delete all series idents',  delete_all_series_idents_promos_path, 
+										:confirm => 'Are you really sure? This is a big change and will take some time.', 
+										:method => :delete %><br/>
+</span>
+
+<%= will_paginate @promos %>
+
+<table>
+<% @promos.each do |promo| %>
+	<tr>
+	    <td><b><%=link_to(h(promo.name), promo) %></b></td>
+		<td><table>
+			<% promo.series_idents.each do |s|%>
+				<% if params[:details] == 'true'%>
+				<tr><td><i>Series Ident: <%= h s.full_description %></i></td>
+					<td><i>Programme Title: <%= h s.title.english unless s.title.nil? %><br />
+						   <%= h 'Title Description: ' + s.title.description unless s.title.nil?||s.title.description.blank? %></i></td></tr>
+				<% else %>
+					<tr><td><i>Series Ident: <%= h s.number %></i></td>
+						<td><i>Programme Title: <%= h s.title.english unless s.title.nil? %></i></td></tr>
+				<% end %>
+			<% end %>
+			</table>
+		</td>
+	    <td><%= link_to 'Details', promo %></td>
+	 	<td class = 'admin', style = 'display: none;'><%= link_to 'Add Series Ident', add_series_idents_promo_path(promo) %></td>
+	    <td><%= link_to 'Edit', edit_promo_path(promo) %></td>
+	    <td><%= link_to 'Destroy', promo, :confirm => 'Are you sure?', :method => :delete %></td>
+	</tr>
+	<% if params[:details] == 'true'%>
+		<tr>
+			<td colspan = '6'><i><%=h 'Promo Descrption: ' + promo.description unless promo.description.blank? %></i></td>
+		</tr>
+		<tr>
+			<td colspan = '6'><%= render :partial => 'media', :locals	=> {:promo => promo, :heading => false, 
+				:details => false, :source => 'promo index'} %></td>
+	<% end %>
+
+<% end %>
+</table>
+<br/>
+
+<%= will_paginate @promos %>

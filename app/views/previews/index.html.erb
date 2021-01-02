@@ -1,0 +1,12 @@
+<h1>ClarityGen Web Application</h1>
+
+
+<% form_tag :controller => :uploads, :action => :check_password do %>
+	<p>
+		Enter password to go to full site<br/>
+		<%= password_field_tag :password,""  %>
+		<%= submit_tag "Full site", :name => nil %>
+	</p>
+<% end %>
+
+<%= render :partial => 'shared/jpeg_folder', :locals	=> {:preview => true} 	%>

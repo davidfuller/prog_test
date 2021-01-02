@@ -1,0 +1,20 @@
+<h1>Editing priority</h1>
+
+<% form_for(@priority) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start %>
+  </p>
+  <p>
+    <%= f.label :press_filename_id %><br />
+    <%= f.text_field :press_filename_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @priority %> |
+<%= link_to 'Back', priorities_path %>

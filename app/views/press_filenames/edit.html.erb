@@ -1,0 +1,20 @@
+<h1>Editing press_filename</h1>
+
+<% form_for(@press_filename) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </p>
+  <p>
+    <%= f.label :import_date %><br />
+    <%= f.date_select :import_date %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @press_filename %> |
+<%= link_to 'Back', press_filenames_path %>

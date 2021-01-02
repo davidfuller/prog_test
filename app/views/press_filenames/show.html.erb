@@ -1,0 +1,13 @@
+<p>
+  <b>Filename:</b>
+  <%=h @press_filename.filename %>
+</p>
+
+<p>
+  <b>Import date:</b>
+  <%=h @press_filename.import_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_press_filename_path(@press_filename) %> |
+<%= link_to 'Back', press_filenames_path %>

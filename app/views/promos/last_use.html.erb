@@ -1,0 +1,69 @@
+<% content_for(:title) do%>
+	Promo Past Last Use: MuVi2 Database
+<% end %>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% if Useful.date?(params[:last_use_date]) %>
+<% 	last_use_display = params[:last_use_date]%>
+<% else %>
+<%	last_use_display = format_date_time(Date.today,"%B %e, %Y") %>
+<% end %>
+<% 	six_months_time = format_date_time(Date.parse(last_use_display).to_datetime.advance(:months => 6, :hours => 5),"%B %e, %Y %I:%M %p") %>
+<fieldset>
+	<legend>Promo Media</legend>
+		<% form_tag promo_past_last_use_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+		<%= calendar_date_select_tag :last_use_date, last_use_display, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+    <%= select_tag :media_type_display, options_for_select(@media_type_display, params[:media_type_display]),{:onchange => 'this.form.submit()'}%><br/>
+		<% end %>
+</fieldset>
+
+<br/>
+
+<%= will_paginate @promos %>
+
+
+<% form_tag :action => :change_last_use do %>
+<table>
+	<tr>
+		<th></th>
+		<th>Name</th>
+		<th>First Use</th>
+		<th>Last Use</th>
+	</tr>
+
+	<% @promos.each do |promo| %>
+		  <tr>
+				<td><%= check_box_tag "promo_ids[]", promo.id, false , :class => 'fred' %></td>
+		    <td><b><%=h promo.name %></b></td>
+				<td><%=h promo.first_use.to_s(:broadcast_datetime) unless promo.first_use.nil?%></td>
+				<td><%=h promo.last_use.to_s(:broadcast_datetime) unless promo.last_use.nil? %></td>
+	
+		    <td width = '50'><%= link_to 'Details', promo %></td>
+		    <td width = '50'><%= link_to 'Edit', edit_promo_path(promo) %></td>
+		    <td width = '50'><%= link_to 'Destroy', promo, :confirm => 'Are you sure?', :method => :delete %></td>
+		  </tr>
+
+	<% end %>
+	</table>
+	<br/>
+	<%= will_paginate @promos %>
+
+
+	<span class = 'info_text'>
+		Set last use dates of selected promos and <br/>all media files associated with those promos	<br/>
+	</span>
+	<%= calendar_date_select_tag :new_last_use, six_months_time, {:size => '45', :month_year => :label, :time => true, :minute_interval => 1} %>
+	<%= submit_tag "Add all checked", :confirm => "This will update the last use date on all the checked promos " +
+																								"and all the media associated with those promos. \n\n" +
+																								"This cannot be undone. \n\nAre you sure you want to do this?" %>
+
+<% end %>
+
+<span class = 'link_button'>
+<%= link_to_function 'Check all', "$$('input.fred').each(function(checkbox) { checkbox.checked = true; });" %>
+<%= link_to_function 'Uncheck all', "$$('input.fred').each(function(checkbox) { checkbox.checked = false; });" %>
+</span>

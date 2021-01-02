@@ -1,0 +1,28 @@
+<h1>Editing schedule_file</h1>
+
+<% form_for(@schedule_file) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :channel_id %><br />
+    <%= f.text_field :channel_id %>
+  </p>
+  <p>
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start %>
+  </p>
+  <p>
+    <%= f.label :end %><br />
+    <%= f.datetime_select :end %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @schedule_file %> |
+<%= link_to 'Back', schedule_files_path %>

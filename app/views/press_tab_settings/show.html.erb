@@ -1,0 +1,19 @@
+<p>
+  <b>Item:</b>
+  <%=h @press_tab_setting.item %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%=h @press_tab_setting.position %>
+</p>
+
+<p>
+  <b>Clipsource Position:</b>
+  <%=h @press_tab_setting.clipsource_position %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_press_tab_setting_path(@press_tab_setting) %> |
+<%= link_to 'Back', press_tab_settings_path %>

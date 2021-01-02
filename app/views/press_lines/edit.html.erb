@@ -1,0 +1,14 @@
+
+<h1>Editing programme details from press file</h1>
+
+<% form_for(@press_line) do |f| %>
+  <%= f.error_messages %>
+
+    <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', press_lines_with_date(@press_line.start.to_s(:broadcast_date_full_month),
+																					@press_line.channel_name) %>

@@ -1,0 +1,43 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<p>
+  <%= f.label :start %><br />
+	<%= f.calendar_date_select :start, {:month_year => :label, :minute_interval => 5} %>
+</p>
+<p>
+  <%= f.label :display_title %><br />
+  <%= f.text_field :display_title, :size => 60 %>
+</p>
+<p>
+  <%= f.label :original_title %><br />
+  <%= f.text_field :original_title, :size => 60 %>
+</p>
+<p>
+  <%= f.label :channel_id %><br />
+  <%= f.collection_select (:channel_id, @channels, :id, :name, {:prompt => true})   %>
+</p>
+<p>
+  <%= f.label :lead_text %><br />
+  <%= f.text_field :lead_text, :size => 60 %>
+</p>
+<p>
+  <%= f.label :series_number %><br />
+  <%= f.text_field :series_number %>
+</p>
+<p>
+  <%= f.label :eidr ,"EIDR" %><br />
+  <%= f.text_field :eidr, :size => 60 %>
+</p>
+<p>
+  <%= f.label :year_number %><br />
+  <%= f.text_field :year_number %>
+</p>
+
+<p>
+  <%= f.label :priority %>
+	<%= f.check_box :priority %><br />
+</p>
+
+<p>
+  <%= f.label :audio_priority, "Audio ECP" %>
+	<%= f.check_box :audio_priority %><br />
+</p>

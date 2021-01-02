@@ -1,0 +1,75 @@
+<% content_for(:title) do%>
+	Promo Media: MuVi2 Database
+<% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="20" />
+<% end %>
+
+<p>
+  <label>Promo Name</label><br/>
+  <%=h @promo.name %>
+</p>
+
+<p>
+  <label>Description</label><br>
+  <%=h @promo.description %>
+</p>
+
+<label><%= pluralize(@promo.series_idents.count, 'associated title')%></label><br/>
+
+<%= link_to_function 'Hide/Show Associated Titles' do |page|
+	page['associated-titles'].toggle()
+end %>
+<br/>
+
+<% if @promo.series_idents.count > 6 %>
+  <div id= 'associated-titles', style = 'display: none;'>
+<% else %>
+  <div id= 'associated-titles'>
+<% end %>
+
+  <% @promo.series_idents.each do |s| %>
+    <p id = 'series_ident'>
+      <%= render :partial => 'shared/associated', :locals => {:series_ident => s} %>
+    </p>
+  <% end %>
+</div>
+
+<label><%= pluralize(@promo.on_demands.count, 'associated On Demand title')%></label><br/>
+<%= link_to_function 'Hide/Show Associated On Demand Titles' do |page|
+	page['associated-od-titles'].toggle()
+end %>
+<br/>
+
+<% if @promo.on_demands.count > 6 %>
+  <div id= 'associated-od-titles', style = 'display: none;'>
+<% else %>
+  <div id= 'associated-od-titles'>
+<% end %>
+  <p id = 'series_ident'>
+    <%= render :partial => 'shared/associated_on_demand', :locals => {:on_demands => @promo.on_demands} %>
+  </p>
+
+</div>
+
+<table>
+	<tr>
+		<td><b>First Use</b></td>
+		<td><%=h @promo.first_use.to_s(:broadcast_datetime)%></td>
+		<td><b>Last Use</b></td>
+		<td><%=h @promo.last_use.to_s(:broadcast_datetime)%></td>
+	</tr>
+</table>
+<br/>
+  <%= render :partial => 'media', :locals	=> {:promo => @promo, :heading => false, 
+	:details => true, :source => 'promo'} %>
+<p>	
+	<%= link_to "Add Clip", :action => :add_media, :id => @promo, :media_type => :clip %> |
+	<%= link_to "Add Clip with Audio", :action => :add_media, :id => @promo, :media_type => :clipaudio %> |
+	<%= link_to "Add Still", :action => :add_media, :id => @promo, :media_type => :still %> |
+	<%= link_to "Add Portrait Still", :action => :add_media, :id => @promo, :media_type => :portrait %>
+</p>
+
+
+<%= link_to 'Edit', edit_promo_path(@promo) %> |
+<%= link_to 'Back', promos_path %>

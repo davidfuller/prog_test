@@ -1,0 +1,49 @@
+<%= render :partial => 'basic_entry', :locals => {:f => f} %>
+
+
+<label><%= pluralize(@promo.series_idents.count, 'associated title')%></label><br/>
+
+<%= link_to_function 'Hide/Show Associated Titles' do |page|
+	page['associated-titles'].toggle()
+end %>
+<br/>
+
+<% if @promo.series_idents.count > 6 %>
+  <div id= 'associated-titles', style = 'display: none;'>
+<% else %>
+  <div id= 'associated-titles'>
+<% end %>
+  <% @promo.series_idents.each do |s| %>
+    <p id = 'series_ident'>
+      <%= render :partial => 'shared/associated', :locals => {:series_ident => s} %>
+      <%= link_to 'Remove', { :controller => :promos, :action => :delete_series_ident,
+                            :id => params[:id], :series_ident_id => s.id,  
+                          :search => params[:search], :page => params[:page]},
+                        :confirm => 'Are you sure?'%>
+    </p>
+  <% end %>
+</div>
+
+<label><%= pluralize(@promo.on_demands.count, 'associated On Demand title')%></label><br/>
+
+<%= link_to_function 'Hide/Show Associated On Demand Titles' do |page|
+	page['associated-od-titles'].toggle()
+end %>
+<br/>
+
+<% if @promo.on_demands.count > 6 %>
+  <div id= 'associated-od-titles', style = 'display: none;'>
+<% else %>
+  <div id= 'associated-od-titles'>
+<% end %>
+  <p id = 'series_ident'>
+    <%= render :partial => 'shared/associated_on_demand', :locals => {:on_demands => @promo.on_demands} %>
+  </p>
+</div>
+
+
+<%= link_to_function 'Toggle Title Search' do |page|
+	page['search_title'].toggle()
+end %>
+
+

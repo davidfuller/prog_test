@@ -1,0 +1,63 @@
+
+<%= link_to 'Process Playlist, Press or Schedule Files ', uploads_path %><br/>
+<fieldset>
+<legend>Press File</legend>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% display_date = params[:press_date] %>
+<%- session[:press_date] = params[:press_date] %>
+<%- session[:press_channel] = params[:channel] %>
+
+<% form_tag press_lines_path, :method =>'get' do %>
+	<p>
+		<%= text_field_tag :search, params[:search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %>
+	</p>
+		<%= calendar_date_select_tag :press_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
+		<% if session[:press_date] %>
+		<%= link_to 'Previous day', press_lines_with_date(previous_day(session[:press_date]), session[:press_channel]) %> | 
+		<%= link_to 'Next day', press_lines_with_date(next_day(session[:press_date]), session[:press_channel]) %>
+		<% end %>
+<br/>
+<% end %>
+</fieldset>
+<br/>
+<table>
+  <tr>
+    <th>Start</th>
+    <th>Display title</th>
+    <th>Original title</th>
+		<th>Lead text</th>
+		<th>Series No.</th>
+		<th>EIDR</th>
+		<th>Year No</th>
+		<th>Priority</th>
+		<th>Audio ECP</th>
+  </tr>
+
+<% @press_lines.each do |press_line| %>
+  <tr>
+		<td><%=h format_date_time(press_line.start, "%d/%m/%y %H:%M") %></td>
+    <td width = '200'><%=h press_line.display_title %></td>
+    <td width = '200'><%=h press_line.original_title %></td>
+    <td width = '100'><%=h press_line.lead_text %></td>
+		<td><%=h press_line.series_number %></td>
+		<td><%=h press_line.eidr %></td>
+		<td><%=h press_line.year_number %></td>
+		<td><%=h press_line.priority_display %></td>
+		<td><%=h press_line.audio_display %></td>
+		<td><%= link_to 'Toggle priority', :action => 'toggle_priority', :id => press_line %>
+		<td><%= link_to 'Toggle audio ECP', :action => 'toggle_audio', :id => press_line %>
+		<td><%= link_to 'Edit', edit_press_line_path(press_line) %></td>
+		<td><%= link_to 'Add to Titles', :controller => 'titles', :action => 'new_from_press', 
+							:id => press_line, :source => params[:source], :channel => press_line.channel_name,
+							:schedule_comparison_id => params[:schedule_comparison_id] %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Back', :back %>

@@ -1,0 +1,18 @@
+<p>
+  <b>Start:</b>
+  <%=h @press_line.start %>
+</p>
+
+<p>
+  <b>Display title:</b>
+  <%=h @press_line.display_title %>
+</p>
+
+<p>
+  <b>Original title:</b>
+  <%=h @press_line.original_title %>
+</p>
+
+
+<%= link_to 'Edit', edit_press_line_path(@press_line) %> |
+<%= link_to 'Back', press_lines_path %>

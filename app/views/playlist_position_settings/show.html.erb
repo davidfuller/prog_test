@@ -1,0 +1,18 @@
+<p>
+  <b>Item:</b>
+  <%=h @playlist_position_setting.item %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%=h @playlist_position_setting.position %>
+</p>
+
+<p>
+  <b>Length:</b>
+  <%=h @playlist_position_setting.length %>
+</p>
+
+
+<%= link_to 'Edit', edit_playlist_position_setting_path(@playlist_position_setting) %> |
+<%= link_to 'Back', playlist_position_settings_path %>

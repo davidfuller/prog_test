@@ -1,0 +1,25 @@
+<h1>Settings</h1>
+<h2>Tabs in Press Files</h2>
+
+<table>
+  <tr>
+    <th width=50 align="left">Pos</th>
+    <th align="left">Clipsource Position</th>
+		<th width=150 align="left">Item</th>
+  </tr>
+
+<% @press_tab_settings.each do |press_tab_setting| %>
+  <tr>
+    <td width=50><%=h press_tab_setting.position %></td>
+    <td><%=h press_tab_setting.clipsource_position %></td>
+    <td width=150><%=h press_tab_setting.item %></td>
+    
+    <td witdh=100><%= link_to 'Edit', edit_press_tab_setting_path(press_tab_setting) %></td>
+    <td width=100><%= link_to 'Delete', press_tab_setting, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New tab', new_press_tab_setting_path %>

@@ -1,0 +1,56 @@
+<h1>Editing schedule_comparison</h1>
+
+<% form_for(@schedule_comparison) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start %>
+  </p>
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :house_number %><br />
+    <%= f.text_field :house_number %>
+  </p>
+  <p>
+    <%= f.label :series_number %><br />
+    <%= f.text_field :series_number %>
+  </p>
+  <p>
+    <%= f.label :press_start %><br />
+    <%= f.text_field :press_start %>
+  </p>
+  <p>
+    <%= f.label :original_title %><br />
+    <%= f.text_field :original_title %>
+  </p>
+  <p>
+    <%= f.label :local_title %><br />
+    <%= f.text_field :local_title %>
+  </p>
+  <p>
+    <%= f.label :contained %><br />
+    <%= f.check_box :contained %>
+  </p>
+  <p>
+    <%= f.label :found_house %><br />
+    <%= f.check_box :found_house %>
+  </p>
+  <p>
+    <%= f.label :found_series %><br />
+    <%= f.check_box :found_series %>
+  </p>
+  <p>
+    <%= f.label :found_title %><br />
+    <%= f.check_box :found_title %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @schedule_comparison %> |
+<%= link_to 'Back', schedule_comparisons_path %>

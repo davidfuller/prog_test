@@ -1,0 +1,52 @@
+
+
+<fieldset>
+<legend>Priority Programmes</legend>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% display_date = params[:priority_date] %>
+<%- session[:priority_date] = params[:priority_date] %>
+<%- session[:priority_channel] = params[:channel] %>
+<%- session[:priority_show] = params[:show] %>
+
+<% form_tag priority_press_lines_path, :method =>'get' do %>
+	
+		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%>
+		
+<% end %>
+</fieldset>
+<br/>
+<table>
+  <tr>
+    <th>Start</th>
+    <th>Display title</th>
+    <th>Original title</th>
+		<th>Lead text</th>
+		<th>Priority</th>
+		<th>Audio ECP</th>
+  </tr>
+<%- last_day = "" %>
+<% @press_lines.each do |press_line| %>
+	<%- this_day = day_header(press_line.start)%>
+	<%- if this_day != last_day %>
+		<tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
+		<%- last_day = this_day%>
+	<%- end %>
+  <tr>
+		<td><%=h format_date_time(press_line.start, "%H:%M") %></td>
+    <td width = '200'><%=h press_line.display_title %></td>
+    <td width = '200'><%=h press_line.original_title %></td>
+    <td width = '100'><%=h press_line.lead_text %></td>
+		<td><%=h press_line.priority_display %></td>
+		<td><%=h press_line.audio_display %></td>
+		<td><%= link_to 'Toggle priority', :action => 'toggle_priority_from_priority', :id => press_line %>
+		<td><%= link_to 'Toggle audio ECP', :action => 'toggle_audio_from_priority', :id => press_line %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
