@@ -1,0 +1,2 @@
+module TrailerTabSettingsHelper
+end

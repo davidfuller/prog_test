@@ -1,0 +1,2 @@
+module TemplateFieldJoinsHelper
+end
