@@ -1,0 +1,60 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<p>
+  <%= f.label :house_number %><br />
+  <%= f.text_field :house_number %>
+</p>
+<p>
+  <%= f.label :title %><br />
+  <%= f.text_field :title, :size => '60' %>
+</p>
+<p>
+  <%= f.label :duration %><br />
+  <%= f.text_field :duration %>
+</p>
+<p>
+  <%= f.label :enable, "Trailer ECP Enabled"%><br />
+  <%= f.check_box :enable %>
+</p>
+<%= hidden_field_tag :next_monday, @next_monday%>
+<%= hidden_field_tag :plus_two_weeks, @plus_two_weeks%>
+<p>
+  <%= link_to_function 'Set first use to next Monday and last use 2 weeks later',  'document.getElementById("trailer_first_use").value = document.getElementById("next_monday").value; 
+                                                                      document.getElementById("trailer_last_use").value = document.getElementById("plus_two_weeks").value'%>
+ 
+  <table>
+    <tr>
+      <td> 
+        <%= f.label :first_use %><br />
+        <%= f.calendar_date_select :first_use, {:month_year => :label, :minute_interval => 1} %><br/>
+      </td>
+      <td>
+        <%= f.label :last_use %><br />
+        <%= f.calendar_date_select :last_use, {:month_year => :label, :minute_interval => 1} %>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<%= link_to_function 'Hide/Show additional information' do |page|
+	page['additional-info'].toggle()
+end %>
+<br/>
+<div id = 'additional-info', style = 'display: none;'>
+  <p>
+    <%= f.label :change %><br />
+    <%= f.calendar_date_select :change, {:month_year => :label, :minute_interval => 1} %>
+  </p>
+  <p>
+    <%= f.label :channels_text %><br />
+    <%= f.text_field :channels_text, :size => '100' %>
+  </p>
+  <p>
+    <%= f.label :ingest_status %><br />
+    <%= f.text_field :ingest_status %>
+  </p>
+  <p>
+    <%= f.label :trailer_file_id, "Trailer Import File" %><br />
+    <%= f.collection_select (:trailer_file_id, @trailer_files, :id, :display_with_date)   %>
+  </p>
+</div>
+

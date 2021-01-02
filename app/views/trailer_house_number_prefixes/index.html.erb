@@ -1,0 +1,26 @@
+<% content_for(:title) do%>
+	Trailer House Number Prefixes: MuVi2 Database
+<% end %>
+
+<h1>Listing Trailer House Number Prefixes</h1>
+
+<table>
+  <tr>
+    <th>Prefix</th>
+    <th>Language</th>
+  </tr>
+
+<% @trailer_house_number_prefixes.each do |trailer_house_number_prefix| %>
+  <tr>
+    <td><%=h trailer_house_number_prefix.prefix %></td>
+    <td><%=h trailer_house_number_prefix.language.name if trailer_house_number_prefix.language %></td>
+    <td><%= link_to 'Show', trailer_house_number_prefix %></td>
+    <td><%= link_to 'Edit', edit_trailer_house_number_prefix_path(trailer_house_number_prefix) %></td>
+    <td><%= link_to 'Destroy', trailer_house_number_prefix, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Trailer House Number Prefix', new_trailer_house_number_prefix_path %>

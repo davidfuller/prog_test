@@ -1,0 +1,61 @@
+<h1>Editing title</h1>
+<%  if params[:search].blank? && session[:info]
+		search = session[:info][:search]
+	else
+		search = params[:search]
+	end %>
+		
+<% session[:info] =   { :title_id => @title.id,
+						:press_id => @title.press_line_id, 
+					 	:search => search,
+						:page => params[:page],
+					 	:source => @title.source, 
+					    :channel => @title.channel,
+					 	:schedule_comparison_id => @title.schedule_comparison_id } %>
+					
+<%= session[:info] %>
+
+<% form_for(@title) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => 'entry', :locals	=> {:f => f, :action => 'edit'} 	%>
+	
+	<%= link_to_function 'Toggle Promo Search' do |page|
+		page['search_title'].toggle()
+	end %><br />
+
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<% if @title.source == 'Press' %>
+	<%= link_to 'Back', press_lines_with_date(session[:press_date], @title.channel) %>
+<% elsif @title.source == 'playlist_comparison' %>
+	<%= link_to 'Back', comparison_path_with_filter_and_filename %>
+<% else %>
+	<%= link_to 'Back', :back %>
+<% end%>
+| <%= link_to 'Titles', titles_path %>
+
+<% if search.nil? %>
+	<div id ='search_title' , style = "display: none;" >
+<% else %>
+	<div id ='search_title'>
+<% end %>
+
+<h1>Promos</h1>
+<% if @title.source == 'Title' %>
+	<% path = edit_title_path %>
+<% elsif @title.source == 'playlist_comparison' %>
+	<% path = {:controller => 'titles', :action => 'search_promo',} %>
+<% end %>
+
+<% form_tag path, :method =>'get' do %>
+<p>
+	<%= text_field_tag :search, search, :size => 45 %>
+	<%= submit_tag "Search", :name => nil %>
+</p>			
+<% end %>
+
+<%= render :partial => 'shared/promos', :locals => {:include_add => false } %>
+</div>

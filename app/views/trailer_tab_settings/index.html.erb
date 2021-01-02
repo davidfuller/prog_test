@@ -1,0 +1,24 @@
+<h1>Settings</h1>
+<h2>Tabs in Trailer Files</h2>
+
+<table>
+  <tr>
+    <th width=50 align="left">Pos</th>
+    <th width=150 align="left">Name</th>
+    <th width=150 align="left">Field Name</th>
+  </tr>
+
+  <% @trailer_tab_settings.each do |trailer_tab_setting| %>
+    <tr>
+      <td witdh=50><%=h trailer_tab_setting.position %></td>
+      <td width=150><%=h trailer_tab_setting.name %></td>
+      <td width=150><%=h trailer_tab_setting.field_name %></td>
+      <td><%= link_to 'Edit', edit_trailer_tab_setting_path(trailer_tab_setting) %></td>
+      <td><%= link_to 'Destroy', trailer_tab_setting, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+
+<%= link_to 'New tab', new_trailer_tab_setting_path %>

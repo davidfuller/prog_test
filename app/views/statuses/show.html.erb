@@ -1,0 +1,13 @@
+<p>
+  <b>Value:</b>
+  <%=h @status.value %>
+</p>
+
+<p>
+  <b>Message:</b>
+  <%=h @status.message %>
+</p>
+
+
+<%= link_to 'Edit', edit_status_path(@status) %> |
+<%= link_to 'Back', statuses_path %>

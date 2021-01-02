@@ -1,0 +1,18 @@
+<% content_for(:title) do%>
+	Trailer Import File: MuVi2 Database
+<% end %>
+<h1>Trailer Import File</h1>
+
+<p>
+  <label>Filename</label><br/>
+  <%=h @trailer_file.filename %>
+</p>
+
+<p>
+  <label>Uploaded</label><br/>
+  <%=h @trailer_file.uploaded %>
+</p>
+
+
+<%= link_to 'Edit', edit_trailer_file_path(@trailer_file) %> |
+<%= link_to 'Back', :back %>

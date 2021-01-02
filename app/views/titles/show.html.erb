@@ -1,0 +1,84 @@
+<p>
+  <b>English:</b>
+  <%=h @title.english %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @title.description %>
+</p>
+
+<p>
+  <b>Danish:</b>
+  <%=h @title.danish %>
+</p>
+
+<p>
+  <b>Swedish:</b>
+  <%=h @title.swedish %>
+</p>
+
+<p>
+  <b>Norwegian:</b>
+  <%=h @title.norwegian %>
+</p>
+
+<p>
+  <b>Hungarian:</b>
+  <%=h @title.hungarian %>
+</p>
+
+<p>
+	<b>EOP:</b>
+	<%= @title.eop_display%>
+</p>
+
+<b>Series Idents</b>
+<% if @title.series_idents.count > 0 %>
+	<table>
+		<tr>
+			<th>Series Ident</th>
+			<th>EIDR</th>
+			<th>Year</th>
+			<th>Description</th>
+		</tr>
+
+		<% @title.series_idents.each do |s| %>
+			<tr>
+				<td><%= h s.number %></td>
+				<% if s.eidr_url %>
+					<td><%= link_to s.eidr, s.eidr_url, :target => "_blank" %></td>
+				<% else %>
+					<td><%=h s.eidr %></td>
+				<% end %>
+				<td><%= h s.year_number %></td>
+				<td><%= h s.description %></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
+<p><%= link_to "Add dummy series ident", new_series_title_path(@title) %></p>
+
+<% max_column = 5 %>
+<% column = 0 %>
+<b>House Numbers</b>
+<table>
+	<% @title.houses.each do |h| %>
+		<%column += 1%>
+		<% if column > max_column %>
+			<%	column = 1 %>
+		<% end %>
+		<% if column == 1 %>
+			<tr>
+		<% end %>
+			<td><%=h h.house_number %></td>
+		<% if column == max_column %>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
+
+
+<%= link_to 'Edit', edit_title_path(@title) %> |
+<%= link_to 'Back', titles_path %>

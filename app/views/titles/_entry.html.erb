@@ -1,0 +1,97 @@
+<%= f.hidden_field :source %>
+<%= f.hidden_field :channel %>
+<%= f.hidden_field :schedule_comparison_id %>
+<%= f.hidden_field :press_line_id %>
+  
+<span class = 'original_title'><%='Please fix the discrepancies' if show_fix_discrepancy? %></span>
+<p>
+	<%= f.label "Original" %><br />
+	<%= f.text_field :english, :size => 80 %>
+	<%= render :partial => '_discrepancy', :locals => {:language => :english } %>	
+</p>
+<p>
+	<%= f.label :description %><br />
+	<%= f.text_field :description, :size => 80 %>
+</p>
+<p>
+	<%= f.label :danish %><br />
+	<%= f.text_field :danish, :size => 80 %>
+	<%= render :partial => '_discrepancy', :locals => {:language => :danish } %>
+</p>
+<p>
+	<%= f.label :swedish %><br />
+	<%= f.text_field :swedish, :size => 80 %>
+	<%= render :partial => '_discrepancy', :locals => {:language => :swedish } %>
+</p>
+<p>
+	<%= f.label :norwegian %><br />
+	<%= f.text_field :norwegian, :size => 80 %>
+	<%= render :partial => '_discrepancy', :locals => {:language => :norwegian } %>
+</p>
+<p>
+	<%= f.label :hungarian %><br />
+	<%= f.text_field :hungarian, :size => 80 %>
+	<%= render :partial => '_discrepancy', :locals => {:language => :hungarian } %>  </p>
+<p>
+	EOP
+	<%= f.check_box :eop %><br />
+	Tick if the programme has it's own EOPs<br />
+	Leave empty if you wish to have 'Now' straps
+</p>
+
+<h1>Series Idents</h1>
+<p>
+<% if @press && @press.series_number %>
+	Series number from press file: 
+	<%= h @press.series_message %><br />
+	<% if @title.id %>
+		<%= link_to "Add as new", create_series_ident_title_path(:title_id => @title.id, :press_id => @press ) %> | 
+		<%= link_to "Add with promo(s)", create_series_ident_title_path(:title_id => @title.id, :press_id => @press, :with_promo => true) %><br />
+	<% end %>
+<% end %>
+<span style="color: green">
+	<% if flash[:series_message] != nil %>
+		<% flash[:series_message].split(". ").each do |fl| %>
+			<%= fl %> <br />
+		<% end %>
+	<% end %>
+</span></p>
+
+<% if @title.series_idents.count > 0 %>
+	<table>
+		
+		<% @title.series_idents.each do |s| %>
+			<tr>
+				<th>Series Ident</th>
+				<th>EIDR</th>
+				<th>Year</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><%= h s.number %></td>
+				<% if s.eidr_url %>
+	    	<td><%= link_to s.eidr, s.eidr_url, :target => "_blank" %></td>
+				<% else %>
+				<td><%=h s.eidr %></td>
+				<% end %>
+				<td><%= h s.year_number %></td>
+				<td><%= h s.description %></td>
+				<td><%= link_to 'Edit', edit_from_title_series_ident_path(:id => s.id, :original_params => params, :source => @title.source )%></td>
+				<td><%= link_to 'Delete', delete_series_ident_title_path(:id => s.id) ,{:confirm => 'Are you sure?', :method => :delete} %></td>
+				<% if @press && @press.series_number %>
+					<td><%= link_to 'Change to press file values',change_series_ident_title_path(:id => s.id, :press_id => @press, :title_id => @title) ,
+									{:confirm => 'Are you sure?. This will replace the series ident number, EIDR and the year. The description will not change.'} %></td>
+				<% end %>
+				<% if @title.series_idents.count > 1 %>
+					<td><%= link_to 'Split this series into new title', clone_title_path(:id => @title, :series_id => s.id), 
+								{:confirm => 'Are you sure? This will create a completely new title and associate this series with it'} %></td>
+				<% end %>
+			</tr>
+			<tr id = 'series_promo_list'>
+				<td colspan = '4'><%= render :partial => 'shared/promo_list', :locals => {:series_ident => s, :show_remove => true} %></td>
+			</tr>
+		<% end %>
+	</table>
+<% end %>
+
+<p></p>

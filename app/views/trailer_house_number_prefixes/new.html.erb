@@ -1,0 +1,14 @@
+<% content_for(:title) do%>
+	New Trailer House Number Prefix: MuVi2 Database
+<% end %>
+<h1>New Trailer House Number Prefix</h1>
+
+<% form_for(@trailer_house_number_prefix) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', trailer_house_number_prefixes_path %>

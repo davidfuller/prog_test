@@ -1,0 +1,27 @@
+<% content_for(:title) do%>
+	Template Fields: MuVi2 Database
+<% end %>
+<h1>Template Fields</h1>
+
+<table>
+  <tr>
+    <th>Field No.</th>
+    <th>Template</th>
+    <th>Field Type</th>
+  </tr>
+
+<% @template_field_joins.each do |template_field_join| %>
+  <tr>
+    <td><%=h template_field_join.field %></td>
+    <td><%=h template_field_join.dynamic_special_template.name if template_field_join.dynamic_special_template %></td>
+    <td><%=h template_field_join.dynamic_special_field.name if template_field_join.dynamic_special_field %></td>
+    <td><%= link_to 'Show', template_field_join %></td>
+    <td><%= link_to 'Edit', edit_template_field_join_path(template_field_join) %></td>
+    <td><%= link_to 'Destroy', template_field_join, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Template Field', new_template_field_join_path %>

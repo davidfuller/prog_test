@@ -1,0 +1,8 @@
+<p>
+  <%= f.label :prefix %><br />
+  <%= f.text_field :prefix %>
+</p>
+<p>
+  <%= f.label :language_id, "Language" %><br />
+  <%= f.collection_select (:language_id, @languages, :id, :name)   %>
+</p>

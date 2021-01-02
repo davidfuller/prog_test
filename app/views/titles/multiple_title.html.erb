@@ -1,0 +1,41 @@
+<% content_for(:title) do%>
+	Fix multiple titles: MuVi2 Database
+<% end %>
+
+<h1>Multiple Titles</h1>
+<p id = 'information'>
+	This entry has multiple matches for original title. Please choose the one you wish to use<br/>
+	<%= h @press.series_message %>
+</p>
+
+<table>
+  <tr>
+    <th id = 'lang'>English</th>
+	<th id = 'lang'>Series Number(s)</th>
+	<th id = 'lang'>Danish</th>
+	<th id = 'lang'>Swedish</th>
+    <th id = 'lang'>Norwegian</th>
+    <th id = 'lang'>Hungarian</th>
+  </tr>
+
+<% @titles.each do |title| %>
+  <tr>
+    <td id = 'lang'><%= h title.english %><br />
+                 <i><%= h 'Description: ' + title.description unless title.description.blank? %></i></td>
+	<td><table>
+			<%title.series_idents.each do |s|%>
+				<tr><td><%= h s.full_description %></td></tr>
+			<% end %>
+		</table>
+	</td>
+		<td id = 'lang'><%=h title.danish %></td>
+    <td id = 'lang'><%=h title.swedish %></td>
+    <td id = 'lang'><%=h title.norwegian %></td>
+    <td id = 'lang'><%=h title.hungarian %></td>
+	<td><%= link_to 'Use this one', choose_title_path(title) %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= link_to 'Back', :back %>

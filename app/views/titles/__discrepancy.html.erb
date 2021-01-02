@@ -1,0 +1,47 @@
+<%
+
+	original_title = nil
+	replace_title = @press.display_title unless @press.nil? || @press.display_title.nil?
+	
+	case language
+	when :norwegian
+		display_title = @title.norwegian
+		title_field = 'title_norwegian'
+		message = 'Clipsource Norweigan title wrong'
+	when :swedish
+		display_title = @title.swedish
+		title_field = 'title_swedish'
+		message = 'Clipsource Swedish title wrong'
+	when :hungarian
+		display_title = @title.hungarian
+		title_field = 'title_hungarian'
+		message = 'Clipsource Hungarian title wrong'
+	when :danish
+		display_title = @title.danish
+		title_field = 'title_danish'
+		message = 'Clipsource Danish title wrong'
+	when :english
+		display_title = nil
+		original_title = @title.english
+		title_field = 'title_english'
+		replace_title = @press.original_title unless @press.nil? || @press.original_title.nil?
+		message = 'Clipsource Original title wrong'
+	end	
+%>
+<% if show_press?(language) %>
+	<span id = "<%= language %>"> 
+	<%= link_to 'Use existing title    |', update_press_title_title_path(:id => @press.id, :display => display_title, 
+																	:original => original_title, :channel => @title.channel, :language => language, :schedule_comparison_id => @title.schedule_comparison_id, :message => message )%> 
+	<%= link_to 'Use existing title and update all titles in schedule', update_multiple_press_title_title_path(:id => @press.id, :display => display_title, 
+																	:original => original_title, :channel => @title.channel, :language => language, :schedule_comparison_id => @title.schedule_comparison_id, :message => message )%>
+	
+																
+	<br /><span class = 'original_title'><%= press_title(replace_title)%></span>
+		<%= link_to_function "Use title from Press Listings" do |page|
+				page << "if (confirm('Are you sure?. This will affect all programmes associated with this title.')) {"
+					page[title_field].value = replace_title
+					page[language].hide()
+				page << "}"
+			end %></span>
+	</span>
+<% end %>

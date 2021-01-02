@@ -1,0 +1,25 @@
+<% content_for(:title) do%>
+	Trailer Import Files: MuVi2 Database
+<% end %>
+<h1>Trailer Import Files</h1>
+
+<table>
+  <tr>
+    <th>Filename</th>
+    <th>Uploaded</th>
+  </tr>
+
+<% @trailer_files.each do |trailer_file| %>
+  <tr>
+    <td><%=h trailer_file.filename %></td>
+    <td><%=h trailer_file.uploaded %></td>
+    <td><%= link_to 'Show', trailer_file %></td>
+    <td><%= link_to 'Edit', edit_trailer_file_path(trailer_file) %></td>
+    <td><%= link_to 'Destroy', trailer_file, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Trailer Import File', new_trailer_file_path %>

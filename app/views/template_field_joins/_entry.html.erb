@@ -1,0 +1,25 @@
+  <%= f.hidden_field :source %>
+  <p>
+    <%= f.label :field %><br />
+    <%= f.text_field :field %>
+  </p>
+  <p>
+    <%= f.label :dynamic_special_template_id, 'Template' %><br />
+    <%= f.collection_select (:dynamic_special_template_id, @templates, :id, :name, {:prompt => 'Choose a Template'})%>
+  </p>
+  <p>
+    <%= f.label :dynamic_special_field_id, 'Field Type' %><br />
+    <%= f.collection_select (:dynamic_special_field_id, @fields, :id, :name, {:prompt => 'Choose a Field Type'})%>
+  </p>
+  <p>
+    <%= f.label :default_value, 'Default' %><br />
+    <%= f.text_field :default_value %>
+  </p>
+  <p>
+    <%= f.label :fixed, 'Fixed value' %><br />
+    <%= f.check_box :fixed %>
+  </p>
+  <p>
+    <%= f.label :dropdown, 'Has dropdown' %><br />
+    <%= f.check_box :dropdown %>
+  </p>

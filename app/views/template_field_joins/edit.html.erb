@@ -1,0 +1,17 @@
+<% content_for(:title) do%>
+	Edit Template Field: MuVi2 Database
+<% end %>
+<h1>Editing Template Field</h1>
+
+<% form_for(@template_field_join) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @template_field_join %> |
+<%= link_to 'Back', :back %>

@@ -1,0 +1,1 @@
+page.replace_html :promo_table, :partial => 'shared/promos', :locals => {:include_add => false }

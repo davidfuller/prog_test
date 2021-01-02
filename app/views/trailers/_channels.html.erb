@@ -1,0 +1,24 @@
+<div id ='channel_panel'>
+  <label>Channels Enabled</label><br/>
+  Toggle a language<br/>
+  <span class = 'link_button'>
+    <%= link_to 'Danish', toggle_channel_trailer_enable(@trailer, 'Danish') %> | 
+    <%= link_to 'Swedish', toggle_channel_trailer_enable(@trailer, 'Swedish') %> | 
+    <%= link_to 'Norwegian', toggle_channel_trailer_enable(@trailer, 'Norwegian') %> 
+  </span><br/>
+
+  
+  <table id = 'channel_table'>
+    <tr>
+      <th>Channel</th>
+      <th>Enable</th>
+    </tr>
+    <% @trailer.channel_trailers.each do |channel_trailer| %>
+      <tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td><%=h channel_trailer.channel.name %></td>
+        <td><%= check_box_tag "channel_trailer_ids[]", channel_trailer.id, channel_trailer.enable, :class => channel_trailer.channel.language.name %></td>
+      </tr>
+    <% end %>
+  </table><br />
+  
+</div>

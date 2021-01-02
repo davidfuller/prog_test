@@ -1,0 +1,97 @@
+<% content_for(:title) do%>
+	Trailer Media: MuVi2 Database
+<% end %>
+
+<%= link_to_function 'Upload Trailer File' do |page|
+	page['trailer-upload'].toggle()
+end %>
+<br/>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<% display_date = params[:on_air_date] %>
+<%- session[:on_air_date] = params[:on_air_date] %>
+
+<div id= 'trailer-upload', style = 'display: none;'>
+  <fieldset>
+    <legend>Trailer file</legend>
+    <% form_tag({:action => :upload_trailer_file}, :multipart => true) do %>
+      <p>Select the Trailer file to process:</p>
+      <%= file_field_tag 'trailer', {:size => 60} %><br/>
+      <%= submit_tag("Process") %>
+    <% end %>
+  </fieldset>
+  <br/>
+</div>
+<fieldset>
+	<legend>Trailer Media</legend>
+		<% form_tag trailers_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+      <p>
+        <label>Trailer File</label>
+        <%= select_tag :trailer_filename, options_for_select(@trailer_filenames, params[:trailer_filename]),
+		                    {:onchange => 'this.form.submit()'} %>
+      </p>
+      <p>
+        <label>TX date</label>
+        <%= calendar_date_select_tag :on_air_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        <%= link_to_function 'Clear',  'document.getElementById("on_air_date").value = ""; document.getElementById("search-form").submit()'%>
+      </p>
+      <p>
+        <label>Show</label>
+        <%= select_tag :show_choice, options_for_select([['All','0'], ['Available', '1'], ['Not Available', '2'], ['Requires Diva Data', '3'], ['Requires Clarity Transfer', '4'], ['Clarity Started But Not Complete', '5'], ['Transfer Complete', '6']], params[:show_choice]),
+                        {:onchange => 'this.form.submit()'} %>  
+        <% if params[:show_choice] == '3'%>
+          <%= link_to 'Update Diva Data', trailer_media_search %>
+        <% elsif params[:show_choice] == '4'%>
+          <%= link_to 'Update Clarity Transfer', trailer_workflow %>
+        <% elsif params[:show_choice] == '5'%>
+          <%= link_to 'Update Clarity Status', trailer_workflow_update %>  
+        <% end %>
+      </p>
+		<% end %>
+</fieldset>
+
+<br/>
+<%= link_to 'New trailer', new_trailer_path %> | <%= link_to "Delete all trailers that are unused. (Currently " + pluralize(not_available_count, "trailer") + " not available)", trailer_delete_not_available, :confirm => "Are you sure?\nYou are about to delete " + pluralize(not_available_count, "trailer"), :method => :delete %>
+<% if diva_orphaned_count >0  %>
+  | <%= link_to 'Delete references to orphaned Diva Data. Currently ' + pluralize(diva_orphaned_count, 'reference') + '.', trailer_delete_diva_references(params[:show_choice],params[:search], params[:trailer_filename], params[:on_air_date]), :confirm => 'Are you sure?', :method => :delete %>
+<% end %> 
+<br/>
+<%= will_paginate @trailers %>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>House No</th>
+    <th>Dur</th>
+    <th>First Use</th>
+    <th>Available</th>
+    <th>Diva Status</th>
+    <th>Conversion</th>
+  </tr>
+
+<% @trailers.each do |trailer| %>
+  <tr>
+    <td><b><%=link_to(h(trailer.title), trailer) %></b></td>
+    <td><%=h trailer.house_number %></td>
+    <td><%=h trailer.duration %></td>
+    <td><%=h trailer.first_use.to_s(:broadcast_day_month) if trailer.first_use %></td>
+    <td><%=h trailer.available %></td>
+    <td><%=h trailer.diva_status %></td>
+    <td><%=h trailer.media_file.status_display if trailer.media_file%>
+    <td><%= link_to 'Show', trailer %></td>
+    <td><%= link_to 'Edit', edit_trailer_path(trailer) %></td>
+    <td><%= link_to 'Destroy', trailer_path(trailer, :search => params[:search], :page => params[:page], :show_choice => params[:show_choice], 
+                                            :trailer_filename => params[:trailer_filename], :on_air_date => params[:on_air_date] ), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Auto add', trailer_auto_enable(trailer, params[:page], params[:trailer_filename], params[:search]) if !trailer.enable  %></td>
+    <td><%= link_to 'Status Log', diva_logs_path(:search => trailer.house_number) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New trailer', new_trailer_path %>
+<%= will_paginate @trailers %>

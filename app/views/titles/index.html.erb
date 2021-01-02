@@ -1,0 +1,100 @@
+<% content_for(:title) do%>
+	Programme Titles: MuVi2 Database
+<% end %>
+
+<span id = "title_fieldset">
+<fieldset>
+	<legend>Programme Titles</legend>
+		<% form_tag titles_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+		
+			<%= select_tag :language, options_for_select(@languages.insert(0,"All"), 
+											params[:language]),{:onchange => 'this.form.submit()'} %> <br /> 
+			<%= label_tag :house_no, "Show House Numbers" %>
+			<%= check_box_tag :house_no, value ="1", params[:house_no],{:onclick => 'this.form.submit()'} %> <br />
+			<%= label_tag :house_no, "Show Series Idents" %>
+			<%= check_box_tag :show_series, value ="1", params[:show_series],{:onclick => 'this.form.submit()'} %><br/>
+			<%= label_tag :house_no, "Show EIDR" %>
+			<%= check_box_tag :show_eidr, value ="1", params[:show_eidr],{:onclick => 'this.form.submit()'} %><br/>
+			
+		<% end %>
+</fieldset>
+</span>
+		<% session[:language] = params[:language] %>
+		<% session[:house_no] = params[:house_no] %>
+		<% session[:show_series] = params[:show_series]%>
+		
+<p class = 'link_button'>
+	<%= link_to 'New title', new_title_path %>
+</p>
+
+<%= will_paginate @titles %>
+
+<table>
+
+  <tr>
+    <th id = 'lang'>English</th>
+		<% if @danish %><th  id = 'lang'>Danish</th><% end %>
+    <% if @swedish %><th id = 'lang'>Swedish</th><% end %>
+    <% if @norwegian %><th id = 'lang'>Norwegian</th><% end %>
+    <% if @hungarian %><th id = 'lang'>Hungarian</th><% end %>
+    <% if @show_house && @show_series && @show_eidr %><th>House/Series Idents/EIDR</th>
+    <% elsif @show_house && @show_series %><th>House/Series Idents</th>
+    <% elsif @show_house && @show_eidr %><th>House/EIDR</th>
+    <% elsif @show_series && @show_eidr %><th>Series Idents/EIDR</th>
+    <% elsif @show_house %><th>House</th>
+		<% elsif @show_series %><th>Series Ident</th>
+		<% elsif @show_eidr %><th>EIDR</th><% end %>
+
+		<th>EOP</th>
+  </tr>
+	</div>
+<% @titles.each do |title| %>
+  <tr>
+    <td id = 'lang'><%= h title.english %><br />
+                 <i><%= h 'Description: ' + title.description unless title.description.blank? %></i></td>
+    <% if @danish %><td id = 'lang'><%=h title.danish %></td><% end %>
+    <% if @swedish %><td id = 'lang'><%=h title.swedish %></td><% end %>
+    <% if @norwegian %><td id = 'lang'><%=h title.norwegian %></td><% end %>
+    <% if @hungarian %><td id = 'lang'><%=h title.hungarian %></td><% end %>
+		</div>
+		<% if @show_house || @show_series || @show_eidr %>
+			<td>
+				<table>
+					<%title.series_idents.each do |s|%>
+						<tr>
+							<%if @show_house %>
+								<td> 
+										<% s.houses.each do |h| %>
+											<%= h h.house_number %><br />
+										<% end %>
+								</td>
+							<% end %>
+							<% if @show_series %>
+								<td><%= h s.number %></td>
+							<% end %>							
+							<% if @show_eidr %> 
+								<% if s.eidr_url %>
+									<td><%= link_to s.eidr, s.eidr_url, :target => "_blank" %></td>
+								<% else %>
+									<td><%= h s.eidr %></td>
+								<% end %>
+							<% end %>
+						</tr>
+					<% end %>
+				</table>
+			</td>
+		<% end %>
+		<td><%= h title.eop_display %></td>
+		<td><%= link_to 'Show', title %></td>
+    <td><%= link_to 'Edit', edit_title_path(title) %></td>
+    <td><%= link_to 'Delete', title, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @titles %>

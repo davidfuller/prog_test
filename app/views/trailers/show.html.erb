@@ -1,0 +1,97 @@
+<% content_for(:title) do%>
+	Trailer Media: MuVi2 Database
+<% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="20" />
+<% end %>
+
+<p>
+  <label>Trailer Title</label><br/>
+  <%=h @trailer.title %>
+</p>
+<table>
+  <tr>
+    <td>
+      <label>House number</label><br/>
+      <%=h @trailer.house_number %>
+    </td>
+    <td>
+      <label>Duration</label><br/>
+      <%=h @trailer.duration.to_s %>
+    </td>
+    <td>
+      <label>Trailer ECP Enabled</label><br/>
+      <%=h @trailer.enable_text %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label>First Use</label><br/>
+      <%=h @trailer.first_use.to_s(:broadcast_datetime) unless @trailer.first_use.nil? %>
+    </td>
+    <td>
+      <label>Last Use </label><br/>
+      <%=h @trailer.last_use.to_s(:broadcast_datetime) unless @trailer.last_use.nil? %>
+    </td>
+  </tr>
+</table>
+
+<%= link_to_function 'Hide/Show Media Details' do |page|
+	page['media-details'].toggle()
+end %>
+
+<div id= 'media-details'>
+  <label>Media Details</label><br/>
+  <%= render :partial => 'media', :locals	=> {:trailer => @trailer, :heading => false, 
+  :details => true, :source => 'trailer'} %>
+</div>
+<br/>
+<%= link_to_function 'Hide/Show Diva Details' do |page|
+	page['diva-details'].toggle()
+end %>
+
+<div id= 'diva-details',  style = 'display: none;'>
+  <label>Diva Details</label><br/>
+  <%= render :partial => 'diva_data', :locals	=> {:trailer => @trailer, :details => true, :source => 'trailer'} %>
+</div>
+<br/>
+<label>Channels Enabled</label><br/>
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Enable</th>
+  </tr>
+
+  <% @trailer.channel_trailers.each do |channel_trailer| %>
+    <tr>
+      <td><%=h channel_trailer.channel.name %></td>
+      <td><%=h channel_trailer.enabled_text %></td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to_function 'Hide/Show TSV File Details' do |page|
+	page['tsv-details'].toggle()
+end %>
+
+<div id= 'tsv-details',  style = 'display: none;'>
+  <p>
+    <label>Trailer Import File</label><br/>
+    <td><%=h @trailer.trailer_file.filename if @trailer.trailer_file %></td>
+  </p>
+  <p>
+    <label>Channels Text</label><br/>
+    <%=h @trailer.channels_text %>
+  </p>
+  <p>
+    <label>Last Changed</label><br/>
+    <%=h @trailer.change.to_s(:broadcast_datetime) %>
+  </p>
+  <p>
+    <label>Ingest status</label><br/>
+    <%=h @trailer.ingest_status %>
+  </p>
+</div>
+<br/>
+<%= link_to 'Edit', edit_trailer_path(@trailer) %> |
+<%= link_to 'Trailer Media', trailers_path%>

@@ -1,0 +1,18 @@
+
+
+# channel = Channel.press_channel_from_filename(params[:press_file])
+
+#if channel
+#  page[:channel].value = channel
+#end
+
+#week = params[:press_date].strftime(%V)
+#year = params[:press_date].strftime(%G)
+
+#  logger.debug week
+#  logger.debug year
+  
+#page[:week] = week if week
+#page[:year] = year if year
+
+

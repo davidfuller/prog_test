@@ -1,0 +1,33 @@
+<% if trailer.diva_data %>
+  
+  <table class = 'media_table' width = '90%'>
+    <% diva_data = trailer.diva_data %>
+      <tr class = 'audio' >
+        <td colspan = '3' width = '50%'>
+          <label>Diva Media</label><br/>
+          <b>System ID: </b><%=h diva_data.system_id %><br/>
+          <b>Diva House Number: </b><%=h diva_data.diva_house_number %><br/>
+          <% if details %>
+            <b>Diva Duration: </b><%=h diva_data.diva_duration %><br/>
+            <b>TV Standard: </b><%=h diva_data.tv_standard %><br/>
+            <div class = "<%= diva_data.status_css %>"><b>Diva Status: </b><%=h diva_data.diva_status.message unless diva_data.diva_status.nil? %></div><br/>
+            <label>Transfer to Clarity</label><br/>
+            <b>Workflow Job ID: </b><%=h diva_data.job_id %><br/>
+            <b>Workflow created at: </b><%=h diva_data.job_created.to_s(:broadcast_datetime) if diva_data.job_created %><br/>
+            <b>Workflow started at: </b><%=h diva_data.job_started.to_s(:broadcast_datetime) if diva_data.job_started %><br/>
+            <b>Workflow completed at: </b><%=h diva_data.job_completed.to_s(:broadcast_datetime) if diva_data.job_completed %><br/>
+            <b>Workflow status: </b><%=h diva_data.status %><br/>
+          <% end %>
+        </td>
+        <td><%= link_to 'Details', diva_data_path(diva_data, :source => source)%></td>
+        <td><%= link_to 'Edit', edit_diva_data_path(diva_data, :source => source, :trailer_id => trailer) %></td>
+        <td><%= link_to 'Destroy', diva_data_path(diva_data, :source => source, :trailer_id => trailer) , :confirm => 'Are you sure?',:method => :delete %></td>
+      </tr>
+  </table>
+
+<% else %>
+  No Diva Data<br/>
+<% end %>
+<%= link_to 'Request XML', trailer_request_media(trailer) %> | 
+<%= link_to 'Request Workflow XML', trailer_request_workflow(trailer, true) %> |
+<%= link_to 'Request Updated Workflow XML', trailer_request_workflow(trailer, false) %>

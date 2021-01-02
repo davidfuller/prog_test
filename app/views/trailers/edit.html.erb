@@ -1,0 +1,14 @@
+<h1>Editing trailer</h1>
+
+<% form_for(@trailer) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <%= render :partial => 'channels', :locals	=> {:f => f}	%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+  
+<% end %>
+
+<%= link_to 'Show', @trailer %> |
+<%= link_to 'Back', :back %>

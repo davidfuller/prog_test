@@ -1,0 +1,13 @@
+<p>
+  <label>Prefix</label><br />
+  <%=h @trailer_house_number_prefix.prefix %>
+</p>
+
+<p>
+  <label>Language</label><br />
+  <%=h @trailer_house_number_prefix.language.name if @trailer_house_number_prefix.language %>
+</p>
+
+
+<%= link_to 'Edit', edit_trailer_house_number_prefix_path(@trailer_house_number_prefix) %> |
+<%= link_to 'Back', trailer_house_number_prefixes_path %>
