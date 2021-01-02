@@ -1,0 +1,36 @@
+<h1>Series Identity</h1>
+<p>
+  <label>Title:</label>
+  <%=h @series_ident.title.english unless @series_ident.title.nil? %>
+</p>
+
+<p>
+  <label>Number:</label>
+  <%=h @series_ident.number %>
+</p>
+
+<p>
+  <label>EIDR:</label>
+  <% if @series_ident.eidr_url %>
+		<td><%= link_to @series_ident.eidr, @series_ident.eidr_url, :target => "_blank" %></td>
+	<% else %>
+		<td><%=h @series_ident.eidr %></td>
+	<% end %>
+</p>
+
+<p>
+  <label>Year number:</label>
+  <%=h @series_ident.year_number %>
+</p>
+
+<p>
+  <label>Description:</label>
+  <%=h @series_ident.description %>
+</p>
+
+<%= render :partial => 'shared/promo_list', :locals => {:series_ident => @series_ident, :show_remove =>false } %>
+	
+<br/>
+
+<%= link_to 'Edit', edit_series_ident_path(@series_ident) %> |
+<%= link_to 'Back', series_idents_path %>

@@ -1,0 +1,21 @@
+<h1>Editing Series Identity</h1>
+
+<% session[:series_info] =   { :series_id => @series_ident.id, 
+							   :source => @series_ident.source,
+							   :schedule_comparison_id => @series_ident.schedule_comparison_id } 
+   session[:series_info][:press_id] = @press.id unless @press.nil? %>
+					
+<%= session[:series_info] %>
+
+<% form_for(@series_ident) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  
+ <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @series_ident %> |
+<%= link_to 'Back', series_idents_path %>

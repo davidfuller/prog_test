@@ -1,0 +1,12 @@
+<span id = 'associated_title'>
+	<% on_demands.each do |on_demand| %>
+    <p>
+			<span id = 'description'>Name:</span>
+			<span id = 'value'><b><%= link_to h(on_demand.name), on_demand %></span></b><br />
+      <span id = 'description'>Title:</span>
+			<span id = 'value'><%= h on_demand.title %></span><br />
+      <span id = 'description'>Service:</span>
+			<span id = 'value'><%= h on_demand.service.name if on_demand.service %></span><br />
+    </p>
+	<% end %>
+</span>

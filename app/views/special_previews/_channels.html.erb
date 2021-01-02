@@ -1,0 +1,24 @@
+<div id ='channel_panel'>
+  <label>Channels Enabled</label><br/>
+  Toggle a language<br/>
+  <span class = 'link_button'>
+    <%= link_to 'Danish', toggle_channel_special_preview_enable(@special_preview, 'Danish') %> | 
+    <%= link_to 'Swedish', toggle_channel_special_preview_enable(@special_preview, 'Swedish') %> | 
+    <%= link_to 'Norwegian', toggle_channel_special_preview_enable(@special_preview, 'Norwegian') %> 
+  </span><br/>
+
+  
+  <table id = 'channel_table'>
+    <tr>
+      <th>Channel</th>
+      <th>Enable</th>
+    </tr>
+    <% @special_preview.channel_special_previews.each do |channel_special_preview| %>
+      <tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+        <td><%=h channel_special_preview.channel.name %></td>
+        <td><%= check_box_tag "channel_special_preview_ids[]", channel_special_preview.id, channel_special_preview.enable, :class => channel_special_preview.channel.language.name %></td>
+      </tr>
+    <% end %>
+  </table><br />
+  
+</div>

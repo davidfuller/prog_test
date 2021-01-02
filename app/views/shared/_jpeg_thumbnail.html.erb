@@ -1,0 +1,51 @@
+<h1>Showing Clarity Items</h1>
+
+<% 	if preview %>
+<%		page_path = preview_jpegs_path %>
+<%	else %>
+<%		page_path = jpegs_path %>
+<%	end %>
+
+<% form_tag page_path, :method =>'get' do %>	
+	<%= select_tag :folder, options_for_select(@folders, params[:folder]),{:onchange => 'this.form.submit()'} %>
+	<%= text_field_tag :search, params[:search], :size => 25 %>
+	<%= submit_tag "View", :name => nil %>
+<% end %>
+
+<% session[:jpeg_folder] = params[:folder] %>
+<% session[:jpeg_search] = params[:search] %>
+
+<% max_column = 3 %>
+<% column = 0 %>
+
+<%= will_paginate @jpegs %>
+
+<table>
+  
+<% @jpegs.each do |jpeg| %>
+	<%column += 1%>
+	<% if column > max_column %>
+	<%	column = 1 %>
+	<% end %>
+  <% if column == 1 %>
+		<tr>
+	<% end %>
+	<% if preview %>
+			<td><%=h jpeg.name %><br/>
+					<%= link_to image_tag (jpeg.image_url, :size => jpeg.thumbnail_size), preview_jpeg_path(jpeg) %></td>
+    	<td><br/><%= link_to 'Show', preview_jpeg_path(jpeg) %></td>
+			<td width=50></td>
+	<% else %>
+			<td><%=h jpeg.name %><br/>
+					<%= link_to image_tag (jpeg.image_url, :size => jpeg.thumbnail_size), jpeg_path(jpeg) %></td>
+    	<td><br/><%= link_to 'Show', jpeg_path(jpeg) %></td>
+			<td width=50></td>
+	<% end %>
+	<% if column == max_column %>
+  	</tr>
+	<% end %>
+<% end %>
+</table>
+
+
+<%= will_paginate @jpegs %>

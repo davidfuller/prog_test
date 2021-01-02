@@ -1,0 +1,61 @@
+<% content_for(:title) do%>
+	Series Idents: MuVi2 Database
+<% end %>
+<p id = 'admin_link'>
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin').each { |a| a.toggle }
+		end %>
+</p>
+
+<fieldset>
+	<legend>Series Identities/EIDR</legend>
+		<% form_tag series_idents_path, :method =>'get' do %>
+			<p>
+				Enter Series Ident or EIDR<br/>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>	
+		<% end %>
+</fieldset>
+
+<p class = 'link_button'>
+	<%= link_to 'New Series Ident', new_series_ident_path %>
+	<span class = 'admin', style = 'display: none;'> |
+		<%= link_to 'Destroy All', destroy_all_series_idents_path, :confirm => 'Are you really really sure?' %> |
+		<%= link_to 'Add dummy Series Idents to all titles without one', add_dummy_series_idents_path, 
+						:confirm => 'Are you sure?. This may take a few minutes.'%>
+	</span>
+</p>
+
+<%= will_paginate @series_idents %>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Number</th>
+    <th>EIDR</th>
+  	<th>Year number</th>
+    <th>Description</th>
+  </tr>
+
+<% @series_idents.each do |series_ident| %>
+  <tr>
+    <td><%=h series_ident.title.english unless series_ident.title.nil? %></td>
+    <td><%=h series_ident.number %></td>
+		<% if series_ident.eidr_url %>
+			<td><%= link_to series_ident.eidr, series_ident.eidr_url, :target => "_blank" %></td>
+		<% else %>
+			<td><%=h series_ident.eidr %></td>
+		<% end %>
+    <td><%=h series_ident.year_number %></td>
+    <td><%=h series_ident.description %></td>
+    <td><%= link_to 'Show', series_ident %></td>
+    <td><%= link_to 'Edit', edit_series_ident_path(series_ident) %></td>
+    <td><%= link_to 'Destroy', series_ident, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @series_idents %>
+

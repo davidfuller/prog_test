@@ -1,0 +1,36 @@
+<h1>Schedule for <%=h @channel %></h1>
+
+<% form_tag schedule_lines_path, :method =>'get' do %>	
+	<%= select_tag :schedule_filename, options_for_select(@filenames, params[:schedule_filename]),{:onchange => 'this.form.submit()'} %>
+ 
+	<%= link_to 'Compare with Press File', schedule_comparison_path_with_filter(params[:schedule_filename]) %>
+<% end %>
+<br/>
+<%= will_paginate @schedule_lines %>
+
+<table>
+  <tr>
+    <th>Start</th>
+    <th>House no</th>
+    <th>Title</th>
+    <th>Series title</th>
+    <th>Series no</th>
+  </tr>
+
+<% @schedule_lines.each do |schedule_line| %>
+  <tr>
+    <td><%=h schedule_line.start.to_s(:broadcast_datetime) %></td>
+    <td><%=h schedule_line.house_no %></td>
+    <td><%=h schedule_line.title %></td>
+    <td><%=h schedule_line.series_title %></td>
+    <td><%=h schedule_line.series_number %></td>
+    <td><%= link_to 'Show', schedule_line %></td>
+    <td><%= link_to 'Edit', edit_schedule_line_path(schedule_line) %></td>
+    <td><%= link_to 'Destroy', schedule_line, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= will_paginate @schedule_lines %>

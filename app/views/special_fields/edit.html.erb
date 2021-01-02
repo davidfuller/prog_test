@@ -1,0 +1,17 @@
+<h1>Editing Special Field</h1>
+
+<%= render :partial => 'dynamic_special' %>
+
+<% form_for(@special_field) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<% if @special_field.source == 'dynamic' %>
+  <%= link_to 'Back', dynamic_special_path(@special_field.dynamic_special_id) %>
+<% else %>
+  <%= link_to 'Back', :back %>
+<% end %>

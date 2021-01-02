@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @schedule_file.name %>
+</p>
+
+<p>
+  <b>Channel:</b>
+  <%=h @schedule_file.channel_id %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%=h @schedule_file.start %>
+</p>
+
+<p>
+  <b>End:</b>
+  <%=h @schedule_file.end %>
+</p>
+
+
+<%= link_to 'Edit', edit_schedule_file_path(@schedule_file) %> |
+<%= link_to 'Back', schedule_files_path %>

@@ -1,0 +1,52 @@
+<% content_for(:title) do%>
+	Special Preview: MuVi2 Database
+<% end %>
+
+
+<fieldset>
+	<legend>Special Preview</legend>
+		<% form_tag special_previews_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+      <p>
+        <label>Channel</label> 
+        <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
+      </p>
+		<% end %>
+</fieldset>
+
+<p>
+<%= link_to 'Special Previews past last use', special_preview_media_files_past_last_use_path %>
+</p>
+<br/>
+
+<%= will_paginate @special_previews %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Image</th>
+    <th>Channels</th>
+  </tr>
+  <% @special_previews.each do |special_preview| %>
+    <tr>
+      <td><b><%= link_to(h(special_preview.name), special_preview) %></b></td>
+      <% if special_preview.media_file && special_preview.media_file.jpeg_exist? %>
+        <td><%= link_to image_tag(special_preview.media_file.jpeg_url, :size => "160x90"), special_preview %></td>
+      <% else %>
+        <td>Media not loaded</td>
+      <% end %>
+      <td style = 'width:150px'><%= h special_preview.channel_csv %></td>
+      <td><%= link_to 'Show', special_preview %></td>
+      <td><%= link_to 'Edit', edit_special_preview_path(special_preview) %></td>
+      <td><%= link_to 'Destroy', special_preview, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+
+
+<%= link_to 'New Special Preview', new_special_preview_path %>
+<%= will_paginate @special_previews %>

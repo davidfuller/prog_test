@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th>Tailer House No</th>
+    <th>System ID</th>
+    <th>Diva House Number</th>
+    <th>Diva Dur</th>
+    <th>TV Standard</th>
+    <th>Diva Status</th>
+  </tr>
+
+<% @diva_datas.each do |diva_data| %>
+  <tr>
+    <td><%=h diva_data.trailer.house_number if diva_data.trailer %></td>
+    <td><%=h diva_data.system_id %></td>
+    <td><%=h diva_data.diva_house_number %></td>
+    <td><%=h diva_data.diva_duration %></td>
+    <td><%=h diva_data.tv_standard %></td>
+    <td><%=h diva_data.diva_status.message if diva_data.diva_status %></td>
+    <td><%= link_to 'Show', diva_data %></td>
+    <td><%= link_to 'Edit', edit_diva_data_path(diva_data) %></td>
+    <td><%= link_to 'Destroy', diva_data, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

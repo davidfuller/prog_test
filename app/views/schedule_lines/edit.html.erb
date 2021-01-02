@@ -1,0 +1,14 @@
+<h1>Editing Schedule Item</h1>
+
+<% form_for(@schedule_line) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @schedule_line %> |
+<%= link_to 'Back', schedule_lines_path %>

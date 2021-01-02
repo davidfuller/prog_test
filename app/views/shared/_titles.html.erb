@@ -1,0 +1,43 @@
+
+
+<%= will_paginate @titles %>
+
+<table id = 'search_table'>
+  <tr>
+    <th>Title</th>
+	  <th>Description</th>
+    <th>Series Ident/EIDR</th>
+  </tr>
+
+<% @titles.each do |title| %>
+  <tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+    <td><%=h title.english %><br />
+					<% if !title.danish.blank? %><%=h 'Danish: ' + title.danish %><br /><% end %>
+					<% if !title.swedish.blank? %><%=h 'Swedish: ' + title.swedish %><br /><% end %>
+					<% if !title.norwegian.blank? %><%=h 'Norwegian: ' + title.norwegian %><br /><% end %>
+					<% if !title.hungarian.blank? %><%=h 'Hungarian: ' + title.hungarian %><% end %></td>
+	<td><%= h title.description %></td>
+	
+	<td><table><% title.series_idents.each do |s| %>
+		<tr>
+      <td><%= h s.full_description if s.full_description %></td>
+      <td><%= h s.eidr if s.eidr %></td>
+      <% if include_add %>
+				<td><%= link_to "Add this series",  { :controller => :promos, :action => :new_series_ident,
+		      									 :id => params[:id], :series_ident_id => s.id,  
+											     :search => params[:search], :page => params[:page]}%></td>
+			<% else %>
+				<td><%= link_to_function "Use this series" do |page|
+			          page['house_series_ident_id'].value = s.id
+					  page.replace('associated_title', :partial => 'shared/associated', :locals => {:series_ident => s})
+			    end %></td>
+			<% end %>
+		</tr>
+		<% end %></table>
+	</td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= will_paginate @titles %>

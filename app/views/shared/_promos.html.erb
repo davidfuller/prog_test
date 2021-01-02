@@ -1,0 +1,16 @@
+
+<%= will_paginate @promos %>
+
+<table id = 'search_table'>
+<% @promos.each do |promo| %>
+	<tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+	    <td><%= h promo.name %></td>
+		<td><%= h promo.description %></td>
+		<td><%= link_to 'Add', add_promo_title_path({ :title_id => @title.id, :promo_id => promo.id, :search => params[:search]})%> </td>
+	</tr>
+<% end %>
+
+</table>
+<br/>
+
+<%= will_paginate @promos %>

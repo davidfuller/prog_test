@@ -1,0 +1,45 @@
+<%= f.hidden_field :source %>
+<%= f.hidden_field :original_id %>
+<%= f.hidden_field :original_channel %>
+<%= f.hidden_field :schedule_comparison_id %>
+<%= f.hidden_field :press_id %>
+
+
+<% 	replace_year = @press.year_number unless @press.nil? || @press.year_number.nil? %>
+<p>
+	<%= f.label :title_id %><br />
+	<%= f.collection_select (:title_id, @titles, :id, :english, :prompt => 'Select a title')   %>
+</p>
+<p>
+	<%= f.label :number %><br />
+	<%= f.text_field :number %>
+</p>
+<p>
+	<%= f.label :eidr, "EIDR" %><br />
+	<%= f.text_field :eidr, :size=>60 %><br/>
+	<% if @series_ident.eidr_url %>
+		<%= link_to 'Look up on EIDR.org', @series_ident.eidr_url, :target => "_blank" %>
+	<% end %>
+</p>
+
+<p>
+	<%= f.label :year_number %><br />
+	<%= f.text_field :year_number %>
+	<% if show_press_year? %>
+		<span id = "year_number">
+		<%= link_to 'Use existing year', update_press_series_series_ident_path(:id => @press.id, :year => @series_ident.year_number) %>
+		<br /><span class = 'original_title'><%= press_year_number(replace_year)%></span>
+			<%= link_to_function "Use year from Press Listings" do |page|
+					page << "if (confirm('Are you sure?. This will affect all programmes associated with this series.')) {"
+						page['series_ident_year_number'].value = replace_year
+						page['year_number'].hide()
+					page << "}"
+				end %></span>
+		</span>
+	<% end %>
+</p>
+<p>
+	<%= f.label :description %><br />
+	<%= f.text_field :description %>
+</p>
+ 

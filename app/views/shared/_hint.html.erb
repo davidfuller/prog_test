@@ -1,0 +1,272 @@
+<% if show == 'all'%>
+	<h2>No Hint Available</h2>
+	<p>The hint system is for specific issues. First select a specific issue from the drop down list above and then <i>Show Hint</i></p>
+
+<% elsif show =='in_db_no_eidr'%>
+	<h2>EIDR is not in database</h2>
+	<p>EIDR is the new field that holds the system together. It replaces Series Ident</p>
+	<p>EIDR is an international standard for uniquely identifying TV shows, series and episodes</p>
+	<a href="http://eidr.org" target="_blank">EIDR.org</a> has more details<br/>
+	<p>For episodic series we use the season EIDR to link everything together</p>
+	<p>Unless you see something odd, click 'Add EIDR' for each programme. Or 'Check All' and click the 'Add all checked' button</p>
+<% elsif show =='no_press'%>
+	<h2>House Number is not in database. Nothing in the Press Listings for this time</h2>
+	<p>The most likely scenario here is the transmission time in the schedule is different from the one in the press listings. 
+		Often this can be down to a rounding error so the times are 5 minutes apart.</p> 
+	<p>To check click <em>Find Title in Press Listings</em>. The press listings for the relevant date/channel are shown. 
+		At the top of the screen details of the programme from the comparison screen are shown. Looking through the listing
+		you should be able to spot the programme, at the <em>incorrect time</em>.</p>
+	<p>You can then do one of two things.</p>
+	<p>1. Edit the press listings and change the time in the press listings to match the schedule. When you return to the 
+	  comparison screen click <em>Recalculate</em> and this entry will have been reclassified</p>
+	<p>2. Click <em>Add To Titles</em>. This will either create a new title, or add the series/house number
+	  to an existing one.(But this will remain red in the comparisons).</p>
+	<p>Sometimes you get this message if the press listing have not been uploaded yet for the given date/channel. 
+		You'll spot this because when you click <em>Find Title in Press Listings</em>, no programmes appear around the time
+		of the programme you're looking for.</p>
+
+<% elsif show == 'not_db_all_match'%>
+	<h2>House number is not in database. Both Series and Titles match items already in database</h2>
+	<p>Normally all that needs to happen with this selection is <em>Add House Number</em> and the system adds the house 
+		number to the Series/Title</p>
+	<p>Additionally you can use the check boxes and the <em>Add All Checked</em> button to add multiple titles</p>
+	<h2>Beware</h2>
+	<p>If the title from the press listing does not refer to the title shown in the schedule, <em>do not</em> click
+		<em>Add House Number</em> because then you'll attach a series and title to totally the wrong house number. The best course 
+		of action here is do nothing until the programme is updated in either the press listing or the schedule so that both match</p>
+	<p>If you really need to fix it now, you have one of two choices.</p>
+	<p>If you think the title is already in the database then click <em>Manually Add House Number</em>. Then find the title by searching for it</p>
+	<p>If it doesn't exist, you should manually create a new programme title and (importantly) add a dummy series number to it. Then come 
+		back to this screen and click <em>Manually Add House Number</em>. Then you can select the newly created title by searching for it.</p>
+		
+<% elsif show == 'not_db_fix_local'%>
+	<h2>House number is not in database. Series and original title match. Local title does not match</h2>
+	<p>This means that the title in the local language is different in the press listings from the one stored in the database.</p>
+	<p>In most cases this is because the title in the press listings has a number appended to the end (e.g. 'Bones 3') and the local title in the database does not (e.g. 'Bones')</p>
+	<p>If you wish to reset the title in the press listings to that stored in the database, click:</p>
+	<h3>Use stored local title</h3>
+	<p>If you have a long list of these then you can tick the check-boxes and click 'Add All Checked' and 
+	    it will replace the title in the Press listings with the one currently stored in the database for each ticked programme. But please
+	    be careful to check all the titles/programmes are as expected.</p>
+	<p>Otherwise...</p>
+	<h3>Fix Local Title</h3>
+	<p>You'll be given the choice to use the use either the local title stored in the database, or the one used in the press listings</p>
+	<p>There is one catch with this. If you decide to use the title from the press listings, this will change the local title, for all
+		programmes associated with the all the series numbers associated with that title. If there is only one series number associated 
+		with the title, this is all that's possible.</p>
+	<p>If there's two or more series you may want to have different local titles to be associated with each. For instance,
+		one series might be titled <em>Top Model 6</em> and another <em>Top Model 7</em>.</p>
+	<p>If you do select <em>Use Title from Press Listing</em>, you should click the <em>Recalculate</em> button so that all 
+		the comparisons pick up the title change</p>
+<% elsif show == 'not_db_fix_english'%>
+	<h2>House number is not in database. But the series matches. The original title does not match</h2>
+	<p>This means that the title in the original language is different in the press listings from the one stored in the database.</p>
+	<p>In most cases this is because the title in Clipsource is different to the one previously used by Polopoly. You should click</p>
+	<h3>Fix English Title</h3>
+	<p>You'll be given the choice to use the use either the original title stored in the database, or the one used in the press listings</p>
+		
+<% elsif show == 'not_db_no_match'%>
+	<h2>The house, series and title are not in the database</h2>
+	<p>In this case the times match, but nothing else. Also the Original title in the Press Listing
+		is significantly different from the title in the Schedule</p>
+	<p>In most cases you can <em>Auto Add</em>, but before you do, do a visual check the Schedule Title and Original Title are close enough for
+		this to be automatically added. It is quite possible with this selection it is totally the wrong programme</p>
+	<p>You can do multiple <em>Auto Adds</em> by ticking the check boxes and clicking the <em>Add Add Checked</em> button</p>
+	<p>If it is totally the wrong programme do not <em>Auto Add</em> as it's a pain in the bottom to correct later. The best course of action
+		here is to get the Press Listings or Schedule file corrected and re-import</p>
+	<p>It's also better to avoid adding sports fixtures where the teams are TBA. Leave the update for when the Press Listings have 
+		been updated to include the matches</p>
+
+<% elsif show == 'in_db_no_press'%>
+	<h2>House number found but nothing in Press Listings for this time</h2>
+	<p>The most likely scenario here is the transmission time in the schedule is different from the one in the press listings. 
+		Often this can be down to a rounding error so the times are 5 minutes apart.</p> 
+	<p>To check click <em>Find Title in Press Listings</em>. The press listings for the relevant date/channel are shown. 
+		At the top of the screen details of the programme from the comparison screen are shown. Looking through the listing
+		you should be able to spot the programme, at the <em>incorrect time</em>.</p>
+	<p>You can then do one of two things.</p>
+	<p>1. Edit the press listings and change the time in the press listings to match the schedule. When you return to the 
+	  comparison screen click <em>Recalculate</em> and this entry will have been reclassified</p>
+	<p>2. Note down the series number, then come back to the comparison screen and click <em>Edit House Number</em>. Then look on that screen and check that 
+		the <em>Series Ident</em> number is the same as the one noted on the press listings screen.</p>
+	<p>If it is the same you need not do anything. (But this will remain orange). If it's different you may want to update the <em>Associated Title</em></p>
+	<h2>Warning</h2>
+	<p>If when you search you find that the press listings and schedule are completely different, it's probably best to wait until the relevant file is 
+	  fixed and then re-import.</p>
+	<p>Sometimes you get this message if the press listing have not been uploaded yet for the given date/channel. 
+		You'll spot this because when you click <em>Find Title in Press Listings</em>, no programmes appear around the time
+		of the programme you're looking for.</p>
+
+<% elsif show == 'in_db_no_press_local_blank'%>
+	<h2>House Number found, but the title in this language is blank</h2>
+	<p>Normally this happens when the programme is shown on multiple channels and the house number has already been stored 
+		under a different language.</p>
+	<p>If you are confident that the title just needs updating for this language, click <em>Fix Local Title</em>, 
+		which will take you to a screen that will allow you to check and update the title.</p>
+	<p>If you are less certain, click <em>Find Title in Press Listings</em>. The press listings for the relevant 
+		date/channel are shown. At the top of the screen details of the programme from the comparison screen are shown. 
+		Looking through the listing	you should be able to spot the programme, at the <em>incorrect time</em>.</p>
+	<p>Click <em>Add to Titles</em> on the listed programme and the title is shown with the local title filled in</p>
+	<p>On some rare occasions you may get the message <em>Cannot find title</em> when clicking <em>Fix Local Title</em>. 
+		This is because the house number has become detached from the title. To solve this click <em>Edit House Number</em> 
+		and add the correct associated title.</p>
+
+<% elsif show == 'in_db_fix_series'%>
+	<h2>House number linked to different series</h2>
+	<p>This means that the house number is already in the database, but is linked to a different series</p>
+	<p>With the move to Clipsource, the most likely cause of this is the series ident is not in Clipsource, and the EIDR, the replacement for series ident, has not been added yet</p>
+	<p>If everything looks good (i.e. the titles are the same or similar) and the series ident is empty, then it's safe to click 'Fix Series Number/EIDR'</p>
+	
+  <h3>Warning</h3>
+	<p>A worse scenario is that for that time the schedule and the press listings have entirely different programmes. If this happens it's probably
+	  best to wait until the schedule or press listing is corrected and then re-import.</p>
+	<p>Otherwise you have various options</p>
+	<h3>Add the series number from the press listings to the title.</h3>
+		<p>To do this click <i>Edit Title</i> and then <i>Add as new</i> under <i>Series Idents</i> on the next page. This way the title can have 
+		two or more series associated with it. Each series can have it's own promos, or share the same promo. Both series will have the same
+		title on screen.</p>
+	<h3>Create New Title</h3>
+		<p>Only do this if you are absolutely certain you need this series/house number to be associated with a different title.
+			This effectively means you want a different title shown on the dynamic branding events than the one current stored in the database,
+			and the one currently shown in the press listings. Also it means you want all the programmes with this series number to have this
+			<i>different</i> title. All of this is quite unlikely, but possible.</p>
+
+<% elsif show == 'in_db_house_series_mismatch'%>		
+	<h2>House number linked to different series and title</h2>
+	<p>This means the house number has been found and is linked to one series, but the press listing has a different series associated with
+		this programme.</p>
+	<h2>Be Careful</h2>
+	<p>Sometimes a completely different programme is the the schedule compared to the press listings</p>
+	<p>It would be a <b>bad thing</b> to associate the House Number to the wrong programme. But if the titles look to be the same, or close enough...</p>
+	<h3>Associate the house number with the one in the press listing.</h3>
+	<p>Click <i>Swap House Number to this Series</i> to do this</p>
+	<h3>Keep the house number associated with the series in the database</h3>
+	<p>This is effectively saying the series number in the press listing is wrong. This sometimes happens if the title in the press listings
+		is unrelated to title in the schedule. Click <i>Keep House Number with the database series</i> which will edit the press listing to give
+		put the <em>correct</em> series number in the press listing. Note this will be undone if the press listing is ever re-imported.	</p>
+<% elsif show == 'not_db_no_series_fix_local_multiple'%>
+  <h2>Multiple versions of the English title are in the database, but no local title matches. The house number and series has not been found</h2>
+  <p>In some cases this is where the programme is a sports event, where the local title contains the fixture and the English title contains just the competition name</p>
+  <p>It matches multiple English titles because there are many fixtures, all with the same English title</p>
+  <p>if this is the case click <i>Create New</i> as this will create a new title for this fixture</p>
+  <p>Otherwise it might appear when you have 'corrected' local titles to remove a series number (e.g. 'Bones 2' has become 'Bones')</p>
+  <p>If you are certain that you want to add this programme to one of the existing titles you can click:</p>
+  <h3>Auto Add (Don't do this for sports fixtures)</h3>
+  <p>This will give you the option to choose which title you want, and then it will add this programme (with it's series and house number) to that title.</p>
+  <p>Any promos currently associated with that title will also be added</p>
+  <p>If, when offered the choice of titles, none are what you want - click the back button and use one of the other options</p>
+  <h3>Add to titles</h3>
+  <p>This option allows you to manually perform the same actions as Auto Add</p>
+  <p>You will firstly be taken to a screen that will allow you to choose which title. After that you can manually edit the title and add series and promos to the title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+  <h3>Create New Title (Use this for sports fixtures)</h3>
+  <p>This option allows you to create a new title and add the series to it. Use this option if you want to create different/new titles for a series with the same English Title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+<% elsif show == 'not_db_no_series_multiple'%>
+  <h2>Multiple versions of the title are in the database. The house number and series has not been found</h2>
+  <h3>If this is a sports fixture</h3>
+  <p>Use the <i>Create New Title</i> link as this will create a new title for this particular fixture</p>
+  <h3>Otherwise</h3>
+  <p>The idea here is to work out which title should be used, and then attach this entry to that title. First you should click...
+  <h3>Add to titles</h3>
+  <p>You will firstly be taken to a screen that will allow you to choose which title. After that you can manually edit the title and add series and promos to the title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+  <p>If none of the titles are what you want, then click 'back' and then....</p>
+  <h3>Create New Title</h3>
+  <p>This option allows you to create a new title and add the series to it. Use this option if you want to create different/new titles for a series with the same English Title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+<% elsif show == 'not_db_no_series_fix_local'%>
+  <h2>The English title is in the database, but the local title does not match. The house number and series has not been found</h2>
+  <p>In some cases this is where the programme is a sports event, where the local title contains the fixture and the English title contains just the competition name</p>
+  <p>if this is the case click <i>Create New</i> as this will create a new title for this fixture</p>
+  <p>Otherwise this is when the local title in Clipsource is different to the one you have been using.</p>
+  <p>If you are certain that you want to add this programme to the existing title you can click:</p>
+  <h3>Auto Add (Do not use for sports fixtures)</h3>
+  <p>This will add the programme (with it's series and house number) to the title. But the local title will not be updated.</p>
+  <p>Any promos currently associated with that title will also be added</p>
+  <p>Other options...</p>
+  <h3>Fix local title</h3>
+  <p>This option allows you to manually perform the same actions as Auto Add</p>
+  <p>You will be taken to a screen where you can manually edit the title and add series and promos to the title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+  <h3>Create New Title (Use for sports fixtures)</h3>
+  <p>This option allows you to create a new title and add the series to it. Use this option if you want to create different/new titles for a series with the same English Title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+<% elsif show == 'not_db_no_series'%>
+  <h2>The English and local titles are in the database, but the house number and series has not been found</h2>
+  <p>If you are certain that you want to add the series/house existing title you can click:</p>
+  <h3>Auto Add</h3>
+  <p>This will add the programme (with it's series and house number) to the title.</p>
+  <p>Any promos currently associated with that title will also be added</p>
+  <p>Other options...</p>
+  <h3>Edit title</h3>
+  <p>This option allows you to manually perform the same actions as Auto Add</p>
+  <p>You will be taken to a screen where you can manually edit the title and add series and promos to the title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+  <h3>Create New Title</h3>
+  <p>This option allows you to create a new title and add the series to it. Use this option if you want to create different/new titles for a series with the same English Title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+<% elsif show == 'in_db_fix_local' %>
+	<h2>House and Series found. Local titles different</h2>
+	<p>This means that the title in the local language is different in the press listings from the one stored in the database.</p>
+	<p>This probably means the local title in Clipsource, which is sourced from Movida, is different to the one we have been using.</p>
+	<h3>Fix Local Title</h3>
+	<p>You'll be given the choice to use the use either the local title stored in the database, or the one used in the press listings</p>
+<% elsif show == 'in_db_fix_english' %>
+	<h2>House and Series found. English/original titles different</h2>
+	<p>This means that the title in the original language is different in the press listings from the one stored in the database.</p>
+	<p>This is most likely that the original title in Clipsource is slightly different to the one currently stored.</p>
+	<h3>Fix English Title</h3>
+	<p>You'll be given the choice to use the use either the English title stored in the database, or the one used in the press listings</p>
+	<p>There is one catch with this. If you decide to use the title from the press listings, this will change the local title, for all
+		programmes associated with the all the series numbers associated with that title. If there is only one series number associated 
+		with the title, this is all that's possible.</p>
+	<p>If you do select <em>Use Title from Press Listing</em>, you should click the <em>Recalculate</em> button so that all 
+		the comparisons pick up the title change</p>
+<% elsif show == 'in_db_local_blank' %>
+	<h2>The house number and series has been found, but the local title is blank.</h2>
+	<p>In most cases this is a programme that has been shown in another country, but this is the first showing in this country</p>
+	<p>Unless the titles don't match, click 'Add local title' to add the titles in this language to the title</p>
+	<p>If you want to check before you do this, click 'Edit title'</p>
+<% elsif show == 'not_db_no_match_contained' %>
+	<h2>There is no match for the house number or series, but title is contained in playlist</h2>
+	<p>This means the English title in the Press listing either matches or is close to the title in the Schedule, but neither the house number or 
+		series is currently in the database.</p>
+	<p>It is recommended that you do a visual check that the titles match - there may be some cases where the titles are close but different (e.g. Champions League). But assuming they 			match well enough, then click <i>Auto Add</i> and this will add the Title, House Number and Series to the database.</p>
+	<p>It is recommended that you do a <i>Recalculate</i> after an <i>Auto add</i></p>
+	<p>Following that if there are any <h3>No House. Series Found Titles Match</h3> (in yellow) deal with those before continuing.</p>
+<% elsif show == 'in_db_fix_english_year' %>
+	<h2>The House and Series/EIDR have been found, but there is an issue with both the original title and the year</h2>
+	<p>The title issue is almost certainly a difference between what Clipsource has for the title and what we have been using. It is recommended that you click <i>Fix English Title</i> and correct the title. </p>
+	<p>After that the issue will become a <i>House Series/Found. Year Discrepancy</i>. From there you can click <i>Fix Year</i> where you can chose which year to keep.</p>
+	<p>The issue with year is almost certainly a difference between what Polopoly had as year number and what Clipsource has.</p>
+<% elsif show == 'in_db_fix_year' %>
+	<h2>The House and Series/EIDR has been found, but there is an issue with both the original title and the year</h2>
+	<p>The issue with year is almost certainly a difference between what Polopoly had as year number and what Clipsource has.</p>
+	<p>Click <i>Fix Year</i> where you can chose which year to keep.</p>
+<% elsif show == 'not_db_no_series_local_blank' %>
+	<h2>The house number and series has not been found, but the original title matched with the local title is blank.</h2>
+	<p>In most cases this is a programme that has been shown in another country, but this is the first showing in this country</p>
+	<p>Unless the titles don't match, click 'Auto Add' to add the titles in this language to the title</p>
+	<p>If you want to check before you do this, click 'Edit title'</p>	
+<% elsif show == 'not_db_no_series_local_blank_multiple'%>
+  <h2>Multiple versions of the original title are in the database. The house number and series has not been found and the local title is blank</h2>
+  <h3>If this is a sports fixture</h3>
+  <p>Use the <i>Create New Title</i> link as this will create a new title for this particular fixture</p>
+  <h3>Otherwise</h3>
+  <p>The idea here is to work out which title should be used, and then attach this entry to that title. First you should click...
+  <h3>Add to titles</h3>
+  <p>You will firstly be taken to a screen that will allow you to choose which title. After that you can manually edit the title and add series and promos to the title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+  <p>If none of the titles are what you want, then click 'back' and then....</p>
+  <h3>Create New Title</h3>
+  <p>This option allows you to create a new title and add the series to it. Use this option if you want to create different/new titles for a series with the same English Title</p>
+  <p>This option does not add the house number, but after you have gone this route, the programme will appear under 'No House. Series found. Titles match' (yellow) where you will be able to add the house number</p>
+<% elsif show == 'not_found' || show == 'all' %>
+	<h2>No Hint Available</h2>
+	<p>The hint system is for specific issues. First select a specific issue from the drop down list above and then <i>Show Hint</i></p>
+<% elsif show == 'in_db' %>
+	<h2>All is good with these entries</h2>
+	<p>No further action needed</p>
+<% end %>
+

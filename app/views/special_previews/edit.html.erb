@@ -1,0 +1,30 @@
+<% content_for(:title) do%>
+	Special Preview: MuVi2 Database
+<% end %>
+
+<h1>Editing Special Preview</h1>
+
+<% form_for(@special_preview) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <div id= 'media-details'>
+    <label>Media Details</label><br/>
+    <%= render :partial => 'media', :locals	=> {:special_preview => @special_preview, :heading => false, 
+    :details => true, :source => 'special preview edit'} %>
+  </div>
+  <br/>
+
+  <%= render :partial => 'channels', :locals	=> {:f => f}	%>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @special_preview %> |
+<%= link_to 'List of Special Previews', special_previews_path %> | 
+<%= link_to 'Back', :back %>

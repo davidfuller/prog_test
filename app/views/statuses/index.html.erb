@@ -1,0 +1,22 @@
+<h1>Status Messages</h1>
+
+<table>
+  <tr>
+    <th>Value</th>
+    <th>Message</th>
+  </tr>
+
+<% @statuses.each do |status| %>
+  <tr>
+    <td><%=h status.value %></td>
+    <td><%=h status.message %></td>
+    <td><%= link_to 'Show', status %></td>
+    <td><%= link_to 'Edit', edit_status_path(status) %></td>
+    <td><%= link_to 'Destroy', status, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New status message', new_status_path %>

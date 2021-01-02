@@ -1,0 +1,34 @@
+<h1>Select Schedule</h1>
+
+<% 	if preview %>
+<%		folders_path = previews_path %>
+<%	else %>
+<%		folders_path = jpeg_folders_path %>
+<%	end %>
+
+<% form_tag folders_path, :method =>'get' do %>
+	Channel <%= select_tag :channel, options_for_select(@channels.insert(0,"All"), 
+									params[:channel]),{:onchange => 'this.form.submit()'} %>
+
+<% end %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+<% @jpeg_folders.each do |jpeg_folder| %>
+  <tr>
+		<% 	if preview %>
+	    <td class = 'folder_link'><%= link_to jpeg_folder.name, preview_jpeg_with_folder(jpeg_folder) %></td>
+	    <td><%= link_to 'Show', preview_jpeg_with_folder(jpeg_folder) %></td>
+		<%	else %>
+	    <td class = 'folder_link'><%= link_to jpeg_folder.name, jpeg_with_folder(jpeg_folder) %></td>
+	    <td><%= link_to 'Show', jpeg_with_folder(jpeg_folder) %></td>
+		<%	end %>
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @jpeg_folders %>
+

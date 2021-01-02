@@ -1,0 +1,62 @@
+<% if special_preview.media_file %>
+
+  <table class = 'media_table' width = '90%'>
+    <% if heading %>
+      <tr class = 'media' >
+        <th>Name</th>
+        <th>Filename</th>
+        <th>Media Type</th>
+        <% if details %>
+          <th>Media folder</th>
+          <th>Uploaded</th>
+          <th>Available until</th>
+        <% end %>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    <% end %>
+
+    <% media_file = special_preview.media_file %>
+    <% if media_file.has_audio %>
+      <tr class = 'audio' >
+    <% else %>
+      <tr class = 'media' >
+    <% end %>
+        <td width = '180' >
+          <% if media_file.jpeg_exist? %>
+            <% if media_file.portrait? %>
+              <%= link_to image_tag(media_file.jpeg_url, :size => "60x108"), media_file_path(media_file, :source => source, :special_preview_id => special_preview, :upload => 'false') %>
+            <% else %>
+              <%= link_to image_tag(media_file.jpeg_url, :size => "160x90"), media_file_path(media_file, :source => source, :special_preview_id => special_preview, :upload => 'false') %>
+            <% end %>
+          <% end %>
+        </td>
+        <td colspan = '3' width = '50%'>
+          <b><%=h media_file.media_type.name unless media_file.media_type.nil?%> Name: </b><%=h media_file.name %><br/>
+          <b>Filename: </b><%=h media_file.filename %><br/>
+          <% if details %>
+            <% if media_file.has_audio %>
+              <b>Audio Filename: </b><%=h media_file.audio_filename %><br/>
+            <% end %>
+            <b>Folder: </b><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %><br/>
+            <b>Uploaded: </b><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %><br/>
+            <b>Available until: </b><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %><br/>
+          <% end %>
+          <div class = "<%= media_file.status_css %>"><b>Status: </b><%=h media_file.status.message unless media_file.status.nil?%></div>
+        </td>
+        <td><%= link_to 'Details', media_file_path(media_file, :source => source, :upload => 'false')%></td>
+        <% if source == 'special preview show'%>
+          <td><%= link_to 'Upload', media_file_path(media_file, :source => source, :upload => 'true')%></td>
+          <td><%= link_to 'Edit', edit_media_file_path(media_file, :source => source, :special_preview_id => special_preview) %></td>
+          <td><%= link_to 'Destroy', media_file_path(media_file, :source => source, :special_preview_id => special_preview, :promo_id => special_preview) , :confirm => 'Are you sure?',:method => :delete %></td>
+        <% end %>
+      </tr>
+  </table>
+
+<% else %>
+  No media created
+  <td><%= link_to 'Add Media', special_preview_add_media(special_preview) %></td>
+<% end %>

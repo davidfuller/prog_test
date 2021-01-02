@@ -1,0 +1,21 @@
+<p>
+  <b>Series number:</b>
+  <%=h @series_number.series_number %>
+</p>
+
+<table>
+	<tr>
+		<th>House Number</th>
+		<th>English Title</th>
+	</tr>
+	<% @series_number.houses.each do |house| %>
+		<tr>
+			<td><%=h house.house_number %></td>
+			<td><%=h house.title.english if house.title%></td>
+		</tr>
+	<% end %>
+</table>	
+
+
+<%= link_to 'Edit', edit_series_number_path(@series_number) %> |
+<%= link_to 'Back', series_numbers_path %>

@@ -1,0 +1,24 @@
+<h1>Settings</h1>
+<h2>Tabs in Schedule Files</h2>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Position</th>
+		<th>Deletion Rule</th>
+  </tr>
+
+<% @schedule_tab_settings.each do |schedule_tab_setting| %>
+  <tr>
+    <td><%=h schedule_tab_setting.item %></td>
+    <td><%=h schedule_tab_setting.position %></td>
+    <td><%=h schedule_tab_setting.deletion_rule %></td>
+    <td><%= link_to 'Edit', edit_schedule_tab_setting_path(schedule_tab_setting) %></td>
+    <td><%= link_to 'Destroy', schedule_tab_setting, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New tab', new_schedule_tab_setting_path %>

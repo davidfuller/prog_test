@@ -1,0 +1,53 @@
+<div id = 'colour_key'>
+
+<div id = 'full_colour_key' style = 'display:none;'>
+	<ul>
+		<li class = 'heading'>Colour key<%= link_to_function 'Show filtered colours' do |page|
+											      page['full_colour_key'].hide 
+												  page['filtered_colour_key'].show
+												  page['heading_only'].hide
+											  end %> 
+										 <%= link_to_function 'Hide' do |page| 
+												  page['full_colour_key'].hide 
+												  page['filtered_colour_key'].hide
+  												  page['heading_only'].show
+											  end %></li>
+		<% @filters.each do |f| %>
+			<li class = '<%= f[:scope] %>'><%= f[:label] %></li>
+		<% end %>
+	</ul>
+</div>
+
+<div id = 'filtered_colour_key' >
+	<ul>
+		<li class = 'heading'>Colour key  <%= link_to_function 'Show all colours' do |page|
+											      page['full_colour_key'].show 
+												  page['filtered_colour_key'].hide
+												  page['heading_only'].hide
+											  end %> 
+										  <%= link_to_function 'Hide' do |page| 
+												  page['full_colour_key'].hide 
+												  page['filtered_colour_key'].hide
+												  page['heading_only'].show
+											  end %></li>
+		<% @colour_display.each do |f| %>
+			<li class = '<%= f[1] %>'><%= f[0] %></li>
+		<% end %>
+	</ul>
+</div>
+
+<div id = 'heading_only' style = 'display:none;' >
+	<ul>
+		<li class = 'heading'>Colour key  <%= link_to_function 'Show all colours' do |page|
+											      page['full_colour_key'].show 
+												  page['filtered_colour_key'].hide
+												  page['heading_only'].hide
+											  end %> 
+										  <%= link_to_function 'Show filtered colours' do |page| 
+												  page['full_colour_key'].hide 
+												  page['filtered_colour_key'].show
+												  page['heading_only'].hide
+											  end %></li>
+	</ul>
+</div>
+</div>

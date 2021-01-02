@@ -1,0 +1,21 @@
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+<p>
+  <%= f.label :start %><br />
+	<%= f.calendar_date_select :start, {:month_year => :label, :minute_interval => 1} %>
+</p>
+<p>
+  <%= f.label :house_no %><br />
+  <%= f.text_field :house_no, :size => 40 %>
+</p>
+<p>
+  <%= f.label :title %><br />
+  <%= f.text_field :title, :size => 40 %>
+</p>
+<p>
+  <%= f.label :series_title %><br />
+  <%= f.text_field :series_title, :size => 40 %>
+</p>
+<p>
+  <%= f.label :series_number %><br />
+  <%= f.text_field :series_number, :size => 40 %>
+</p>

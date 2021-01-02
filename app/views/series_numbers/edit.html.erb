@@ -1,0 +1,14 @@
+<h1>Editing Series Number</h1>
+
+<% form_for(@series_number) do |f| %>
+  <%= f.error_messages %>
+
+ 	<%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+
+	<p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @series_number %> |
+<%= link_to 'Back', series_numbers_path %>

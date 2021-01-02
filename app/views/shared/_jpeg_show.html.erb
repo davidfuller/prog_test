@@ -1,0 +1,20 @@
+
+<h3>Spreadsheet: <%=h @jpeg.jpeg_folder.name %></h3>
+<h3>Filter: <%= session[:jpeg_search] %></h3>
+<h2><%=h @jpeg.name %></h2>
+
+<%= image_tag (@jpeg.image_url, :size => @jpeg.jpeg_size) %>
+
+<% if preview %>
+	<p>
+		<%= link_to 'List', preview_jpeg_with_session_folder_and_search %>|
+		<%= link_to 'Previous', preview_jpeg_path(@jpeg_previous) %>|
+		<%= link_to 'Next', preview_jpeg_path(@jpeg_next) %>
+	</p>
+<% else %>
+	<p>
+		<%= link_to 'List', jpeg_with_session_folder_and_search %>|
+		<%= link_to 'Previous', @jpeg_previous %>|
+		<%= link_to 'Next', @jpeg_next %>
+	</p>
+<% end %>

@@ -1,0 +1,24 @@
+<h1>Special Fields</h1>
+
+<table>
+  <tr>
+    <th>Number</th>
+    <th>Description</th>
+    <th>Default text</th>
+  </tr>
+
+<% @special_fields.each do |special_field| %>
+  <tr>
+    <td><%=h special_field.number %></td>
+    <td><%=h special_field.description %></td>
+    <td><%=h special_field.default_text %></td>
+    <td><%= link_to 'Show', special_field %></td>
+    <td><%= link_to 'Edit', edit_special_field_path(special_field) %></td>
+    <td><%= link_to 'Destroy', special_field, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New special_field', new_special_field_path %>

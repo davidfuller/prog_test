@@ -1,0 +1,36 @@
+<fieldset>
+	<legend>Series Numbers</legend>
+		<% form_tag series_numbers_path, :method =>'get' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>	
+		<% end %>
+</fieldset>
+
+<%= link_to 'New Series Number', new_series_number_path %>
+
+<%= will_paginate @series_numbers %>
+
+<table>
+  <tr>
+    <th>Series number</th>
+		<th>English Title</th>
+		<th>House Number</th>
+  </tr>
+
+<% @series_numbers.each do |series_number| %>
+	<% series_number.houses.each do |house| %>
+  <tr>
+    <td><%=h series_number.series_number %></td>
+    <td><%=h house.title.english if house.title %></td>
+		<td><%=h house.house_number %></td>
+    <td><%= link_to 'Show', series_number %></td>
+    <td><%= link_to 'Edit', edit_series_number_path(series_number) %></td>
+    <td><%= link_to 'Destroy', series_number, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+	<% end %>
+<% end %>
+</table>
+<br />
+<%= will_paginate @series_numbers %>

@@ -1,0 +1,11 @@
+<p>
+  <b>Name:</b>
+  <%=h @service.name %>
+</p>
+<p>
+  <b>Logo:</b>
+  <%=h @service.logo_filename %>
+</p>
+
+<%= link_to 'Edit', edit_service_path(@service) %> |
+<%= link_to 'Back', services_path %>

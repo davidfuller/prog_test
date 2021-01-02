@@ -1,0 +1,40 @@
+<% content_for(:title) do%>
+	Special Preview: MuVi2 Database
+<% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="60" />
+<% end %>
+
+<p>
+  <label>Special Preview Name</label><br/>
+  <%=h @special_preview.name %>
+</p>
+
+
+<div id= 'media-details'>
+  <label>Media Details</label><br/>
+  <%= render :partial => 'media', :locals	=> {:special_preview => @special_preview, :heading => false, 
+  :details => true, :source => 'special preview show'} %>
+</div>
+<br/>
+
+<label>Channels Enabled</label><br/>
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Enable</th>
+  </tr>
+
+  <% @special_preview.channel_special_previews.each do |channel_special_preview| %>
+    <tr>
+      <td><%=h channel_special_preview.channel.name %></td>
+      <td><%=h channel_special_preview.enabled_text %></td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+
+
+<%= link_to 'Edit', edit_special_preview_path(@special_preview) %> |
+<%= link_to 'Special Preview List', special_previews_path %> |
+<%= link_to 'Back', :back %>

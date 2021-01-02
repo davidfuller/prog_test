@@ -1,0 +1,17 @@
+<label><%= h pluralize(series_ident.promos.count, 'Associated promo') %></label>
+<div id = 'promo_list'>
+<table>
+	<% series_ident.promos.each do |p| %>
+		<tr><td><%= h p.name %></td>
+			<td><%= h p.description %></td>
+			<% if show_remove %>
+				<td><%= link_to 'Remove', delete_promo_title_path({:series_id => series_ident.id, :search => params[:search], :promo_id => p.id }),
+											 :method => :delete, :confirm => 'Are you sure?' %> </td>
+			<% end %>
+		
+			</tr>
+	<% end %>
+</table>
+</div>
+
+

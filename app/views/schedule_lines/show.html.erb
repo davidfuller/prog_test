@@ -1,0 +1,27 @@
+<p>
+  <b>Start:</b>
+  <%=h @schedule_line.start.to_s(:broadcast_datetime) %>
+</p>
+
+<p>
+  <b>House no:</b>
+  <%=h @schedule_line.house_no %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%=h @schedule_line.title %>
+</p>
+
+<p>
+  <b>Series title:</b>
+  <%=h @schedule_line.series_title %>
+</p>
+
+<p>
+  <b>Series number:</b>
+  <%=h @schedule_line.series_number %>
+</p>
+
+<%= link_to 'Edit', edit_schedule_line_path(@schedule_line) %> |
+<%= link_to 'Back', schedule_lines_path %>

@@ -1,0 +1,20 @@
+<% content_for(:title) do%>
+	Special Preview: MuVi2 Database
+<% end %>
+
+<h1>New Special Preview</h1>
+Enter a name and click create. The system will then take you to another screen to enter channels and media file details.
+
+<% form_for(@special_preview) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name, :autofocus => true %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', special_previews_path %>

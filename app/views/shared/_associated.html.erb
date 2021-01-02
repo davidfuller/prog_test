@@ -1,0 +1,13 @@
+<span id = 'associated_title'>
+	<% if series_ident && series_ident.title_with_details %>
+		<% series_ident.title_with_details.each do |t| %>
+			<span id = 'description'><%= h t[:description] %>:</span>
+			<span id = 'value'>
+			<% if t[:url] %>
+				<%= link_to t[:value], t[:url], :target => "_blank" %>
+			<% else %>
+				<%= h t[:value] %></span><br />
+			<% end %>
+		<% end %>
+	<% end %>
+</span>
