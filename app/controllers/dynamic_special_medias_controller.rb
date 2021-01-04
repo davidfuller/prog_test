@@ -25,7 +25,7 @@ class DynamicSpecialMediasController < ApplicationController
   # GET /dynamic_special_medias/new.xml
   def new
     @dynamic_special_media = DynamicSpecialMedia.new
-
+    @special_types = DynamicSpecialImageSpec.all(:order => :name)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @dynamic_special_media }
@@ -34,6 +34,7 @@ class DynamicSpecialMediasController < ApplicationController
 
   # GET /dynamic_special_medias/1/edit
   def edit
+    @special_types = DynamicSpecialImageSpec.all(:order => :name)
     @dynamic_special_media = DynamicSpecialMedia.find(params[:id])
   end
 

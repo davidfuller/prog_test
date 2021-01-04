@@ -1,0 +1,8 @@
+  <p>
+    <%= f.label :media_file_id %><br />
+    <%= f.text_field :media_file_id %>
+  </p>
+  <p>
+    <%= f.label :dynamic_special_image_spec_id, "Image Type" %><br />
+    <%= f.collection_select (:dynamic_special_image_spec_id, @special_types, :id, :name, {:prompt => 'Choose an Image Type'})%>
+  </p>
