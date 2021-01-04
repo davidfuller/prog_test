@@ -20,6 +20,22 @@ class DynamicSpecialImageSpec < ActiveRecord::Base
     end
   end
 
+  def logo_text
+    if logo
+      'Logo'
+    else
+      ''
+    end
+  end
+
+  def promo_text
+    if promo
+      'Promo Image'
+    else
+      ''
+    end
+  end
+  
   def self.multibrand_logo
     find_by_name('Multibrand Logo Centre')
   end

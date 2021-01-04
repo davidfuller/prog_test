@@ -12,6 +12,7 @@
     <th>Resizable</th>
     <th>Folder</th>
     <th>Logo</th>
+    <th>Promo<th>
   </tr>
 
 <% @dynamic_special_image_specs.each do |dynamic_special_image_spec| %>
@@ -22,7 +23,8 @@
     <td><%=h dynamic_special_image_spec.height %></td>
     <td><%=h dynamic_special_image_spec.resizable_text %></td>
     <td><%=h dynamic_special_image_spec.display_folder %></td>
-    <td><%=h dynamic_special_image_spec.logo %></td>
+    <td><%=h dynamic_special_image_spec.logo_text %></td>
+    <td><%=h dynamic_special_image_spec.promo_text %></td>
     <td><%= link_to 'Show', dynamic_special_image_spec %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_image_spec_path(dynamic_special_image_spec) %></td>
     <td><%= link_to 'Destroy', dynamic_special_image_spec, :confirm => 'Are you sure?', :method => :delete %></td>
