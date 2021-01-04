@@ -11,7 +11,7 @@
     <%= f.text_field :display_filename %>
   </p>
   <p>
-    <%= f.label :dynamic_special_image_spec_id %><br />
+    <%= f.label :dynamic_special_image_spec_id, "Logo Type" %><br />
     <%= f.collection_select (:dynamic_special_image_spec_id, @special_types, :id, :name, {:prompt => 'Choose a Field Type'})%>
   </p>
   <p>
