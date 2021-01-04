@@ -90,7 +90,7 @@ class MediaFilesController < ApplicationController
           keep_first_last_use_in_sync
           format.html { redirect_to(trailer_path(@media_file.trailer_id)) }
           format.xml  { head :ok }
-        elsif @media_file.source = 'special preview show'
+        elsif @media_file.source == 'special preview show'
           format.html { redirect_to(special_preview_path(@media_file.special_preview_id)) }
           format.xml  { head :ok }
         else
