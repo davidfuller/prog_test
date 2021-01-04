@@ -1,0 +1,22 @@
+<h1>Listing dynamic_special_medias</h1>
+
+<table>
+  <tr>
+    <th>Media file</th>
+    <th>Dynamic special image spec</th>
+  </tr>
+
+<% @dynamic_special_medias.each do |dynamic_special_media| %>
+  <tr>
+    <td><%=h dynamic_special_media.media_file_id %></td>
+    <td><%=h dynamic_special_media.dynamic_special_image_spec_id %></td>
+    <td><%= link_to 'Show', dynamic_special_media %></td>
+    <td><%= link_to 'Edit', edit_dynamic_special_media_path(dynamic_special_media) %></td>
+    <td><%= link_to 'Destroy', dynamic_special_media, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New dynamic_special_media', new_dynamic_special_media_path %>

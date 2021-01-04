@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :dynamic_special_medias
+
   map.resources :dynamic_special_logos
 
   map.resources :automated_dynamic_special_fields

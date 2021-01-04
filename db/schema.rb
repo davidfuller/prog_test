@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20201222174635) do
+ActiveRecord::Schema.define(:version => 20210104170719) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(:version => 20201222174635) do
     t.boolean  "image"
     t.string   "display_folder"
     t.boolean  "logo"
+    t.boolean  "promo"
   end
 
   create_table "dynamic_special_logos", :force => true do |t|
@@ -256,6 +257,13 @@ ActiveRecord::Schema.define(:version => 20201222174635) do
     t.string   "display_filename"
     t.integer  "dynamic_special_image_spec_id"
     t.integer  "language_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dynamic_special_medias", :force => true do |t|
+    t.integer  "media_file_id"
+    t.integer  "dynamic_special_image_spec_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

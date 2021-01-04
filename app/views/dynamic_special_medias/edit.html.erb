@@ -1,0 +1,20 @@
+<h1>Editing dynamic_special_media</h1>
+
+<% form_for(@dynamic_special_media) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :media_file_id %><br />
+    <%= f.text_field :media_file_id %>
+  </p>
+  <p>
+    <%= f.label :dynamic_special_image_spec_id %><br />
+    <%= f.text_field :dynamic_special_image_spec_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @dynamic_special_media %> |
+<%= link_to 'Back', dynamic_special_medias_path %>
