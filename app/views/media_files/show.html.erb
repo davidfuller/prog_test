@@ -38,6 +38,8 @@
 	  <% if @media_file.jpeg_exist? %>
       <% if @media_file.media_type.name == 'Portrait Still'%>
         <%= image_tag (@media_file.still_jpeg_url, :size => "200x360") %>
+      <% elsif @media_file.media_type.name == 'Special Media'%>
+        <%= image_tag (@media_file.jpeg_url, :size => @media_file.media_type_size) %>
       <% else %>
         <%= image_tag (@media_file.still_jpeg_url, :size => "560x360") %>
       <% end %>
@@ -80,7 +82,11 @@
 </p>
 <p>
   <b>Media Type:</b><br/>
-  <%=h @media_file.media_type.name unless @media_file.media_type.nil? %>
+  <%=h @media_file.media_type_display %><br/>
+  <%if @media_file.media_type_size%>
+    <b>Size: </b>
+    <%=h @media_file.media_type_size %>
+  <% end %>
 </p>
 
 <p>

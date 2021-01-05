@@ -7,6 +7,7 @@ class MediaFile < ActiveRecord::Base
   belongs_to :status
   has_one :trailer
   has_one :special_preview
+  has_one :dynamic_special_media
   
   default_scope :order => 'first_use, media_type_id, filename'
   validates_uniqueness_of :filename, :message => " is already in the system"
@@ -514,6 +515,10 @@ def self.wd_copy(original_filename, filename)
     clip_special_jpeg_proxy_path + jpeg_filename
   end
 
+  def dynamic_special_proxy_jpeg_url
+    dynamic_special_proxy_path + jpeg_filename
+  end
+
   def clip_jpeg_url
     clip_jpeg_proxy_path + jpeg_filename
   end
@@ -529,7 +534,23 @@ def self.wd_copy(original_filename, filename)
   def clip_special_jpeg_proxy_folder
     Rails.root.join('public','data', 'proxies', 'special', 'jpeg')
   end
+
+  def dynamic_special_proxy_folder
+    if dynamic_special_media && dynamic_special_media.dynamic_special_image_spec
+      Pathname.new("#{Rails.root}/public" + dynamic_special_media.dynamic_special_image_spec.display_folder)
+    else
+      nil
+    end
+  end
   
+  def dynamic_special_proxy_path
+    if dynamic_special_media && dynamic_special_media.dynamic_special_image_spec
+      dynamic_special_media.dynamic_special_image_spec.display_folder
+    else
+      nil
+    end
+  end
+
   def clip_quicktime_url
     clip_quicktime_proxy_path + quicktime_filename
   end
@@ -565,6 +586,8 @@ def self.wd_copy(original_filename, filename)
       clip_jpeg_url
     when 'Special Preview'
       clip_special_jpeg_url
+    when 'Special Media'
+      dynamic_special_proxy_jpeg_url
     else
       ""
     end
@@ -584,6 +607,8 @@ def self.wd_copy(original_filename, filename)
       File.exist?(clip_jpeg_proxy_folder.join(jpeg_filename))
     when 'Special Preview'
       File.exist?(clip_special_jpeg_proxy_folder.join(jpeg_filename))
+    when 'Special Media'
+      File.exists?(dynamic_special_proxy_folder.join(jpeg_filename))
     else
       false
     end
@@ -681,5 +706,31 @@ def self.wd_copy(original_filename, filename)
     dirname = File.dirname(filename)
     Dir.mkdir(dirname) unless File.directory?(dirname)
   end
+
+  def media_type_display
+    display=''
+    if media_type
+      display = media_type.name
+      if media_type.name == 'Special Media'
+        if dynamic_special_media && dynamic_special_media.dynamic_special_image_spec
+            display = media_type.name + ': ' + dynamic_special_media.dynamic_special_image_spec.name
+        end
+      end
+    end
+    display
+  end
+
+  def media_type_size
+    size = nil
+    if media_type
+      if media_type.name == 'Special Media'
+        if dynamic_special_media && dynamic_special_media.dynamic_special_image_spec
+            size = dynamic_special_media.dynamic_special_image_spec.width.to_s + 'x' + dynamic_special_media.dynamic_special_image_spec.height.to_s
+        end
+      end
+    end
+    size
+  end
+
     
 end
