@@ -59,11 +59,8 @@ class AutomatedDynamicSpecialFieldsController < ApplicationController
   def update
     @automated_dynamic_special_field = AutomatedDynamicSpecialField.find(params[:id])
     source = params[:automated_dynamic_special]
-    field_type = DynamicSpecialImageSpec.find(params[:field_type])
     respond_to do |format|
       if @automated_dynamic_special_field.update_attributes(params[:automated_dynamic_special_field])
-        logger.debug '=============='
-        logger.debug field_type
         @automated_dynamic_special_field.reconcile_the_change()
         flash[:notice] = 'Field was successfully updated.'
         format.html { 
