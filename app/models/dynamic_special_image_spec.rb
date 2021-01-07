@@ -2,6 +2,7 @@ class DynamicSpecialImageSpec < ActiveRecord::Base
 
   has_many :dynamic_special_fields
   has_many :dynamic_special_logos
+  belongs_to :media_folder
   default_scope :order =>  'name'
   
   def image_text
@@ -38,6 +39,34 @@ class DynamicSpecialImageSpec < ActiveRecord::Base
   
   def self.multibrand_logo
     find_by_name('Multibrand Logo Centre')
+  end
+
+  def preview_size
+    if promo
+      (width/4).to_s + 'x' + (height/4).to_s
+    else
+      '50x50'
+    end
+  end
+
+  def size_text
+    width.to_s + 'x' + height.to_s
+  end
+
+  def image_description
+    if image
+      if promo
+        if resizable
+          'Resizable promo image: ' + size_text
+        else
+          'Promo image: ' + size_text
+        end
+      elsif logo
+        'Logo image: ' + size_text
+      end
+    else
+      'No image'
+    end
   end
 
 end
