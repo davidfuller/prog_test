@@ -1,0 +1,32 @@
+<%= will_paginate @medias %>
+
+<table id = 'search_table'>
+  <tr>
+    <th>Name</th>
+    <th>Filename</th>
+    <th>Media type</th>
+    <th>Status</th>
+    <th>First use</th>
+    <th>Last use</th>
+    <th>Use</th>
+  </tr>
+
+  <% @medias.each do |media_file| %>
+    <tr class= "<%= cycle('list-line-odd', 'list-line-even') %>" >
+      <td><%=h media_file.name %></td>
+      <td><%=h media_file.filename %></td>
+      <td><%=h media_file.media_type_display %></td>
+      <td><%=h media_file.status_display%>
+      <td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %></td>
+      <td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
+      <% if include_add %>
+        <td><%= link_to "Use this",  {  :controller => :dynamic_special_medias, :action => :replace_media,
+		      									            :id => params[:id], :media_file_id => media_file.id,  
+											                  :search => params[:search], :page => params[:page] }%></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+<%= will_paginate @medias %>
