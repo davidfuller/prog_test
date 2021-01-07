@@ -18,83 +18,8 @@
 	<% end %>
 <% end %>
 
+<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @media_file, :extended => true, :source => params[:source], :dynamic_special_media_id => params[:dynamic_special_media_id]} 	%>
 
-<% if @media_file.media_type %>
-  <% if @media_file.media_type.name == 'Promo Clip Audio' || @media_file.media_type.name == 'Promo Clip' || @media_file.media_type.name == 'Trailer ECP' || @media_file.media_type.name == 'Special Preview' %>
-    <% if @media_file.jpeg_exist? %>
-      <% if @media_file.mp4_exist? %>
-    	    <%= link_to image_tag(@media_file.jpeg_url, :size => "640x360"), @media_file.clip_mp4_url %><br/>
-    	    <%= link_to 'Play Video', @media_file.clip_mp4_url %>
-    	<% elsif @media_file.quicktime_exist? %>
-    	    <%= link_to image_tag(@media_file.jpeg_url, :size => "640x360"), @media_file.clip_quicktime_url %><br/>
-    	    <%= link_to 'Play Video', @media_file.clip_quicktime_url %>
-      <% else %>	  	
-      	<% if @media_file.jpeg_exist? %>
-				  <%= image_tag (@media_file.jpeg_url, :size => "640 x 360") %>
-			  <% end %>
-      <% end %>
-	  <% end %>
-  <% else %>
-	  <% if @media_file.jpeg_exist? %>
-      <% if @media_file.media_type.name == 'Portrait Still'%>
-        <%= image_tag (@media_file.still_jpeg_url, :size => "200x360") %>
-      <% elsif @media_file.media_type.name == 'Special Media'%>
-        <%= image_tag (@media_file.jpeg_url, :size => @media_file.media_type_size) %>
-      <% else %>
-        <%= image_tag (@media_file.still_jpeg_url, :size => "560x360") %>
-      <% end %>
-	  <% end %>
-  <% end %>		
-<% end%>
-
-<% if @media_file.has_audio %>
-  <div class = 'audio'>
-<% else %>
-  <div class = 'media'>
-<% end %>
-  
-
-<p>
-  <b>Filename:</b><br/>
-  <%=h @media_file.filename %>
-</p>
-
-<% if @media_file.has_audio %>
-  <p>
-    <b>Audio Filename:</b><br/>
-    <%=h @media_file.audio_filename %>
-  </p>
- <% end %>
-
-<p>
-  <b>Media folder:</b><br/>
-  <%=h @media_file.media_folder.folder unless @media_file.media_folder.nil? %>
-</p>
-
-<p>
-  <b>First use:</b><br/>
-  <%=h @media_file.first_use.to_s(:broadcast_datetime) %>
-</p>
-
-<p>
-  <b>Last use:</b><br/>
-  <%=h @media_file.last_use.to_s(:broadcast_datetime) %>
-</p>
-<p>
-  <b>Media Type:</b><br/>
-  <%=h @media_file.media_type_display %><br/>
-  <%if @media_file.media_type_size%>
-    <b>Size: </b>
-    <%=h @media_file.media_type_size %>
-  <% end %>
-</p>
-
-<p>
-  <b>Status:</b><br/>
-  <%=h @media_file.status.message unless @media_file.status.nil? %>
-</p>
-
-</div>
 <%= link_to 'Edit', edit_media_file_path(@media_file) %> |
 <% if params[:source] == 'promo index'%>
 	<%= link_to 'Back', promos_path %>
