@@ -36,6 +36,9 @@ class DynamicSpecialMediasController < ApplicationController
   def edit
     @special_types = DynamicSpecialImageSpec.all(:conditions => {:promo => true})
     @dynamic_special_media = DynamicSpecialMedia.find(params[:id])
+    params[:media_type_display] = 'Special Media'
+    params[:spec_id] = @dynamic_special_media.dynamic_special_image_spec_id
+    @medias = MediaFile.search(params)
   end
 
   # POST /dynamic_special_medias
@@ -45,8 +48,8 @@ class DynamicSpecialMediasController < ApplicationController
 
     respond_to do |format|
       if @dynamic_special_media.save
-        flash[:notice] = 'DynamicSpecialMedia was successfully created.'
-        format.html { redirect_to(@dynamic_special_media) }
+        flash[:notice] = 'Dynamic Special Media was successfully created. Now add the image.'
+        format.html { redirect_to(new_media_file_path(:dynamic_special_media_id => @dynamic_special_media.id, :spec_id => @dynamic_special_media.dynamic_special_image_spec_id || 1)) }
         format.xml  { render :xml => @dynamic_special_media, :status => :created, :location => @dynamic_special_media }
       else
         format.html { render :action => "new" }
@@ -82,5 +85,20 @@ class DynamicSpecialMediasController < ApplicationController
       format.html { redirect_to(dynamic_special_medias_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def replace_media
+    dynamic_special_media = DynamicSpecialMedia.find(params[:id])
+    if dynamic_special_media
+      dynamic_special_media.media_file_id = params[:media_file_id]
+      if dynamic_special_media.save
+        flash[:notice] = 'Media File successfully updated'
+      else
+        flash[:notice] = 'Issue with updating file'
+      end
+    else
+      flash[:notice] = 'Issue finding dynamic special media'
+    end
+    redirect_to edit_dynamic_special_media_path({:id => params[:id], :search => params[:search], :page => params[:page]})
   end
 end
