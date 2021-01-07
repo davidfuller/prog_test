@@ -8,12 +8,16 @@
   <tr>
     <th>Media file</th>
     <th>Image Type</th>
+    <th>Filename</th>
+
   </tr>
 
 <% @dynamic_special_medias.each do |dynamic_special_media| %>
   <tr>
     <td><%=h dynamic_special_media.media_file.name if dynamic_special_media.media_file %></td>
     <td><%=h dynamic_special_media.dynamic_special_image_spec.name if dynamic_special_media.dynamic_special_image_spec %></td>
+    <td><%=h dynamic_special_media.media_file.filename if dynamic_special_media.media_file %></td>
+    <td><%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %></td>
     <td><%= link_to 'Show', dynamic_special_media %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_media_path(dynamic_special_media) %></td>
     <td><%= link_to 'Destroy', dynamic_special_media, :confirm => 'Are you sure?', :method => :delete %></td>
