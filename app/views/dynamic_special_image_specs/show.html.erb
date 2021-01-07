@@ -1,41 +1,7 @@
 <% content_for(:title) do%>
 	Dynamic Special Field Specification: MuVi2 Database
 <% end %>
-<p>
-  <b>Name:</b>
-  <%=h @dynamic_special_image_spec.name %>
-</p>
+<%= render :partial => 'shared/dynamic_special_image_spec', :locals	=> {:dynamic_special_image_spec => @dynamic_special_image_spec} %>
 
-<p>
-  <b>Has Image:</b>
-  <%=h @dynamic_special_image_spec.image %>
-</p>
-
-<p>
-  <b>Height:</b>
-  <%=h @dynamic_special_image_spec.height %>
-</p>
-
-<p>
-  <b>Width:</b>
-  <%=h @dynamic_special_image_spec.width %>
-</p>
-
-<p>
-  <b>Resizable:</b>
-  <%=h @dynamic_special_image_spec.resizable %>
-</p>
-<p>
-  <b>Display Folder:</b>
-  <%=h @dynamic_special_image_spec.display_folder %>
-</p>
-<p>
-  <b>Is Logo:</b>
-  <%=h @dynamic_special_image_spec.logo %>
-</p>
-<p>
-  <b>Is Promo Image:</b>
-  <%=h @dynamic_special_image_spec.promo %>
-</p>
 <%= link_to 'Edit', edit_dynamic_special_image_spec_path(@dynamic_special_image_spec) %> |
 <%= link_to 'Back', dynamic_special_image_specs_path %>

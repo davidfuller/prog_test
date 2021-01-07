@@ -30,3 +30,7 @@
   <%= f.label :promo, "Is Promo Image" %><br />
   <%= f.check_box :promo %>
 </p>
+<p>
+  <%= f.label :media_folder_id %><br />
+  <%= f.collection_select (:media_folder_id, @folders, :id, :name)   %>
+</p>

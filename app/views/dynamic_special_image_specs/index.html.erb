@@ -10,7 +10,8 @@
     <th>Width</th>
     <th>Height</th>
     <th>Resizable</th>
-    <th>Folder</th>
+    <th>Media Folder</th>
+    <th>Display Folder</th>
     <th>Logo</th>
     <th>Promo<th>
   </tr>
@@ -22,6 +23,7 @@
     <td><%=h dynamic_special_image_spec.width %></td>
     <td><%=h dynamic_special_image_spec.height %></td>
     <td><%=h dynamic_special_image_spec.resizable_text %></td>
+    <td><%=h dynamic_special_image_spec.media_folder.name if dynamic_special_image_spec.media_folder %></td>
     <td><%=h dynamic_special_image_spec.display_folder %></td>
     <td><%=h dynamic_special_image_spec.logo_text %></td>
     <td><%=h dynamic_special_image_spec.promo_text %></td>
