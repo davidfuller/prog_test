@@ -23,23 +23,37 @@ class MediaFile < ActiveRecord::Base
   attr_accessor :issue
   attr_accessor :trailer_id
   attr_accessor :special_preview_id
+  attr_accessor :dynamic_special_media_id
   
   def self.search(params)
     if params[:filename]
       find_all_by_filename(params[:filename])
     else
       type = MediaType.find_by_name(params[:media_type_display])
+      spec = params[:spec_id]
       if params[:search].nil? or params[:search].empty?
         if type
-          paginate  :per_page => 12, :page =>params[:page],
-                    :conditions => ['media_type_id = ?', type.id]       
+          if spec
+            paginate  :per_page => 12, :page =>params[:page],
+                      :joins => :dynamic_special_media,
+                      :conditions => ['media_type_id = ? and dynamic_special_medias.dynamic_special_image_spec_id = ?', type.id, spec]
+          else
+            paginate  :per_page => 12, :page =>params[:page],
+                      :conditions => ['media_type_id = ?', type.id]
+          end
         else
           paginate  :per_page => 12, :page =>params[:page]
         end
       else
         if type
-          paginate  :per_page => 12, :page =>params[:page],
-                    :conditions => ['name LIKE ? and media_type_id = ?', "%#{params[:search]}%", type.id]
+          if spec
+            paginate  :per_page => 12, :page =>params[:page],
+                      :joins => :dynamic_special_media,
+                      :conditions => ['name LIKE ? and media_type_id = ? and dynamic_special_medias.dynamic_special_image_spec_id = ?', "%#{params[:search]}%", type.id, spec]
+          else
+            paginate  :per_page => 12, :page =>params[:page],
+                      :conditions => ['name LIKE ? and media_type_id = ?', "%#{params[:search]}%", type.id]
+          end
         else
           paginate  :per_page => 12, :page =>params[:page],
                     :conditions => ['name LIKE ?', "%#{params[:search]}%"]
@@ -423,6 +437,16 @@ class MediaFile < ActiveRecord::Base
           media.issue = true
           do_it = false
         end
+      when 'Special Media'
+        case upload_file.content_type 
+        when 'image/targa', 'image/x-targa', 'application/octet-stream'
+          filename = Rails.root.join('public','data', 'still', media.targa_filename)
+          do_it = true
+        else
+          media.notice = "Invalid file type. Expected: image/targa. Uploaded: " + upload_file.content_type
+          media.issue = true
+          do_it = false
+        end
       else
         media.notice = "The system currently cannot upload this kind of file"
         do_it = false
@@ -732,5 +756,40 @@ def self.wd_copy(original_filename, filename)
     size
   end
 
+  def preview_size
+    size = nil
+    if media_type
+      if media_type.name == 'Special Media'
+        if dynamic_special_media && dynamic_special_media.dynamic_special_image_spec
+            size = (dynamic_special_media.dynamic_special_image_spec.width/4).to_s + 'x' + (dynamic_special_media.dynamic_special_image_spec.height/4).to_s
+        end
+      end
+    end
+    size
+  end
+
+  def full_filename
+    if media_folder
+      media_folder.folder + filename
+    end
+  end
+
+  def self.new_with_default_values(params)
+    m = MediaFile.new
+    if params[:spec_id]
+      spec = DynamicSpecialImageSpec.find(params[:spec_id])
+      if spec
+        m.media_type_id = MediaType.special_media.id
+        m.media_folder_id = spec.media_folder_id
+        m.first_use = Date.today.to_datetime.advance(:days => 7, :hours => 5)
+        m.last_use = m.first_use.advance(:months => 2)
+        m.status_id = Status.find_by_message('Not loaded').id
+        m.source = 'New Dynamic Special Media'
+        m.dynamic_special_media_id = params[:dynamic_special_media_id]
+      end
+    end
+    m
+  end    
+  
     
 end
