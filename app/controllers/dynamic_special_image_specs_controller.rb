@@ -25,7 +25,7 @@ class DynamicSpecialImageSpecsController < ApplicationController
   # GET /dynamic_special_image_specs/new.xml
   def new
     @dynamic_special_image_spec = DynamicSpecialImageSpec.new
-
+    @folders = MediaFolder.all(:order => :name)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @dynamic_special_image_spec }
@@ -35,6 +35,7 @@ class DynamicSpecialImageSpecsController < ApplicationController
   # GET /dynamic_special_image_specs/1/edit
   def edit
     @dynamic_special_image_spec = DynamicSpecialImageSpec.find(params[:id])
+    @folders = MediaFolder.all(:order => :name)
   end
 
   # POST /dynamic_special_image_specs
