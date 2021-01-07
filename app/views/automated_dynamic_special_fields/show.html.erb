@@ -1,18 +1,27 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special Field: MuVi2 Database
+<% end %>
+<h1>Automated Dynamic Special Field</h1>
+<p>
+  <b>Automated dynamic special:</b>
+  <%=h @automated_dynamic_special_field.automated_dynamic_special.name if @automated_dynamic_special_field.automated_dynamic_special%>
+</p>
 <p>
   <b>The value:</b>
   <%=h @automated_dynamic_special_field.the_value %>
 </p>
-
 <p>
-  <b>Automated dynamic special:</b>
-  <%=h @automated_dynamic_special_field.automated_dynamic_special_id %>
+  <b>The value id:</b>
+  <%=h @automated_dynamic_special_field.the_id %>
 </p>
-
 <p>
-  <b>Template field join:</b>
-  <%=h @automated_dynamic_special_field.template_field_join_id %>
+  <b>The display:</b>
+  <%=h @automated_dynamic_special_field.the_display %>
 </p>
-
+<p>
+  <b>Template:</b>
+  <%=h @automated_dynamic_special_field.template_field_join.dynamic_special_template.name if @automated_dynamic_special_field.template_field_join && @automated_dynamic_special_field.template_field_join.dynamic_special_template %>
+</p>
 
 <%= link_to 'Edit', edit_automated_dynamic_special_field_path(@automated_dynamic_special_field) %> |
 <%= link_to 'Back', automated_dynamic_special_fields_path %>
