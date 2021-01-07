@@ -26,11 +26,11 @@ class MediaFilesController < ApplicationController
   # GET /media_files/new
   # GET /media_files/new.xml
   def new
-    @media_file = MediaFile.new
+    @media_file = MediaFile.new_with_default_values(params)
     @folders = MediaFolder.all(:order => :name)
     @media_types = MediaType.all
     @statuses = Status.all
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @media_file }
@@ -57,8 +57,26 @@ class MediaFilesController < ApplicationController
     
     respond_to do |format|
       if @media_file.save
-        flash[:notice] = 'Media File was successfully created.'
-        format.html { redirect_to(media_files_path_with_type) }
+        format.html { 
+          logger.debug '123456======'
+          logger.debug params[:media_file][:source]
+          if params[:media_file][:source] == 'New Dynamic Special Media'
+            dyn = DynamicSpecialMedia.find(params[:media_file][:dynamic_special_media_id])
+            if dyn
+              dyn.media_file_id = @media_file.id
+              dyn.save
+              flash[:notice] = 'Dynamic Special Media File was successfully created.'
+              redirect_to(dynamic_special_media_path(dyn))
+            else
+              flash[:notice] = 'Dynamic Special Media File was NOT created.'
+              redirect_to(dynamic_special_medias_path)
+            end
+          else
+            flash[:notice] = 'Media File was successfully created.'
+            redirect_to(media_files_path_with_type)
+          end
+        }
+
         format.xml  { render :xml => @media_file, :status => :created, :location => @media_file }
       else
         @folders = MediaFolder.all(:order => :name)
