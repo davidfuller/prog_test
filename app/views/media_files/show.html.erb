@@ -18,7 +18,9 @@
 	<% end %>
 <% end %>
 
-<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @media_file, :extended => true, :source => params[:source], :dynamic_special_media_id => params[:dynamic_special_media_id]} 	%>
+<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @media_file, :extended => true, :source => params[:source], 
+                                                          :dynamic_special_media_id => params[:dynamic_special_media_id],
+                                                          :show_details => false, :show_upload => !params[:upload]} 	%>
 
 <%= link_to 'Edit', edit_media_file_path(@media_file) %> |
 <% if params[:source] == 'promo index'%>
