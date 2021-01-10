@@ -7,7 +7,7 @@
 <% form_for(@dynamic_special_media) do |f| %>
   <%= f.error_messages %>
 
-  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <%= render :partial => 'entry', :locals	=> {:f => f, source => 'dynamic_special_media_new'} 	%>
 
   <p>
     <%= f.submit 'Create' %>

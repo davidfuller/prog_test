@@ -6,7 +6,8 @@
 <b>Media Name:</b><br/>
 <%=h @dynamic_special_media.media_file.name if @dynamic_special_media.media_file %></b><br/>
 
-<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @dynamic_special_media.media_file, :extended => false, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media.id } 	%>
+<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @dynamic_special_media.media_file, :extended => false, :source => 'dynamic_special_media', 
+                                                        :dynamic_special_media_id => @dynamic_special_media.id, :show_details => true, :show_upload => true } 	%>
 <%= render :partial => 'shared/dynamic_special_image_spec', :locals	=> {:dynamic_special_image_spec => @dynamic_special_media.dynamic_special_image_spec} %>
 
 <%= link_to 'Edit', edit_dynamic_special_media_path(@dynamic_special_media) %> |
