@@ -440,8 +440,14 @@ class MediaFile < ActiveRecord::Base
       when 'Special Media'
         case upload_file.content_type 
         when 'image/targa', 'image/x-targa', 'application/octet-stream'
-          filename = Rails.root.join('public','data', 'still', media.targa_filename)
-          do_it = true
+          if media.dynamic_special_media && media.dynamic_special_media.dynamic_special_image_spec
+            filename = Pathname.new("#{Rails.root}/public" + media.dynamic_special_media.dynamic_special_image_spec.upload_folder + media.targa_filename)
+            do_it = true
+          else
+            media.notice = "Issue with media type: " 
+            media.issue = true
+            do_it = false  
+          end
         else
           media.notice = "Invalid file type. Expected: image/targa. Uploaded: " + upload_file.content_type
           media.issue = true
