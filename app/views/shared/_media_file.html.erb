@@ -78,8 +78,12 @@
     <%=h media_file.status.message unless media_file.status.nil? %>
   </p>
 
-  <%= link_to 'Details', media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id, :upload => 'false')%> | 
-	<%= link_to 'Upload', media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id, :upload => 'true')%> |
+  <% if show_details %>
+    <%= link_to 'Details', media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id, :upload => 'false')%> | 
+  <% end %>
+  <% if show_upload %>
+	  <%= link_to 'Upload', media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id, :upload => 'true')%> |
+  <% end %>
 	<%= link_to 'Edit', edit_media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id) %>
 
   </div>
