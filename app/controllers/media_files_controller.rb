@@ -177,6 +177,8 @@ class MediaFilesController < ApplicationController
         redirect_to on_demand_path(@on_demand,  :index_search => params[:search], :index_page => params[:page], 
                                                 :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
                                                 :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media])
+      elsif params[:source] == 'dynamic_special_media'
+        redirect_to dynamic_special_media_path(params[:dynamic_special_media_id])
       else
         redirect_to media_file_path(@media_file, :source => params[:source])
       end
