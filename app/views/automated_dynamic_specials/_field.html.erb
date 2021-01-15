@@ -10,9 +10,11 @@
       <%= f.text_field :the_value %>
     <% else %>
       <% logos = sets[0][:logos] %>
-
       <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}) %>
     <% end %>
   <% end %>
-  <%= f.submit "Update" %>
+  <%= f.submit "Update" %><br/>
+  <% if !@logo_sets.empty? && !sets.empty? %>
+    <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %></div>
+  <% end %>
 <% end %>
