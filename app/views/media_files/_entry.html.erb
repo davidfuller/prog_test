@@ -4,9 +4,16 @@
 <%= f.hidden_field :trailer_id %>
 <%= f.hidden_field :special_preview_id %>
 <%= f.hidden_field :dynamic_special_media_id %>
+<%= f.hidden_field :next_prefix %>
+<%= f.hidden_field :automated_dynamic_special_id %>
+<%= f.hidden_field :field_id %>
 <p>
   <%= f.label :name %><br />
-  <%= f.text_field :name %>
+  <%= f.text_field :name %><br/>
+  <% if new_media %>
+    Enter a name and the filename will be automatically generated.<br/>
+    You can change the filename if you wish
+  <% end %>
 </p>
 <p>
   <%= f.label :filename %><br />
@@ -40,3 +47,7 @@
   <%= f.label :status_id %><br />
   <%= f.collection_select (:status_id, @statuses, :id, :message, :prompt => 'Select status')   %>
 </p>
+
+<% if new_media %>
+  <%= javascript_include_tag 'media_files_entry' %>
+<% end %>
