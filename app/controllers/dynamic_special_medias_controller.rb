@@ -2,7 +2,8 @@ class DynamicSpecialMediasController < ApplicationController
   # GET /dynamic_special_medias
   # GET /dynamic_special_medias.xml
   def index
-    @dynamic_special_medias = DynamicSpecialMedia.all
+    @dynamic_special_medias = DynamicSpecialMedia.search(params)
+    @image_types = DynamicSpecialImageSpec.promo_types_with_all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -80,9 +81,9 @@ class DynamicSpecialMediasController < ApplicationController
   def destroy
     @dynamic_special_media = DynamicSpecialMedia.find(params[:id])
     @dynamic_special_media.destroy
-
+   
     respond_to do |format|
-      format.html { redirect_to(dynamic_special_medias_url) }
+      format.html { redirect_to dynamic_special_medias_path({:image_type => params[:image_type]}) }
       format.xml  { head :ok }
     end
   end
@@ -101,4 +102,18 @@ class DynamicSpecialMediasController < ApplicationController
     end
     redirect_to edit_dynamic_special_media_path({:id => params[:id], :search => params[:search], :page => params[:page]})
   end
+
+  def create_from_automated_dynamic_special
+    spec = DynamicSpecialImageSpec.find_by_name(params[:field_type_name])
+    @dynamic_special_media = DynamicSpecialMedia.new
+    @dynamic_special_media.dynamic_special_image_spec_id = spec
+    if @dynamic_special_media.save
+      flash[:notice] = 'Dynamic Special Media created. Now add the details for the image.'
+      redirect_to new_media_file_path(:dynamic_special_media_id => @dynamic_special_media.id, :spec_id => @dynamic_special_media.dynamic_special_image_spec_id, 
+                                      :automated_dynamic_special_id => params[:automated_dynamic_special_id], :field_id => params[:field_id]) 
+    else
+      render :action => "new" 
+    end
+  end
+
 end
