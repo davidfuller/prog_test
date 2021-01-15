@@ -1,11 +1,14 @@
 <% dynamic_special_template = @automated_dynamic_special.dynamic_special_template %>
 <% automated_dynamic_special_fields = @automated_dynamic_special.automated_dynamic_special_fields %>
 
-<table>
-  <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h dynamic_special_template.name %></td></tr>
+<table class = 'full-template', style = 'display: none;'>
+  <tr><td class='dynamic_special_bold'>Template Name</td><td class='dynamic_special_title'><%=h dynamic_special_template.name %></td></tr>
   <tr><td class='dynamic_special_bold'>Page 16:9</td><td class='dynamic_special_text'><%=h dynamic_special_template.page_169 %></td><td class='dynamic_special_bold'>Page 4:3</td><td class='dynamic_special_text'><%=h dynamic_special_template.page_43 %></td></tr>
   <tr><td class='dynamic_special_bold'>Clear Down 16:9</td><td class='dynamic_special_text'><%=h dynamic_special_template.clear_down_169 %></td><td class='dynamic_special_bold'>Clear Down 4:3</td><td class='dynamic_special_text'><%=h dynamic_special_template.clear_down_43 %></td></tr>
   <tr><td class='dynamic_special_bold'>Duration (seconds)</td><td class='dynamic_special_text'><%=h dynamic_special_template.duration %></td></tr>
+</table>
+<table class = 'full-template'>
+  <tr><td class='dynamic_special_bold'>Template Name</td><td class='dynamic_special_title'><%=h dynamic_special_template.name %></td></tr>
 </table>
 <br />
 <%= render :partial => 'fields', :locals	=> {:automated_dynamic_special_fields => automated_dynamic_special_fields, :show_links => false} %>
