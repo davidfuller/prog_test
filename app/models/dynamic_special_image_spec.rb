@@ -69,4 +69,9 @@ class DynamicSpecialImageSpec < ActiveRecord::Base
     end
   end
 
+  def self.promo_types_with_all
+    list = DynamicSpecialImageSpec.find(:all, :conditions => ['promo = true'], :select =>:name).map{|m| m.name}
+    list.unshift('All')
+  end
+
 end
