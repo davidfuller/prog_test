@@ -1,5 +1,5 @@
   <%= render :partial => 'shared/media_file', :locals	=> {:media_file => @dynamic_special_media.media_file, :extended => false,
-                                                          :show_details => true, :show_upload => true, :source => source} 	%>
+                                                          :show_details => true, :show_upload => true, :source => source, :dynamic_special_media_id => @dynamic_special_media.id} 	%>
   <p>
     <%= f.label :dynamic_special_image_spec_id, "Image Type" %><br />
     <%= f.collection_select (:dynamic_special_image_spec_id, @special_types, :id, :name, {:prompt => 'Choose an Image Type'})%>
