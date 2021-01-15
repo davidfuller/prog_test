@@ -58,15 +58,28 @@ class MediaFilesController < ApplicationController
     respond_to do |format|
       if @media_file.save
         format.html { 
-          logger.debug '123456======'
-          logger.debug params[:media_file][:source]
           if params[:media_file][:source] == 'New Dynamic Special Media'
-            dyn = DynamicSpecialMedia.find(params[:media_file][:dynamic_special_media_id])
-            if dyn
-              dyn.media_file_id = @media_file.id
-              dyn.save
-              flash[:notice] = 'Dynamic Special Media File was successfully created.'
-              redirect_to(dynamic_special_media_path(dyn))
+            dynamic_special_media = DynamicSpecialMedia.find(params[:media_file][:dynamic_special_media_id])
+            if dynamic_special_media
+              dynamic_special_media.media_file_id = @media_file.id
+              if dynamic_special_media.save
+                flash[:notice] = 'Dynamic Special Media File was successfully created'
+                field = AutomatedDynamicSpecialField.find(params[:media_file][:field_id])
+                if field && dynamic_special_media
+                  field.the_id = dynamic_special_media.id
+                  automated_dynamic_special = AutomatedDynamicSpecial.find_by_id(params[:media_file][:automated_dynamic_special_id])
+                  if field.save
+                    field.reconcile_the_change()
+                    flash[:notice] += ' & added to the field for: ' + automated_dynamic_special.name || 'unknown special'
+                  else
+                    flash[:notice] += ' but something prevented it being added to the field for: ' + automated_dynamic_special.name || 'unknown special'
+                  end
+                end
+                redirect_to(dynamic_special_media_path(dynamic_special_media, :show_upload_message => true, :automated_dynamic_special_id => automated_dynamic_special))
+              else
+                flash[:notice] = 'Dynamic Special Media File was NOT created.'
+                redirect_to dynamic_special_medias_path
+              end
             else
               flash[:notice] = 'Dynamic Special Media File was NOT created.'
               redirect_to(dynamic_special_medias_path)
@@ -178,7 +191,11 @@ class MediaFilesController < ApplicationController
                                                 :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
                                                 :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media])
       elsif params[:source] == 'dynamic_special_media'
-        redirect_to dynamic_special_media_path(params[:dynamic_special_media_id])
+        if params[:automated_dynamic_special_id]
+          redirect_to automated_dynamic_special_path(params[:automated_dynamic_special_id])
+        else
+          redirect_to dynamic_special_media_path(params[:dynamic_special_media_id])
+        end
       else
         redirect_to media_file_path(@media_file, :source => params[:source])
       end
