@@ -1,6 +1,7 @@
 <% content_for(:title) do%>
 	Automated Dynamic Special: MuVi2 Database
 <% end %>
+
 <h1>Automated Dynamic Special</h1>
 <table>
   <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h @automated_dynamic_special.name %></td><td rowspan = '3'></tr>
@@ -9,9 +10,39 @@
 </table>
 <br />
 
-<h2>Template</h2>
+<div id = 'show-template'><%= link_to_function ('Show template details') {|page| page.select('.full-template').each {|x| x.toggle}; page['show-template'].toggle; page['hide-template'].toggle} %></div>
+<div id = 'hide-template', style = 'display: none;'><%= link_to_function ('Hide template details') {|page| page.select('.full-template').each {|x| x.toggle}; page['show-template'].toggle; page['hide-template'].toggle} %></div>
+
 <%= render :partial => 'template', :locals	=> { :show_links => true} %>
 
+<% if params[:search].nil? %>
+  <div id ='search_media' , style = "display: none;" >
+<% else %>
+  <div id ='search_media'>
+<% end %>
+    <h1>Dynamic Special Media Files</h1>
+    <table>
+      <tr>
+        <td class = 'dynamic_special_bold'>Field No</td><td class='dynamic_special_text'><%=h @promo_field.field_number %></td>
+        <td class = 'dynamic_special_bold'>Image Type</td><td class='dynamic_special_text'><%=h @promo_field.field_type_name %></td>
+        <td class = 'dynamic_special bold'><div class = 'larger-link'><%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, 
+                                                                                                :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
+                                                                                                :field_type_name => @promo_field.field_type_name, :field_id => @promo_field %></div></td>
+      </tr>
+    </table>
+
+    <% form_remote_tag({:url => @automated_dynamic_special, :method => :get, :html => {:id => 'search-form'}}) do %>
+    <p>
+      <%= text_field_tag :search, params[:search], :size => 45 %>
+      <%= hidden_field_tag :image_type, params[:image_type] %>
+      <%= submit_tag "Search", :name => nil %>
+    </p>			
+    <% end %>
+    <div id = "search_results">
+      <%= render :partial => 'dynamic_special_media_files', :locals => {:include_add => true } %>
+    </div>
+  </div>
+  
 <%= link_to 'Edit', edit_automated_dynamic_special_path(@automated_dynamic_special) %> |
 <%= link_to 'Back', automated_dynamic_specials_path %>
 <% if @automated_dynamic_special.dynamic_special_template.demo%>
@@ -20,3 +51,18 @@
     <%= image_tag(@automated_dynamic_special.dynamic_special_template.demo, :size => '420x300') %>
   </p>
 <% end %>
+<script type="text/javascript">
+    window.onload = setupRefresh;
+ 
+    function setupRefresh() {
+      var status = document.getElementById("image-status");
+      if(status.textContent == "Ready"){
+        setTimeout("refreshPage();", 120000); // milliseconds  2 minutes
+      } else {
+        setTimeout("refreshPage();", 5000); // milliseconds 5 seconds
+      }
+    }
+    function refreshPage() {
+      window.location = location.href;
+    }
+</script>
