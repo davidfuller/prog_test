@@ -573,6 +573,11 @@
   font-size: 12px;
   color: #7a0000;
 }
+#main .larger-link a {
+  font-weight: bold;
+  font-size: 12px;
+  color: #7a0000;
+}
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
