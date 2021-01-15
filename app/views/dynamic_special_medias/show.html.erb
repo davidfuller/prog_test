@@ -1,8 +1,22 @@
 <% content_for(:title) do%>
 	Dynamic Special Media: MuVi2 Database
 <% end %>
-
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="20" />
+<% end %>
 <h1>Dynamic Special Media</h1>
+
+<% if params[:show_upload_message] %>
+  <p>
+    You can now: <br/>
+    <div class = 'larger-link'>
+      <%= link_to 'Upload the actual media file ', media_file_path(@dynamic_special_media.media_file, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media, 
+                                                                                                      :automated_dynamic_special_id => params[:automated_dynamic_special_id], :upload => 'true')%> <br/>
+      <%= link_to 'Return to the automated dynamic special ', automated_dynamic_special_path(params[:automated_dynamic_special_id]) %> <br/>
+    </div>
+  </p>
+<% end %>
+
 <b>Media Name:</b><br/>
 <%=h @dynamic_special_media.media_file.name if @dynamic_special_media.media_file %></b><br/>
 
