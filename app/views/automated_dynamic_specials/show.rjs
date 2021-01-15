@@ -1,0 +1,1 @@
+page.replace_html :search_results, :partial => 'dynamic_special_media_files', :locals => {:include_add => true }
