@@ -24,6 +24,9 @@ class MediaFile < ActiveRecord::Base
   attr_accessor :trailer_id
   attr_accessor :special_preview_id
   attr_accessor :dynamic_special_media_id
+  attr_accessor :next_prefix
+  attr_accessor :automated_dynamic_special_id
+  attr_accessor :field_id
   
   def self.search(params)
     if params[:filename]
@@ -638,7 +641,12 @@ def self.wd_copy(original_filename, filename)
     when 'Special Preview'
       File.exist?(clip_special_jpeg_proxy_folder.join(jpeg_filename))
     when 'Special Media'
-      File.exists?(dynamic_special_proxy_folder.join(jpeg_filename))
+      dsp_folder = dynamic_special_proxy_folder
+      if dsp_folder
+        File.exists?(dsp_folder.join(jpeg_filename))
+      else
+        false
+      end
     else
       false
     end
@@ -792,6 +800,9 @@ def self.wd_copy(original_filename, filename)
         m.status_id = Status.find_by_message('Not loaded').id
         m.source = 'New Dynamic Special Media'
         m.dynamic_special_media_id = params[:dynamic_special_media_id]
+        m.next_prefix = DynamicSpecialMedia.next_picture_prefix('PICT_', spec.name)
+        m.automated_dynamic_special_id = params[:automated_dynamic_special_id]
+        m.field_id = params[:field_id]
       end
     end
     m
