@@ -2,18 +2,40 @@
 
 <% if automated_dynamic_special_fields.count > 0 %>
 
+<div id = 'show-field'><%= link_to_function ('Show fields that cannot be changed') {|page| page.select('.fixed-field').each {|x| x.toggle}; page['show-field'].toggle; page['hide-field'].toggle} %></div>
+<div id = 'hide-field', style = 'display: none;'><%= link_to_function ('Hide fields that cannot be changed') {|page| page.select('.fixed-field').each {|x| x.toggle}; page['show-field'].toggle; page['hide-field'].toggle} %></div>
+
 <table>
 	<tr>
     <th>Field No</th>
     <th>Field Name</th>
     <th>Field Type</th>
     <th></th>
-    <th>Value</th>
+    <th>Value<br/>
+        <div id = 'show-link'><%= link_to_function ('Show filenames') do |page|
+              page.select('.show-filenames').each do |x|
+                x.toggle()
+              end
+              page['show-link'].toggle
+              page['hide-link'].toggle
+            end %></div>
+        <div id = 'hide-link', style = 'display: none;'><%= link_to_function ('Hide filenames') do |page|
+              page.select('.show-filenames').each do |x|
+                x.toggle()
+              end
+              page['show-link'].toggle
+              page['hide-link'].toggle
+            end %></div>
+    </th>
   </tr>	
 
  <% automated_dynamic_special_fields.each do |field| %>
     <% template = field.template_field_join %>
-		<tr>
+    <% if template.fixed%>
+      <tr class = 'fixed-field', style = 'display: none;'>
+    <% else %>
+      <tr>
+    <% end %>
       <td><%=h template.field %></td>
       <% if template.dynamic_special_field%>
 			  <td><%=h template.dynamic_special_field.name %></td>
@@ -22,9 +44,31 @@
           <% field_type = template.dynamic_special_field.dynamic_special_image_spec %>
         <% end %>
       <% end %>
-      <td><%= image_tag(field.dynamic_special_logo_url, :size => field_type.preview_size) if field.dynamic_special_logo_url %></td>
-      <% if template.fixed || field_type.promo %>
-        <td><%=h field.the_value %></td>
+      <td><%= link_to (image_tag(field.dynamic_special_logo_url, :size => field_type.preview_size), dynamic_special_media_path(field.the_id)) if field.dynamic_special_logo_url %></td>
+      <% if template.fixed %>
+        <td>
+          <%=h field.the_display %><br/>
+          <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %></div>
+        </td>
+      <% elsif field_type.promo %>
+        <td>
+          <% if @promo_dynamic_special_media.media_file %>
+            <b>Media Name: </b><%=h @promo_dynamic_special_media.media_file.name %><br/>
+            <b>Status: </b><span id = 'image-status'><%=h @promo_dynamic_special_media.media_file.status.message if @promo_dynamic_special_media.media_file.status %></span><br/>
+          <% end %>
+          <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %><br/></div>
+          <% if @promo_dynamic_special_media %>
+            <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media) %> |
+            <% if @promo_dynamic_special_media.media_file %>
+              <%= link_to 'Upload Media', media_file_path(@promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special) %> |
+            <% end %>
+          <% end %>
+          <%= link_to_function ('Choose Media') {|page| page['search_media'].toggle} %> | 
+          <%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, :id => @automated_dynamic_special, 
+                                    :automated_dynamic_special_id => @automated_dynamic_special.id, :field_type_name => @promo_field.field_type_name,
+                                    :field_id => @promo_field %></div><br/>
+
+        </td>
       <% else %>
         <td><%= render :partial => 'field', :locals	=> { :field => field, :field_type => field_type } %></td>
       <% end %>
