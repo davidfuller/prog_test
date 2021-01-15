@@ -1,9 +1,30 @@
 <% content_for(:title) do%>
 	Dynamic Special Media: MuVi2 Database
 <% end %>
+<% content_for(:refresh) do%>
+  <meta http-equiv="refresh" content="60" />
+<% end %>
 
 <h1>Dynamic Special Media</h1>
 
+<fieldset>
+	<legend>Dynamic Special Media</legend>
+		<% form_tag dynamic_special_medias_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+      <p>
+        <label>Image Type</label> 
+        <%= select_tag :image_type, options_for_select(@image_types, params[:image_type]),{:onchange => 'this.form.submit()'}%><br/>
+      </p>
+
+		<% end %>
+</fieldset>
+
+
+
+<%= will_paginate @dynamic_special_medias %>
 <table>
   <tr>
     <th>Media file</th>
@@ -17,13 +38,17 @@
     <td><%=h dynamic_special_media.media_file.name if dynamic_special_media.media_file %></td>
     <td><%=h dynamic_special_media.dynamic_special_image_spec.name if dynamic_special_media.dynamic_special_image_spec %></td>
     <td><%=h dynamic_special_media.media_file.filename if dynamic_special_media.media_file %></td>
-    <td><%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %></td>
+    <td><% if dynamic_special_media.media_file && dynamic_special_media.media_file.jpeg_exist? %>
+      <%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %>
+    <% end %></td>
     <td><%= link_to 'Show', dynamic_special_media %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_media_path(dynamic_special_media) %></td>
-    <td><%= link_to 'Destroy', dynamic_special_media, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', dynamic_special_media_path(dynamic_special_media, :image_type => params[:image_type]), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
+
+<%= will_paginate @dynamic_special_medias %>
 
 <br />
 
