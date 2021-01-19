@@ -531,7 +531,7 @@ class OnDemand < ActiveRecord::Base
 
   def self.country_code_from_row(row)
     ids = channels_from_row(row)
-    if ids
+    if ids.length > 0
       channel = Channel.find(ids.first)
       if channel
         code = channel.language.code if channel.language
