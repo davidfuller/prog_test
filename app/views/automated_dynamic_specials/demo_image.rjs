@@ -1,0 +1,1 @@
+page.replace_html :demo_image, :partial => 'demo', :locals => {:dynamic_special_template => @image_template, :message => 'This template will only be used if you click the ' + params[:button] + ' button'}
