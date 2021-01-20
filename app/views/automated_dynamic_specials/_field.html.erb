@@ -1,16 +1,17 @@
-<% form_for (field) do |f| %>
+<% #form_for (field) do |f| %>
+<% form_for field, :url => automated_dynamic_special_field_path(field.id, :index_params => @index_params), :method => :put do |f| %>
   <%= hidden_field_tag(:automated_dynamic_special, @automated_dynamic_special.id) %>
   <%= hidden_field_tag(:field_type, field_type.id) %>
 
   <% if @logo_sets.empty?%>
-    <%= f.text_field :the_value %>
+    <%= f.text_field :the_value, :id => 'my_text_' + field.id.to_s %>
   <% else %>
     <% sets = @logo_sets.select { |m| m[:spec].id == field_type.id } %>
     <% if sets.empty?%>
-      <%= f.text_field :the_value %>
+      <%= f.text_field :the_value, :id => 'my_text_' + field.id.to_s %>
     <% else %>
       <% logos = sets[0][:logos] %>
-      <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}) %>
+      <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}, {:id => 'my_select_' + field.id.to_s}) %>
     <% end %>
   <% end %>
   <%= f.submit "Update" %><br/>
