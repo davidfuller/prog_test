@@ -6,7 +6,7 @@ class DynamicSpecial < ActiveRecord::Base
   
   validates_presence_of :name, :page, :channel_id
   
-  def self.search(search, channel, page, show_duplicate, show_all)
+  def self.search(search, channel, page, show_duplicate, show_all, show_only)
     channel_id = Channel.find_by_name(channel)
     current_time = Time.current
     if show_duplicate
@@ -27,25 +27,49 @@ class DynamicSpecial < ActiveRecord::Base
       if channel_id
         if search
           if show_all
-            paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ?', channel_id, "%#{search}%"]
+            if show_only #past last use
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ?', channel_id, "%#{search}%"]
+            end
           else
-            paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
-          end
-        else
+            if show_only
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+            end
+          end 
+        else # no search (almoost never)
           paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ?', channel_id]
         end
-      else
+      else #all channels
         if search then
           if show_all
-            paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ?', "%#{search}%"]
+            if show_only # past last use
+              paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ?', "%#{search}%"]
+            end
           else
-            paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+            if show_only # past last use
+              paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+            end
           end
-        else
+        else # no search (almoost never)
           if show_all
-            paginate  :all, :per_page => 12, :page =>page 
+            if show_only # past last use
+              paginate  :all, :per_page => 12, :page => page, :conditions => ['last_use < ?', current_time]
+            else
+              paginate  :all, :per_page => 12, :page => page 
+            end
           else
-            paginate  :all, :per_page => 12, :page =>page, :conditions => ['last_use >= ?', current_time]
+            if show_only # past last use
+              paginate  :all, :per_page => 12, :page => page, :conditions => ['last_use < ?', current_time]
+            else
+              paginate  :all, :per_page => 12, :page => page, :conditions => ['last_use >= ?', current_time]
+            end
           end
         end
       end
