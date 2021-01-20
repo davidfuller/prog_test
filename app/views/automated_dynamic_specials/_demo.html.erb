@@ -1,0 +1,9 @@
+<% if dynamic_special_template && dynamic_special_template.demo%>
+  <p>
+    <h2>Demo Image</h2>
+    <% if !message.blank? %>
+    <b><%= message %></b><br/>
+    <% end %>
+    <%= image_tag(dynamic_special_template.demo, :size => '420x300') %>
+  </p>
+<% end %>
