@@ -65,7 +65,8 @@ class AutomatedDynamicSpecialFieldsController < ApplicationController
         flash[:notice] = 'Field was successfully updated.'
         format.html { 
           if source
-            redirect_to(automated_dynamic_special_path source)
+            @index_params = clean_params(params[:index_params])
+            redirect_to automated_dynamic_special_path(source, :index_params => @index_params)
           else
             redirect_to(automated_dynamic_special_fields_path) 
           end
@@ -89,4 +90,12 @@ class AutomatedDynamicSpecialFieldsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def clean_params(params)
+    # Delete any blank params
+    if params 
+      params.delete_if {|k,v| v.blank?}
+    end
+  end
+
 end
