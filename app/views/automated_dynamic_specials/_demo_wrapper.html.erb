@@ -1,0 +1,15 @@
+<div id = 'demo_image'>
+  <%= render :partial => 'demo', :locals => {:dynamic_special_template => @automated_dynamic_special.dynamic_special_template, :message => '' } %>
+</div>
+
+<script type = 'text/javascript'>
+  window.onload = addListenerToField;
+  var sourceDropdown = document.getElementById('automated_dynamic_special_dynamic_special_template_id');
+  
+  function addListenerToField(){
+    sourceDropdown.addEventListener("change", function() {changeTemplate()});
+  }
+  function changeTemplate(){
+    new Ajax.Request('<%= demo_image_automated_dynamic_specials_path %>' , {asynchronous:true, evalScripts:true, method:'get', parameters: 'changed_template_id=' + sourceDropdown.value + '&button=' + '<%= button %>' })
+  }
+</script>
