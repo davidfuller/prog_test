@@ -4,7 +4,7 @@ class DynamicSpecialsController < ApplicationController
   def index
     
     respond_to do |format|
-      format.html { @dynamic_specials = DynamicSpecial.search(params[:search],params[:channel], params[:page], params[:show_duplicates], params[:show_all])
+      format.html { @dynamic_specials = DynamicSpecial.search(params[:search],params[:channel], params[:page], params[:show_duplicates], params[:show_all], params[:show_only])
                     @channel_display = Channel.display
                     @show_duplicates = params[:show_duplicates]}
       format.xml  { @dynamic_specials = DynamicSpecial.xml_data(params[:channel]) }
