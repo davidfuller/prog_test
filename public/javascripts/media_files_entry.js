@@ -17,5 +17,6 @@ function getInputValue() {
   let inputVal = document.getElementById("media_file_name").value;
   var filenameField = document.getElementById("media_file_filename");
   var filename = (prefix + inputVal).toUpperCase() + ".tga";
-  filenameField.value = filename;
+  var filename_normalised = filename.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  filenameField.value = filename_normalised;
 }
