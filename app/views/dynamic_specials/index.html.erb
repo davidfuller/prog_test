@@ -15,8 +15,10 @@
 														params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
 		<%= label_tag :show_duplicates, "Show illegal duplicates only" %>
 		<%= check_box_tag :show_duplicates, value ="1", params[:show_duplicates],{:onchange => 'this.form.submit()'} %><br/>
-		<%= label_tag :show_duplicates, "Show all (including past last use)" %>
+		<%= label_tag :show_all, "Show all (including past last use)" %>
 		<%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()'} %><br/>
+    <%= label_tag :show_only, "Show only past last use" %>
+    <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()'} %><br/>
 		<% end %>
 </fieldset>
 
