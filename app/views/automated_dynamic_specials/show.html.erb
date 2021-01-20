@@ -21,17 +21,19 @@
   <div id ='search_media'>
 <% end %>
     <h1>Dynamic Special Media Files</h1>
-    <table>
-      <tr>
-        <td class = 'dynamic_special_bold'>Field No</td><td class='dynamic_special_text'><%=h @promo_field.field_number %></td>
-        <td class = 'dynamic_special_bold'>Image Type</td><td class='dynamic_special_text'><%=h @promo_field.field_type_name %></td>
-        <td class = 'dynamic_special bold'><div class = 'larger-link'><%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, 
-                                                                                                :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
-                                                                                                :field_type_name => @promo_field.field_type_name, :field_id => @promo_field %></div></td>
-      </tr>
-    </table>
+    <% if @promo_field %>
+      <table>
+        <tr>
+          <td class = 'dynamic_special_bold'>Field No</td><td class='dynamic_special_text'><%=h @promo_field.field_number %></td>
+          <td class = 'dynamic_special_bold'>Image Type</td><td class='dynamic_special_text'><%=h @promo_field.field_type_name %></td>
+          <td class = 'dynamic_special bold'><div class = 'larger-link'><%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, 
+                                                                                                  :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
+                                                                                                  :field_type_name => @promo_field.field_type_name, :field_id => @promo_field %></div></td>
+        </tr>
+      </table>
+    <% end %>
 
-    <% form_remote_tag({:url => @automated_dynamic_special, :method => :get, :html => {:id => 'search-form'}}) do %>
+    <% form_remote_tag({:url => automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params), :method => :get, :html => {:id => 'search-form'}}) do %>
     <p>
       <%= text_field_tag :search, params[:search], :size => 45 %>
       <%= hidden_field_tag :image_type, params[:image_type] %>
@@ -44,25 +46,48 @@
   </div>
   
 <%= link_to 'Edit', edit_automated_dynamic_special_path(@automated_dynamic_special) %> |
-<%= link_to 'Back', automated_dynamic_specials_path %>
-<% if @automated_dynamic_special.dynamic_special_template.demo%>
-  <p>
-    <h2>Demo Image</h2>
-    <%= image_tag(@automated_dynamic_special.dynamic_special_template.demo, :size => '420x300') %>
-  </p>
-<% end %>
+<%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path(@index_params) %> 
+
+<%= render :partial => 'demo', :locals => {:dynamic_special_template => @automated_dynamic_special.dynamic_special_template, :message => ''} %>
+
 <script type="text/javascript">
-    window.onload = setupRefresh;
- 
-    function setupRefresh() {
-      var status = document.getElementById("image-status");
+  window.onload = setUpMyJS;
+  function setupRefresh() {
+    var status = document.getElementById("image-status");
+    if (status != null){
       if(status.textContent == "Ready"){
         setTimeout("refreshPage();", 120000); // milliseconds  2 minutes
       } else {
         setTimeout("refreshPage();", 5000); // milliseconds 5 seconds
       }
     }
-    function refreshPage() {
-      window.location = location.href;
-    }
+  }
+  function setUpMyJS(){
+    setupRefresh();
+    addListenerToFields();
+  }
+  function refreshPage() {
+    window.location = location.href;
+  }
+  function addListenerToFields(){
+    console.log("addListenerToFields")
+    var myFields = document.querySelectorAll('[id^="my_text_"]');
+    myFields.forEach((myField) => {
+      myField.addEventListener("focusout", function() {saveValue(myField.id)});
+    });
+    var mySelects = document.querySelectorAll('[id^="my_select_"]');
+    mySelects.forEach((mySelect) => {
+      mySelect.addEventListener("change", function() {saveSelect(mySelect.id)});
+    });
+  }
+  function saveValue(myID){
+    var formID = myID.replace("my_text_","edit_automated_dynamic_special_field_");
+    var myForm = document.getElementById(formID);
+    myForm.submit()
+  }
+  function saveSelect(myID){
+    var formID = myID.replace("my_select_","edit_automated_dynamic_special_field_");
+    var myForm = document.getElementById(formID);
+    myForm.submit()
+  }
 </script>
