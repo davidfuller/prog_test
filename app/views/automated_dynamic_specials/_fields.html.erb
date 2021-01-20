@@ -52,13 +52,13 @@
         </td>
       <% elsif field_type.promo %>
         <td>
-          <% if @promo_dynamic_special_media.media_file %>
+          <% if @promo_dynamic_special_media && @promo_dynamic_special_media.media_file %>
             <b>Media Name: </b><%=h @promo_dynamic_special_media.media_file.name %><br/>
             <b>Status: </b><span id = 'image-status'><%=h @promo_dynamic_special_media.media_file.status.message if @promo_dynamic_special_media.media_file.status %></span><br/>
           <% end %>
           <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %><br/></div>
           <% if @promo_dynamic_special_media %>
-            <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media) %> |
+            <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media, :automated_dynamic_special_id => @automated_dynamic_special) %> |
             <% if @promo_dynamic_special_media.media_file %>
               <%= link_to 'Upload Media', media_file_path(@promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special) %> |
             <% end %>
