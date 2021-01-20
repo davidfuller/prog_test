@@ -3,7 +3,7 @@
 <% end %>
 <h1>New Automated Dynamic Special</h1>
 
-<% form_for(@automated_dynamic_special) do |f| %>
+<% form_for @automated_dynamic_special, :url => automated_dynamic_specials_path(:index_params => @index_params), :method => :post do |f| %>
   <%= f.error_messages %>
 
   <%= render :partial => 'entry', :locals => {:f => f} %>
@@ -12,5 +12,7 @@
     <%= f.submit 'Create' %>
   </p>
 <% end %>
+
+<%= render :partial => 'demo_wrapper', :locals => {:button => 'Create'} %>
 
 <%= link_to 'Back', automated_dynamic_specials_path %>

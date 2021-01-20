@@ -3,7 +3,7 @@
 <% end %>
 <h1>Editing Automated Dynamic Special</h1>
 
-<% form_for(@automated_dynamic_special) do |f| %>
+<% form_for @automated_dynamic_special, :url => automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params), :method => :put do |f| %>
   <%= f.error_messages %>
 
   <%= render :partial => 'entry', :locals => {:f => f} %>
@@ -13,5 +13,8 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @automated_dynamic_special %> |
-<%= link_to 'Back', automated_dynamic_specials_path %>
+<%= render :partial => 'demo_wrapper', :locals => {:button => 'Update'}%>
+
+<%= link_to 'Show', automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params) %> |
+<%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path(@index_params) %> |
+<%= link_to 'Back', :back %>
