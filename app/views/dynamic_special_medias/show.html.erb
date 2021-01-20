@@ -25,4 +25,9 @@
 <%= render :partial => 'shared/dynamic_special_image_spec', :locals	=> {:dynamic_special_image_spec => @dynamic_special_media.dynamic_special_image_spec} %>
 
 <%= link_to 'Edit', edit_dynamic_special_media_path(@dynamic_special_media) %> |
-<%= link_to 'Back', dynamic_special_medias_path %>
+<% if params[:automated_dynamic_special_id] %>
+  <%= link_to 'Back', automated_dynamic_special_path(params[:automated_dynamic_special_id]) %> |
+<% else %>
+  <%= link_to 'Back', :back %> |
+<% end %>
+<%= link_to 'Dynamic Specials Media', dynamic_special_medias_path %> 
