@@ -20,7 +20,7 @@
       <% if include_add %>
         <td><%= link_to "Use this",  {  :controller => :automated_dynamic_specials, :action => :use_media,
                                         :id => params[:id], :dynamic_special_media_id => dynamic_special_media.id,  
-                                        :search => params[:search], :page => params[:page], :field_id => @promo_field }%></td>
+                                        :search => params[:search], :page => params[:page], :field_id => @promo_field, :index_params => @index_params }%></td>
       <% end %>
     </tr>
   <% end %>
