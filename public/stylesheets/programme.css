@@ -282,6 +282,10 @@
 	vertical-align: top;
 }
 
+#store td #check_label{
+  font-size: 13px;
+}
+
 #store td .day_heading {
 	color: #7a0000;
 	font-weight: bold;
