@@ -106,7 +106,7 @@ class DynamicSpecialMediasController < ApplicationController
   def create_from_automated_dynamic_special
     spec = DynamicSpecialImageSpec.find_by_name(params[:field_type_name])
     @dynamic_special_media = DynamicSpecialMedia.new
-    @dynamic_special_media.dynamic_special_image_spec_id = spec
+    @dynamic_special_media.dynamic_special_image_spec_id = spec.id
     if @dynamic_special_media.save
       flash[:notice] = 'Dynamic Special Media created. Now add the details for the image.'
       redirect_to new_media_file_path(:dynamic_special_media_id => @dynamic_special_media.id, :spec_id => @dynamic_special_media.dynamic_special_image_spec_id, 
