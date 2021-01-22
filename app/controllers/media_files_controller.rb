@@ -64,18 +64,20 @@ class MediaFilesController < ApplicationController
               dynamic_special_media.media_file_id = @media_file.id
               if dynamic_special_media.save
                 flash[:notice] = 'Dynamic Special Media File was successfully created'
-                field = AutomatedDynamicSpecialField.find(params[:media_file][:field_id])
+                field = AutomatedDynamicSpecialField.find_by_id(params[:media_file][:field_id])
+                message_show = false
                 if field && dynamic_special_media
                   field.the_id = dynamic_special_media.id
                   automated_dynamic_special = AutomatedDynamicSpecial.find_by_id(params[:media_file][:automated_dynamic_special_id])
                   if field.save
                     field.reconcile_the_change()
+                    message_show = true
                     flash[:notice] += ' & added to the field for: ' + automated_dynamic_special.name || 'unknown special'
                   else
                     flash[:notice] += ' but something prevented it being added to the field for: ' + automated_dynamic_special.name || 'unknown special'
                   end
                 end
-                redirect_to(dynamic_special_media_path(dynamic_special_media, :show_upload_message => true, :automated_dynamic_special_id => automated_dynamic_special))
+                redirect_to(dynamic_special_media_path(dynamic_special_media, :show_upload_message => message_show, :automated_dynamic_special_id => automated_dynamic_special))
               else
                 flash[:notice] = 'Dynamic Special Media File was NOT created.'
                 redirect_to dynamic_special_medias_path
