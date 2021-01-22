@@ -9,7 +9,7 @@
 <%= f.hidden_field :field_id %>
 <p>
   <%= f.label :name %><br />
-  <%= f.text_field :name %><br/>
+  <%= f.text_field :name, :size => 60 %><br/>
   <% if new_media %>
     Enter a name and the filename will be automatically generated.<br/>
     You can change the filename if you wish
@@ -17,7 +17,7 @@
 </p>
 <p>
   <%= f.label :filename %><br />
-  <%= f.text_field :filename %>
+  <%= f.text_field :filename, :size => 60 %>
 </p>
 <p>
   <%= f.label :has_audio %><br />
