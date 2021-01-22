@@ -15,74 +15,150 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 
   def self.search(params)
     channel_id = Channel.find_by_name(params[:channel])
+    template_id = DynamicSpecialTemplate.find_by_name(params[:template])
     current_time = Time.current
     search = params[:search]
     show_all = params[:show_all].present?
     page = params[:page]
     show_only = params[:show_only].present?
+    issues_only = params[:show_issues].present?
 
-    if channel_id # has channel
-      if search # has search (including '')
-        if show_all # including in the past
-          if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
-          else
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['channel_id = ? AND name LIKE ?', channel_id, "%#{search}%"]
+    if issues_only
+      all_record_with_issues(page, channel_id, search, show_all, show_only, template_id)
+    else
+      if channel_id # has channel
+        if search # has search (including '')
+          if show_all # including in the past
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+              end
+            else
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", template_id]                
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ?', channel_id, "%#{search}%"]
+              end
+            end
+          else # not show all
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+              end
+            else # just the future
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+              end
+            end
           end
-        else 
+        else # blank search
           if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
-          else # just the future
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+            if template_id
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['channel_id = ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, current_time, template_id]
+            else
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
+            end
+          else
+            if template_id
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['channel_id = ? AND dynamic_special_template_id = ?', channel_id, template_id]
+            else
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['channel_id = ?', channel_id]
+            end
           end
         end
-      else # blank search
-        if show_only # just the past
-          paginate  :all, :per_page => PER_PAGE , :page => page, 
-                    :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
-        else
-          paginate  :all, :per_page => PER_PAGE , :page => page, 
-                    :conditions => ['channel_id = ?', channel_id]
-        end
-      end
-    else # All channels
-      if search then # has search (including '')
-        if show_all # including the past
-          if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-            :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+      else # All channels
+        if search then # has search (including '')
+          if show_all # including the past
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+              end
+            else
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ? AND dynamic_special_template_id = ?', "%#{search}%", template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ?', "%#{search}%"]
+              end
+            end
           else
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-            :conditions => ['name LIKE ?', "%#{search}%"]
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+              end
+            else # just the future
+              if template_id 
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page, 
+                          :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+              end
+            end
           end
-        else
-          if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
-          else # just the future
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
-          end
-        end
-      else # empty search
-        if show_all #including the past
-          if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE, :page => page, 
-                      :conditions => ['last_use < ?', current_time]
+        else # empty search
+          if show_all #including the past
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use < ? AND dynamic_special_template_id = ?', current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use < ?', current_time]
+              end
+            else
+              if template_id
+                paginate  :all, :per_page => PER_PAGE , :page => page,
+                          :conditions => ['dynamic_special_template_id = ?', template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE , :page => page 
+              end
+            end
           else
-            paginate  :all, :per_page => PER_PAGE , :page => page 
-          end
-        else
-          if show_only # just the past
-            paginate  :all, :per_page => PER_PAGE, :page => page, 
-                      :conditions => ['last_use < ?', current_time]
-          else
-            paginate  :all, :per_page => PER_PAGE, :page => page, 
-                      :conditions => ['last_use >= ?', current_time]
+            if show_only # just the past
+              if template_id
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use < ? AND dynamic_special_template_id = ?', current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use < ?', current_time]
+              end
+            else
+              if template_id
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use >= ? AND dynamic_special_template_id = ?', current_time, template_id]
+              else
+                paginate  :all, :per_page => PER_PAGE, :page => page, 
+                          :conditions => ['last_use >= ?', current_time]
+              end
+            end
           end
         end
       end
@@ -293,4 +369,145 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     end
     {:message => message, :details => details}
   end
+
+  def self.records_with_issues(channel_id, search, show_all, show_only, template_id)
+    specials = search_without_pagination(channel_id, search, show_all, show_only, template_id)
+    results = []
+    specials.each do |special|
+      list = special.field_list
+      if all_text_fields_empty(list)
+        results << special.id
+      elsif any_missing_logo(list)
+        results << special.id
+      elsif any_missing_promos(list)
+        results << special.id
+      elsif any_media_not_ready(list)
+        results << special.id
+      end
+    end
+    results
+  end
+
+  def self.all_record_with_issues(page, channel_id, search, show_all, show_only, template_id)
+    ids = records_with_issues(channel_id, search, show_all, show_only, template_id)
+    begin
+      paginate  ids, :per_page => PER_PAGE, :page => page
+    rescue
+      []
+    end
+  end
+
+  def self.search_without_pagination(channel_id, search, show_all, show_only, template_id)
+    current_time = Time.current
+    if channel_id # has channel
+      if search # has search (including '')
+        if show_all # including in the past
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+            end
+          else # not just the past
+            if template_id
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", template_id]
+            else
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ?', channel_id, "%#{search}%"]
+            end
+          end
+        else # not show all
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+            end
+          else # just the future
+            if template_id
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+            end
+          end
+        end
+      else # blank search
+        if show_only # just the past
+          if template_id
+            find  :all, :conditions => ['channel_id = ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, current_time, template_id]
+          else
+            find  :all, :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
+          end
+        else
+          if template_id
+            find  :all, :conditions => ['channel_id = ? AND dynamic_special_template_id = ?', channel_id, template_id]
+          else
+            find  :all, :conditions => ['channel_id = ?', channel_id]
+          end
+        end
+      end
+    else # All channels
+      if search then # has search (including '')
+        if show_all # including the past
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+            end
+          else # not just the past
+            if template_id
+              find  :all, :conditions => ['name LIKE ? AND dynamic_special_template_id = ?', "%#{search}%", template_id]
+            else
+              find  :all, :conditions => ['name LIKE ?', "%#{search}%"]
+            end
+          end
+        else
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+            end
+          else # just the future
+            if template_id
+              find  :all, :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+            else
+              find  :all, :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+            end
+          end
+        end
+      else # empty search
+        if show_all #including the past
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['last_use < ? AND dynamic_special_template_id = ?', current_time, template_id]
+            else
+              find  :all, :conditions => ['last_use < ?', current_time]
+            end
+          else
+            if template_id
+              find  :all, :conditions => ['dynamic_special_template_id = ?', template_id]
+            else
+              find  :all
+            end
+          end
+        else
+          if show_only # just the past
+            if template_id
+              find  :all, :conditions => ['last_use < ? AND dynamic_special_template_id = ?', current_time, template_id]
+            else
+              find  :all, :conditions => ['last_use < ?', current_time]
+            end
+          else
+            if template_id
+              find  :all, :conditions => ['last_use >= ? AND dynamic_special_template_id = ?', current_time, template_id]
+            else
+              find  :all, :conditions => ['last_use >= ?', current_time]
+            end
+          end
+        end
+      end
+    end
+  end
+
 end
