@@ -1,8 +1,6 @@
 <% content_for(:title) do%>
 	Automated Dynamic Special: MuVi2 Database
 <% end %>
-<h1>Automated Dynamic Specials</h1>
-
 <fieldset>
 	<legend>Automated Dynamic Specials</legend>
 		<% form_tag automated_dynamic_specials_path, :method =>'get' do %>
@@ -10,30 +8,38 @@
 				<%= text_field_tag :search, params[:search], :size => 45 %>
 				<%= submit_tag "Search", :name => nil %>
 			</p>
-		<%= label_tag :channel, 'Channel' %> 
-    <%= select_tag :channel, options_for_select(@channel_display.insert(0,"All"), 
-														params[:channel]),{:onchange => 'this.form.submit()'}%><br/>
-		<%= label_tag :show_all, "Show all (including past last use)" %>
-		<%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()'} %><br/>
-    <%= label_tag :show_only, "Show only past last use" %>
-    <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()'} %><br/>
+    <table>
+      <tr><td><%= label_tag :channel, 'Channel', :id => 'check_label'%> 
+              <%= select_tag :channel, options_for_select(@channel_display.insert(0,"All"), 
+							            						params[:channel]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td>
+              <td><%= label_tag :template, 'Template', :id => 'check_label'%> 
+              <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td></tr>
+      <tr><td><%= label_tag :show_all, "Show all (including past last use)", :id => 'check_label' %>
+              <%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+          <td><%= label_tag :show_only, "Show only past last use", :id => 'check_label' %>
+              <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
+      <tr><td><%= label_tag :show_issues, "Issues only", :id => 'check_label' %>
+              <%= check_box_tag :show_issues, value ="1", params[:show_issues],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
+    </table>
 		<% end %>
-    <% index_params = {:channel => params[:channel], :search => params[:search], :show_all => params[:show_all], :show_only => params[:show_only]} %>
+    <% index_params = {:channel => params[:channel], :search => params[:search], :show_all => params[:show_all], :show_only => params[:show_only], :show_issues => params[:show]} %>
 </fieldset>
 
-
+<br/>
 <%= will_paginate @dynamic_specials %>
+<br/>
 <table>
   <tr>
     <th>Name</th>
     <th>Channel</th>
-    <th>Dynamic special template</th>
+    <th>Dynamic Special Template</th>
     <th>Last Use</th>
     <th>Status</th>
   </tr>
 
 <% @automated_dynamic_specials.each do |automated_dynamic_special| %>
-  <tr>
+  <% if automated_dynamic_special.short_ready_message[:message] != "Good" then row_class = 'dynamic_special_error' end %>
+  <tr class = <%= row_class %>>
     <td><%=h automated_dynamic_special.name %></td>
     <td><%=h automated_dynamic_special.channel_name %></td>
     <td><%=h automated_dynamic_special.template_name %></td>
