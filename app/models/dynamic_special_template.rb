@@ -19,4 +19,10 @@ class DynamicSpecialTemplate < ActiveRecord::Base
     end
   end
 
+  def self.template_display_with_all
+    list = find(:all, :select =>:name).map{|m| m.name}
+    list.unshift('All')
+  end
+  
+
 end
