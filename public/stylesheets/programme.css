@@ -286,6 +286,10 @@
   font-size: 13px;
 }
 
+#store td .check_box{
+  vertical-align: bottom;
+}
+
 #store td .day_heading {
 	color: #7a0000;
 	font-weight: bold;
@@ -588,4 +592,8 @@
 }
 #store .dynamic_special_text {
   font-size: 12px;
+}
+
+#store .dynamic_special_error{
+  background: #FCA3A3; 
 }
