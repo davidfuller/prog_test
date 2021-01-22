@@ -795,8 +795,8 @@ def self.wd_copy(original_filename, filename)
       if spec
         m.media_type_id = MediaType.special_media.id
         m.media_folder_id = spec.media_folder_id
-        m.first_use = Date.today.to_datetime.advance(:days => 7, :hours => 5)
-        m.last_use = m.first_use.advance(:months => 2)
+        m.first_use = Date.today.to_datetime.advance(:days => 1, :hours => 5)
+        m.last_use = m.first_use.advance(:years => 10)
         m.status_id = Status.find_by_message('Not loaded').id
         m.source = 'New Dynamic Special Media'
         m.dynamic_special_media_id = params[:dynamic_special_media_id]
