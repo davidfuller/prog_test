@@ -7,7 +7,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
     respond_to do |format|
       format.html do
         @channel_display = Channel.display
-        @show_duplicates = params[:show_duplicates]
+        @templates = DynamicSpecialTemplate.template_display_with_all
       end# index.html.erb
       format.xml  { render :xml => @automated_dynamic_specials }
     end
