@@ -11,7 +11,8 @@ class MediaFile < ActiveRecord::Base
   
   default_scope :order => 'first_use, media_type_id, filename'
   validates_uniqueness_of :filename, :message => " is already in the system"
-  
+  validates_uniqueness_of :name, :scope => :media_type_id, :message => " is already in the system for this media type"
+
   MAX_FOLDER_CLIPS = 450
   MAX_FOLDER_WITH_AUDIO_CLIPS = 225
   
