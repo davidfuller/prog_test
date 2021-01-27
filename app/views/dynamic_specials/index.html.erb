@@ -22,8 +22,10 @@
 		<% end %>
 </fieldset>
 
-<br />
-<%= link_to 'New Dynamic Special', new_dynamic_special_path %>
+<% if @show_new_edit %>
+  <br />
+  <%= link_to 'New Dynamic Special', new_dynamic_special_path %>
+<% end %>
 <br />
 
 <% if !@show_duplicates %>
@@ -55,9 +57,10 @@
       <td><%=h dynamic_special.clear_down_duration %></td>    
       <td><%=h dynamic_special.special_fields.count %></td>
       <td><%= link_to 'Show', dynamic_special %></td>
-      <td><%= link_to 'Edit', edit_dynamic_special_path(dynamic_special) %></td>
+
+      <td><%= link_to 'Edit', edit_dynamic_special_path(dynamic_special) if @show_new_edit %></td>
       <td><%= link_to 'Destroy', dynamic_special, :confirm => 'Are you sure?', :method => :delete %></td>
-      <td><%= link_to 'Duplicate', :controller => :dynamic_specials, :action => :duplicate, :id => dynamic_special %></td>
+      <td><%= link_to 'Duplicate', :controller => :dynamic_specials, :action => :duplicate, :id => dynamic_special if @show_new_edit%></td>
       <td><%=h dynamic_special.duplicate_message %></td>
     </tr>
   <% end %>
@@ -71,4 +74,7 @@
   <%= will_paginate @dynamic_specials %>
 <% end %>
 
-<%= link_to 'New Dynamic Special', new_dynamic_special_path %>
+<% if @show_new_edit %>
+  <%= link_to 'New Dynamic Special', new_dynamic_special_path %>
+<% end %>
+
