@@ -24,6 +24,9 @@
       <td><%= link_to 'Show', trailer_path(media_file.trailer) %></td>
     <% elsif media_file.special_preview %>
       <td><%= link_to 'Show', special_preview_path(media_file.special_preview) %></td>
+      <td><%= link_to 'Special', automated_dynamic_special_path(media_file.special_preview.automated_dynamic_special) if media_file.special_preview.automated_dynamic_special %></td>
+    <% elsif media_file.dynamic_special_media %>
+      <td><%= link_to 'Show', dynamic_special_media_path(media_file.dynamic_special_media) %></td>
     <% else %>
 		  <td><%= link_to 'Show', promo_path(media_file.first_promo_id) unless media_file.first_promo_id == 0 %></td>
     <% end %>
