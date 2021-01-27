@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210108171424) do
+ActiveRecord::Schema.define(:version => 20210125105344) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20210108171424) do
     t.integer  "dynamic_special_template_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "special_preview_id"
   end
 
   create_table "bugs", :force => true do |t|
