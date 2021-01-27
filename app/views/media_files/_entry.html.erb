@@ -19,18 +19,29 @@
   <%= f.label :filename %><br />
   <%= f.text_field :filename, :size => 60 %>
 </p>
-<p>
-  <%= f.label :has_audio %><br />
-  <%= f.check_box :has_audio %>
-</p>
-<p>
-  <%= f.label :audio_filename %><br />
-  <%= f.text_field :audio_filename %>
-</p>
-<p>
-  <%= f.label :media_folder_id %><br />
-  <%= f.collection_select (:media_folder_id, @folders, :id, :name)   %>
-</p>
+
+<% if show_details %>
+  <div id = 'show-details', style = 'display: none;'><%= link_to_function ('Show more details') {|page| page.select('.media_file_details').each {|x| x.toggle}; page['show-details'].toggle; page['hide-details'].toggle} %></div>
+  <div id = 'hide-details'><%= link_to_function ('Hide details') {|page| page.select('.media_file_details').each {|x| x.toggle}; page['show-details'].toggle; page['hide-details'].toggle} %></div>
+  <div class ='media_file_details'>
+<% else %>
+  <div id = 'show-details'><%= link_to_function ('Show more details') {|page| page.select('.media_file_details').each {|x| x.toggle}; page['show-details'].toggle; page['hide-details'].toggle} %></div>
+  <div id = 'hide-details', style = 'display: none;'><%= link_to_function ('Hide details') {|page| page.select('.media_file_details').each {|x| x.toggle}; page['show-details'].toggle; page['hide-details'].toggle} %></div>
+  <div class ='media_file_details', style = "display: none;" >
+<% end %>
+  <p>
+    <%= f.label :has_audio %><br />
+    <%= f.check_box :has_audio %>
+  </p>
+  <p>
+    <%= f.label :audio_filename %><br />
+    <%= f.text_field :audio_filename %>
+  </p>
+  <p>
+    <%= f.label :media_folder_id %><br />
+    <%= f.collection_select (:media_folder_id, @folders, :id, :name)   %>
+  </p>
+</div>
 <p>
   <%= f.label :first_use %><br />
 	<%= f.calendar_date_select :first_use, {:month_year => :label, :minute_interval => 1} %>
@@ -39,14 +50,20 @@
   <%= f.label :last_use %><br />
 	<%= f.calendar_date_select :last_use,  {:month_year => :label, :minute_interval => 1} %>
 </p>
-<p>
-  <%= f.label :media_type_id %><br />
-  <%= f.collection_select (:media_type_id, @media_types, :id, :name, :prompt => 'Select a type')   %>
-</p>
-<p>
-  <%= f.label :status_id %><br />
-  <%= f.collection_select (:status_id, @statuses, :id, :message, :prompt => 'Select status')   %>
-</p>
+<% if show_details %>
+  <div class ='media_file_details'>
+<% else %>
+  <div class ='media_file_details', style = "display: none;" >
+<% end %>
+  <p>
+    <%= f.label :media_type_id %><br />
+    <%= f.collection_select (:media_type_id, @media_types, :id, :name, :prompt => 'Select a type')   %>
+  </p>
+  <p>
+    <%= f.label :status_id %><br />
+    <%= f.collection_select (:status_id, @statuses, :id, :message, :prompt => 'Select status')   %>
+  </p>
+</div>
 
 <% if new_media %>
   <%= javascript_include_tag 'media_files_entry' %>

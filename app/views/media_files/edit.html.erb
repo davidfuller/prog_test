@@ -3,7 +3,7 @@
 <% form_for(@media_file) do |f| %>
   <%= f.error_messages %>
 
-	<%= render :partial => 'entry', :locals	=> {:f => f, :new_media => false } 	%>
+	<%= render :partial => 'entry', :locals	=> {:f => f, :new_media => false, :show_details => params[:dynamic_special_media_id].blank? } 	%>
   <p>
     <%= f.submit 'Update' %>
   </p>
