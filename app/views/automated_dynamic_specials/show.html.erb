@@ -44,9 +44,23 @@
       <%= render :partial => 'dynamic_special_media_files', :locals => {:include_add => true } %>
     </div>
   </div>
-  
-<%= link_to 'Edit', edit_automated_dynamic_special_path(@automated_dynamic_special) %> |
-<%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path(@index_params) %> 
+
+<div class = 'larger-link'><%= link_to 'Return to list of Automated Dynamic Specials', automated_dynamic_specials_path(@index_params) %> <br/> </div> 
+<%= link_to 'Edit', edit_automated_dynamic_special_path(@automated_dynamic_special) %>
+<% if @automated_dynamic_special.special_preview_status == :not_requested %>
+  | <%= link_to 'Request preview media',  :controller => :special_previews, :action => :create_from_automated_dynamic_special, 
+                                          :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
+                                          :index_params => @index_params %>
+<% elsif @automated_dynamic_special.special_preview_status == :requested %>
+  <h2>Special Preview</h2>
+  The preview has been requested. It will appear here within a few hours.<br/>
+  <td><%= link_to 'Remove request', special_preview_path(@automated_dynamic_special.special_preview, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %></td>
+<% elsif @automated_dynamic_special.special_preview_status == :available %>
+  <h2>Special Preview</h2>
+  <%= render :partial => 'special_preview', :locals => {:media_file => @automated_dynamic_special.special_preview.media_file } %>
+<% end %>
+
+
 
 <%= render :partial => 'demo', :locals => {:dynamic_special_template => @automated_dynamic_special.dynamic_special_template, :message => ''} %>
 

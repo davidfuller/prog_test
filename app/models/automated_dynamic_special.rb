@@ -2,6 +2,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 
   belongs_to :channel
   belongs_to :dynamic_special_template
+  belongs_to :special_preview
   has_many :automated_dynamic_special_fields, :dependent => :destroy
 
   validates_presence_of :name
@@ -507,6 +508,20 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
           end
         end
       end
+    end
+  end
+
+  def special_preview_status
+    if special_preview
+      if special_preview.media_file && special_preview.media_file.status
+        if special_preview.media_file.status.message == 'Ready'
+          :available
+        else
+          :requested
+        end
+      end
+    else
+      :not_requested
     end
   end
 
