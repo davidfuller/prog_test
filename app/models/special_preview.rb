@@ -3,6 +3,7 @@ class SpecialPreview < ActiveRecord::Base
   belongs_to :media_file, :dependent => :destroy
   has_many :channel_special_previews, :dependent => :destroy
   has_many :channels, :through => :channel_special_previews
+  has_one :automated_dynamic_special
 
   default_scope :order => :name
 
@@ -74,6 +75,22 @@ class SpecialPreview < ActiveRecord::Base
       if !self.channel_special_previews.find_by_channel_id(c.id)
         t = self.channel_special_previews.new
         t.channel_id = c.id
+        t.save
+      end
+    end 
+  end
+
+  def add_automated_dynamic_special_channel(channel_id)
+    channels = Channel.language_scope
+    channels.each do |c|
+      if !self.channel_special_previews.find_by_channel_id(c.id)
+        t = self.channel_special_previews.new
+        t.channel_id = c.id
+        if c.id == channel_id
+          t.enable = true
+        else
+          t.enable = false
+        end
         t.save
       end
     end 

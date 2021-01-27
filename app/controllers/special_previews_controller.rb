@@ -81,7 +81,14 @@ class SpecialPreviewsController < ApplicationController
     @special_preview.destroy
 
     respond_to do |format|
-      format.html { redirect_to(special_previews_url) }
+      format.html do
+        if params[:automated_dynamic_special_id]
+          flash[:notice] = "Request has been cancelled"
+          redirect_to automated_dynamic_special_path(params[:automated_dynamic_special_id])
+        else
+          redirect_to special_previews_url
+        end
+      end 
       format.xml  { head :ok }
     end
   end
@@ -132,6 +139,34 @@ class SpecialPreviewsController < ApplicationController
       flash[:notice] = 'Channels updated. '
     else
       flash[:notice] = "Problem with updating channels. "
+    end
+  end
+
+  def create_from_automated_dynamic_special
+    ads = AutomatedDynamicSpecial.find_by_id(params[:automated_dynamic_special_id])
+    if ads
+      special_preview = SpecialPreview.new
+      special_preview.name = ads.name
+      if special_preview.save
+        result = special_preview.add_media
+        if result[:success]
+          special_preview.add_automated_dynamic_special_channel(ads.channel_id)
+          ads.special_preview_id = special_preview.id
+          if ads.save
+            flash[:notice] = 'Preview movie requested'
+          else
+            flash[:notice] = 'Preview movie could not be created for this special. Could not connect to this special'
+          end
+        else
+          flash[:notice] = 'Preview movie could not be created for this special. The media could not be added to the preview'
+        end
+      else
+        flash[:notice] = 'Preview movie could not be created for this special. The preview record could not be created.'
+      end
+      redirect_to automated_dynamic_special_path(ads)
+    else
+      flash[:notice] = "Issue creating preview movie"
+      redirect_to automated_dynamic_specials_url
     end
   end
 
