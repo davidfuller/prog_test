@@ -10,9 +10,10 @@
   <p>
     You can now: <br/>
     <div class = 'larger-link'>
-      <%= link_to 'Upload the actual media file ', media_file_path(@dynamic_special_media.media_file, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media, 
-                                                                                                      :automated_dynamic_special_id => params[:automated_dynamic_special_id], :upload => 'true')%> <br/>
-      <%= link_to 'Return to the automated dynamic special ', automated_dynamic_special_path(params[:automated_dynamic_special_id]) %> <br/>
+      <%= button_to 'Upload the actual media file ', media_file_path(@dynamic_special_media.media_file, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media, 
+                                                                                                        :automated_dynamic_special_id => params[:automated_dynamic_special_id], 
+                                                                                                        :upload => 'true'), :method => :get %> <br/>
+      <%= button_to 'Return to the automated dynamic special ', automated_dynamic_special_path(params[:automated_dynamic_special_id]), :method => :get %> <br/>
     </div>
   </p>
 <% end %>
@@ -30,4 +31,5 @@
 <% else %>
   <%= link_to 'Back', :back %> |
 <% end %>
-<%= link_to 'Dynamic Specials Media', dynamic_special_medias_path %> 
+<%= link_to 'Dynamic Specials Media', dynamic_special_medias_path %> <br/>
+<%= link_to 'Destroy', dynamic_special_media_path(@dynamic_special_media), :confirm => 'Are you sure?', :method => :delete %> 
