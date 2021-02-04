@@ -6,6 +6,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Folder</th>
     <th>Filename</th>
     <th>Display filename</th>
     <th></th>
@@ -16,6 +17,7 @@
 <% @dynamic_special_logos.each do |dynamic_special_logo| %>
   <tr>
     <td><%=h dynamic_special_logo.name %></td>
+    <td><%=h dynamic_special_logo.media_folder_name %></td>
     <td><%=h dynamic_special_logo.filename %></td>
     <td><%=h dynamic_special_logo.display_filename %></td>
     <td><%= image_tag(dynamic_special_logo.display_url, :size => '50x50') if dynamic_special_logo.display_url %></td>
