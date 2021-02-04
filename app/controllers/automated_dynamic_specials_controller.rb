@@ -2,14 +2,13 @@ class AutomatedDynamicSpecialsController < ApplicationController
   # GET /automated_dynamic_specials
   # GET /automated_dynamic_specials.xml
   def index
-    @automated_dynamic_specials = AutomatedDynamicSpecial.search(params)
-    
     respond_to do |format|
       format.html do
+        @automated_dynamic_specials = AutomatedDynamicSpecial.search(params)
         @channel_display = Channel.display
         @templates = DynamicSpecialTemplate.template_display_with_all
       end# index.html.erb
-      format.xml  { render :xml => @automated_dynamic_specials }
+      format.xml  { @automated_dynamic_specials = AutomatedDynamicSpecial.xml_data(params[:channel]) }
     end
   end
 
