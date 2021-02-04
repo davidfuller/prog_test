@@ -57,7 +57,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :exception_lists
 
-  map.resources :dynamic_specials, :collection => { :duplicate => :get }
+  map.resources :dynamic_specials, :collection => { :duplicate => :get, :delete_multiple => :delete }
   
   map.resources :special_fields
   
