@@ -1,26 +1,35 @@
+<% content_for(:title) do%>
+	Dynamic Special Logo: MuVi2 Database
+<% end %>
+
+<h1>Dynamic Special Logo</h1>
 <p>
-  <b>Name:</b>
+  <b>Name:</b><br/>
   <%=h @dynamic_special_logo.name %>
 </p>
+<%= image_tag(@dynamic_special_logo.display_url) if @dynamic_special_logo.display_url %>
 
 <p>
-  <b>Filename:</b>
+  <b>Filename:</b><br/>
   <%=h @dynamic_special_logo.filename %>
 </p>
-
 <p>
-  <b>Display filename:</b>
+  <b>Full Filename:</b><br/>
+  <%=h @dynamic_special_logo.full_filename %>
+</p>
+<p>
+  <b>Display filename:</b><br/>
   <%=h @dynamic_special_logo.display_filename %>
 </p>
 
 <p>
-  <b>Dynamic special image spec:</b>
-  <%=h @dynamic_special_logo.dynamic_special_image_spec_id %>
+  <b>Dynamic special image spec:</b><br/>
+  <%=h @dynamic_special_logo.dynamic_special_image_spec.name if @dynamic_special_logo.dynamic_special_image_spec %>
 </p>
 
 <p>
-  <b>Language:</b>
-  <%=h @dynamic_special_logo.language_id %>
+  <b>Language:</b><br/>
+  <%=h @dynamic_special_logo.language.name if @dynamic_special_logo.language %>
 </p>
 
 
