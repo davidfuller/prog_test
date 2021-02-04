@@ -48,7 +48,11 @@
       <% if template.fixed %>
         <td>
           <%=h field.the_display %><br/>
-          <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %></div>
+          <% if field_type.logo %>
+            <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
+          <% else %>
+            <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %></div>
+          <% end %>
         </td>
       <% elsif field_type.promo %>
         <td>
@@ -56,7 +60,7 @@
             <b>Media Name: </b><%=h @promo_dynamic_special_media.media_file.name %><br/>
             <b>Status: </b><span id = 'image-status'><%=h @promo_dynamic_special_media.media_file.status.message if @promo_dynamic_special_media.media_file.status %></span><br/>
           <% end %>
-          <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %><br/></div>
+          <div class = 'show-filenames', style = 'display: none;'><%=h field.promo_full_filename %><br/></div>
           <% if @promo_dynamic_special_media %>
             <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media, :automated_dynamic_special_id => @automated_dynamic_special) %> |
             <% if @promo_dynamic_special_media.media_file %>

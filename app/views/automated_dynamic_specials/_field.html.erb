@@ -4,11 +4,11 @@
   <%= hidden_field_tag(:field_type, field_type.id) %>
 
   <% if @logo_sets.empty?%>
-    <%= f.text_field :the_value, :id => 'my_text_' + field.id.to_s %>
+    <%= f.text_field :the_value, :size => 35, :id => 'my_text_' + field.id.to_s %>
   <% else %>
     <% sets = @logo_sets.select { |m| m[:spec].id == field_type.id } %>
     <% if sets.empty?%>
-      <%= f.text_field :the_value, :id => 'my_text_' + field.id.to_s %>
+      <%= f.text_field :the_value, :size => 35, :id => 'my_text_' + field.id.to_s %>
     <% else %>
       <% logos = sets[0][:logos] %>
       <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}, {:id => 'my_select_' + field.id.to_s}) %>
@@ -16,6 +16,6 @@
   <% end %>
   <%= f.submit "Update" %><br/>
   <% if !@logo_sets.empty? && !sets.empty? %>
-    <div class = 'show-filenames', style = 'display: none;'><%=h field.the_value %></div>
+    <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
   <% end %>
 <% end %>
