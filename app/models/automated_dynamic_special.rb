@@ -287,6 +287,8 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
           if spec
             if spec.name == 'Text'
               result[:type] = :text
+            elsif spec.name == 'Switcher'
+                result[:type] = :text
             elsif spec.logo
               result[:type] = :logo
             elsif spec.promo
@@ -523,6 +525,15 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     else
       :not_requested
     end
+  end
+  
+  def self.xml_data(channel)
+    channel_id = Channel.find_by_name(channel)
+    if channel_id
+      all :conditions => ['channel_id = ?', channel_id], :order => 'id'
+    else
+      all :order => 'id'
+    end 
   end
 
 end
