@@ -86,7 +86,9 @@ class DynamicSpecialsController < ApplicationController
     @dynamic_special.destroy
 
     respond_to do |format|
-      format.html { redirect_to(dynamic_specials_url(:channel => session[:special_channel])) }
+      format.html { redirect_to dynamic_specials_url(:channel => session[:special_channel], :show_all => session[:special_show_all], 
+                                                      :show_only => session[:special_show_only],
+                                                      :show_duplicates => session[:special_show_duplicates]) }
       format.xml  { head :ok }
     end
   end
@@ -103,5 +105,24 @@ class DynamicSpecialsController < ApplicationController
       format.xml  { render :xml => @dynamic_special }
     end
   end
-    
+
+  def delete_multiple
+    ids_to_delete = params[:dynamic_special_ids]
+    if ids_to_delete && ids_to_delete.count > 0
+      deleted_ids = DynamicSpecial.destroy(ids_to_delete)
+      flash[:notice] = my_pluralise('special', deleted_ids.length) + ' deleted'
+    else
+      flash[:notice] = 'Nothing deleted'
+    end 
+    redirect_to dynamic_specials_url(:channel => session[:special_channel], :show_all => session[:special_show_all], :show_only => session[:special_show_only],
+                                      :show_duplicates => session[:special_show_duplicates])
+  end
+
+  def my_pluralise(text, number)
+    if number == 1
+      return number.to_s + ' ' + text
+    else
+      return number.to_s + ' ' + text.pluralize()
+    end
+  end
 end
