@@ -2,6 +2,15 @@
 
 <% if automated_dynamic_special_fields.count > 0 %>
 
+<% if !@automated_dynamic_special.short_ready_message[:valid] %>
+  <table class = 'field_issues'>
+      <tr><th class = 'field_issues'>Field Issues</th></tr>
+      <% @automated_dynamic_special.short_ready_message[:details].each do |detail| %>
+          <tr><td class = 'field_issues'><%= h detail %></td></tr>
+      <% end %>
+  </table>
+<% end %>
+
 <div id = 'show-field'><%= link_to_function ('Show fields that cannot be changed') {|page| page.select('.fixed-field').each {|x| x.toggle}; page['show-field'].toggle; page['hide-field'].toggle} %></div>
 <div id = 'hide-field', style = 'display: none;'><%= link_to_function ('Hide fields that cannot be changed') {|page| page.select('.fixed-field').each {|x| x.toggle}; page['show-field'].toggle; page['hide-field'].toggle} %></div>
 
