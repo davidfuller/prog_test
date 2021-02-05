@@ -4,6 +4,7 @@
     <% if !message.blank? %>
     <b><%= message %></b><br/>
     <% end %>
+    <%= h dynamic_special_template.help_message %><br/>
     <%= image_tag(dynamic_special_template.demo, :size => '420x300') %>
   </p>
 <% end %>

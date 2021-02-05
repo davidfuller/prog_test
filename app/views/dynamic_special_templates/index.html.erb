@@ -24,7 +24,13 @@
     <td><%=h dynamic_special_template.clear_down_43 %></td>
     <td><%=h dynamic_special_template.duration %></td>
     <td><%=h dynamic_special_template.template_field_joins.count %></td>
-    <td><%=h dynamic_special_template.demo %></td>
+    <td>
+      <%=h dynamic_special_template.help_message %><br/>
+      <% if dynamic_special_template.demo %>
+        <%=h dynamic_special_template.demo %><br/>
+        <%= image_tag(dynamic_special_template.demo, :size => '210x150') %>
+      <% end %> 
+    </td>
     <td><%= link_to 'Show', dynamic_special_template %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_template_path(dynamic_special_template) %></td>
     <td><%= link_to 'Destroy', dynamic_special_template, :confirm => 'Are you sure?', :method => :delete %></td>

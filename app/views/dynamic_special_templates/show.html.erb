@@ -20,6 +20,11 @@
 <% if @dynamic_special_template.demo%>
   <p>
     <h2>Demo Image</h2>
+    <%= @dynamic_special_template.help_message %><br/>
     <%= image_tag(@dynamic_special_template.demo, :size => '420x300') %>
   </p>
+<% else %>
+<p>
+  <%= @dynamic_special_template.help_message %>
+</p>
 <% end %>
