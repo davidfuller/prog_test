@@ -287,8 +287,10 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
           if spec
             if spec.name == 'Text'
               result[:type] = :text
+              result[:empty_allowed] = template.dynamic_special_field.empty_allowed
             elsif spec.name == 'Switcher'
-                result[:type] = :text
+              result[:type] = :text
+              result[:empty_allowed] = template.dynamic_special_field.empty_allowed
             elsif spec.logo
               result[:type] = :logo
             elsif spec.promo
@@ -310,13 +312,17 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     results
   end
 
-  def self.all_text_fields_empty(test_field_list)
+  def self.any_text_fields_empty_unless_allowed(test_field_list)
     test_field_list.each do |field|
-      if field[:type] == :text && !field[:fixed] && field[:value].present?
-        return false
+      if field[:type] == :text && !field[:fixed]
+        if !field[:value].present?
+          if !field[:empty_allowed]
+            return true
+          end
+        end
       end
     end
-    true
+    false
   end
 
   def self.any_missing_logo(test_field_list)
@@ -350,9 +356,10 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     list = field_list
     message = ''
     details =[]
-    if self.class.all_text_fields_empty(list)
-      if message.blank? then message = 'Text fields empty' else message = 'Multiple issues' end
-      details << 'Text fields empty'  
+    valid = false
+    if self.class.any_text_fields_empty_unless_allowed(list)
+      if message.blank? then message = 'Text field(s) empty' else message = 'Multiple issues' end
+      details << 'Text field(s) empty'  
     end
     if self.class.any_missing_logo(list)
       if message.blank? then message = 'Missing logo' else message = 'Multiple issues' end
@@ -369,8 +376,9 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     if message.blank? 
       message = 'Good'
       details << 'Good'
+      valid = true
     end
-    {:message => message, :details => details}
+    {:message => message, :details => details, :valid => valid}
   end
 
   def self.records_with_issues(channel_id, search, show_all, show_only, template_id)
@@ -378,7 +386,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     results = []
     specials.each do |special|
       list = special.field_list
-      if all_text_fields_empty(list)
+      if any_text_fields_empty_unless_allowed(list)
         results << special.id
       elsif any_missing_logo(list)
         results << special.id
