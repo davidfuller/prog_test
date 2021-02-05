@@ -270,6 +270,22 @@
 	line-height: 0px;
 }
 
+table.field_issues {
+	border: 2px solid #7a0000;
+	background-color: #ebd5d5;
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+th.field_issues {
+	font-size: 12px !important;
+	color:  #7a0000; 
+	padding: 5px;
+}
+td.field_issues {
+	font-size: 12px !important;
+	padding: 5px;
+}
 #store table {
 	border-collapse: collapse;
 }
