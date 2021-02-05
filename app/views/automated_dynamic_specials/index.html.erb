@@ -1,6 +1,9 @@
 <% content_for(:title) do%>
 	Automated Dynamic Special: MuVi2 Database
 <% end %>
+
+<% show_delete = params[:show_only] == '1' %>
+
 <fieldset>
 	<legend>Automated Dynamic Specials</legend>
 		<% form_tag automated_dynamic_specials_path, :method =>'get' do %>
@@ -22,46 +25,62 @@
               <%= check_box_tag :show_issues, value ="1", params[:show_issues],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
     </table>
 		<% end %>
-    <% index_params = {:channel => params[:channel], :search => params[:search], :show_all => params[:show_all], :show_only => params[:show_only], :show_issues => params[:show]} %>
+    <% index_params = {:channel => params[:channel], :search => params[:search], :show_all => params[:show_all], 
+                        :show_only => params[:show_only], :show_issues => params[:show_issues], :template => params[:template]} %>
 </fieldset>
 
 <br/>
 <%= will_paginate @dynamic_specials %>
 <br/>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Channel</th>
-    <th>Dynamic Special Template</th>
-    <th>Last Use</th>
-    <th>Status</th>
-  </tr>
 
-<% @automated_dynamic_specials.each do |automated_dynamic_special| %>
-  <% if automated_dynamic_special.short_ready_message[:message] != "Good" then row_class = 'dynamic_special_error' end %>
-  <tr class = <%= row_class %>>
-    <td><%=h automated_dynamic_special.name %></td>
-    <td><%=h automated_dynamic_special.channel_name %></td>
-    <td><%=h automated_dynamic_special.template_name %></td>
-    <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
-    <td><%=h automated_dynamic_special.short_ready_message[:message] %>
-        <% if automated_dynamic_special.short_ready_message[:details].length > 1 %>
-          <% div_id_text = "details_" + automated_dynamic_special.id.to_s%>
-          <%= link_to_function('Details') {|page| page[div_id_text].toggle}%>
-          <%= "<div id = '" + div_id_text + "' style = 'display: none;'>" %> 
-          <% automated_dynamic_special.short_ready_message[:details].each do |detail| %>
-            <%=h detail %><br/>
+<% form_tag delete_multiple_automated_dynamic_specials_path(:index_params => index_params), :method => :delete do%>
+  <% if show_delete %>
+  <p>
+    <span class = 'link_button'>
+    <%= link_to_function 'Check all', "$$('input.checks').each(function(checkbox) { checkbox.checked = true; });" %> |
+    <%= link_to_function 'Uncheck all', "$$('input.checks').each(function(checkbox) { checkbox.checked = false; });" %><br/>
+    </span>
+    <%= submit_tag "Delete all checked", :confirm => "Are you sure you want to delete all checked specials?\r\nThis cannot be undone" %>
+  </p>
+  <% end %>
+
+  <table>
+    <tr>
+      <% if show_delete %><th></th><% end %>
+      <th>Name</th>
+      <th>Channel</th>
+      <th>Dynamic Special Template</th>
+      <th>Last Use</th>
+      <th>Status</th>
+    </tr>
+
+  <% @automated_dynamic_specials.each do |automated_dynamic_special| %>
+    <% if automated_dynamic_special.short_ready_message[:message] != "Good" then row_class = 'dynamic_special_error' end %>
+    <tr class = <%= row_class %>>
+      <% if show_delete %><td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, false , :class => 'checks' %></td><% end %>
+      <td><%=h automated_dynamic_special.name %></td>
+      <td><%=h automated_dynamic_special.channel_name %></td>
+      <td><%=h automated_dynamic_special.template_name %></td>
+      <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
+      <td><%=h automated_dynamic_special.short_ready_message[:message] %>
+          <% if automated_dynamic_special.short_ready_message[:details].length > 1 %>
+            <% div_id_text = "details_" + automated_dynamic_special.id.to_s%>
+            <%= link_to_function('Details') {|page| page[div_id_text].toggle}%>
+            <%= "<div id = '" + div_id_text + "' style = 'display: none;'>" %> 
+            <% automated_dynamic_special.short_ready_message[:details].each do |detail| %>
+              <%=h detail %><br/>
+            <% end %>
+            </div>
           <% end %>
-          </div>
-        <% end %>
-    </td>
-    <td><%= link_to 'Show', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
-    <td><%= link_to 'Edit', edit_automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
-    <td><%= link_to 'Destroy', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params), :confirm => 'Are you sure?', :method => :delete %></td>
-    <td><%= link_to 'Duplicate', :controller => :automated_dynamic_specials, :action => :duplicate, :id => automated_dynamic_special, :index_params => index_params %></td>
-  </tr>
+      </td>
+      <td><%= link_to 'Show', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
+      <td><%= link_to 'Edit', edit_automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
+      <td><%= link_to 'Destroy', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params), :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to 'Duplicate', :controller => :automated_dynamic_specials, :action => :duplicate, :id => automated_dynamic_special, :index_params => index_params %></td>
+    </tr>
+  <% end %>
+  </table>
 <% end %>
-</table>
 
 <br />
 <%= will_paginate @dynamic_specials %>
