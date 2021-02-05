@@ -3,14 +3,18 @@
 <% end %>
 <p>
   <b>Name:</b>
-  <%=h @dynamic_special_field.name %>
+  <%=h @dynamic_special_field.name %><br/>
 </p>
 
 <p>
-  <b>Dynamic special image spec:</b>
-  <%=h @dynamic_special_field.dynamic_special_image_spec_id %>
+  <b>Dynamic special image spec:</b><br/>
+  <%=h @dynamic_special_field.dynamic_special_image_spec.name if @dynamic_special_field.dynamic_special_image_spec %>
 </p>
 
+<p>
+  <b>Empty allowed:</b><br/>
+  <%=h @dynamic_special_field.empty_allowed %><br/>
+</p>
 
 <%= link_to 'Edit', edit_dynamic_special_field_path(@dynamic_special_field) %> |
 <%= link_to 'Back', :back %>

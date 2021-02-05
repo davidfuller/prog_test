@@ -6,3 +6,7 @@
     <%= f.label :dynamic_special_image_spec_id, 'Field Type' %><br />
     <%= f.collection_select (:dynamic_special_image_spec_id, @special_types, :id, :name, {:prompt => 'Choose a Field Type'})%>
   </p>
+  <p>
+    <%= f.label :empty_allowed %><br/>
+    <%= f.check_box :empty_allowed %>
+  </p>

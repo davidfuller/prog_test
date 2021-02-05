@@ -7,12 +7,14 @@
   <tr>
     <th>Name</th>
     <th>Field Type</th>
+    <th>Empty Allowed</th>
   </tr>
 
 <% @dynamic_special_fields.each do |dynamic_special_field| %>
   <tr>
     <td><%=h dynamic_special_field.name %></td>
     <td><%=h dynamic_special_field.dynamic_special_image_spec.name if dynamic_special_field.dynamic_special_image_spec %></td>
+    <td><%=h dynamic_special_field.empty_allowed %></td>
     <td><%= link_to 'Show', dynamic_special_field %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_field_path(dynamic_special_field) %></td>
     <td><%= link_to 'Destroy', dynamic_special_field, :confirm => 'Are you sure?', :method => :delete %></td>
