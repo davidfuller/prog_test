@@ -168,5 +168,26 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
   end
 
+  def delete_multiple
+    @index_params = clean_params(params[:index_params])
+    ids_to_delete = params[:automated_dynamic_special_ids]
+    if ids_to_delete && ids_to_delete.count > 0
+      deleted_ids = AutomatedDynamicSpecial.destroy(ids_to_delete)
+      flash[:notice] = my_pluralise('special', deleted_ids.length) + ' deleted'
+    else
+      flash[:notice] = 'Nothing deleted'
+    end 
+    
+    redirect_to automated_dynamic_specials_url(@index_params)
+  end
+
+  def my_pluralise(text, number)
+    if number == 1
+      return number.to_s + ' ' + text
+    else
+      return number.to_s + ' ' + text.pluralize()
+    end
+  end
+
 end
 
