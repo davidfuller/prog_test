@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :automated_dynamic_special_fields
 
-  map.resources :automated_dynamic_specials, :collection => { :duplicate => :get, :demo_image => :get }
+  map.resources :automated_dynamic_specials, :collection => { :duplicate => :get, :demo_image => :get, :delete_multiple => :delete}
 
   map.resources :template_field_joins
 
