@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210125105344) do
+ActiveRecord::Schema.define(:version => 20210204165819) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(:version => 20210125105344) do
     t.integer  "dynamic_special_image_spec_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "empty_allowed"
   end
 
   create_table "dynamic_special_image_specs", :force => true do |t|
@@ -281,6 +282,7 @@ ActiveRecord::Schema.define(:version => 20210125105344) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "demo"
+    t.string   "help_message"
   end
 
   create_table "dynamic_specials", :force => true do |t|
