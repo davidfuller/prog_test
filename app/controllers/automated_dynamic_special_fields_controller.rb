@@ -66,7 +66,7 @@ class AutomatedDynamicSpecialFieldsController < ApplicationController
         format.html { 
           if source
             @index_params = clean_params(params[:index_params])
-            redirect_to automated_dynamic_special_path(source, :index_params => @index_params)
+            redirect_to automated_dynamic_special_path(source, :index_params => @index_params, :field_id => params[:id], :next_field_id => params[:automated_dynamic_special_field][:next_field_id], :edit_field => params[:edit_field])
           else
             redirect_to(automated_dynamic_special_fields_path) 
           end
