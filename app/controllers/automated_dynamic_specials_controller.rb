@@ -12,6 +12,19 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
   end
 
+  def report
+    if params[:start_date].blank?
+      params[:start_date] = AutomatedDynamicSpecial.default_report_dates[:start_date]
+    end
+    if params[:end_date].blank?
+      params[:end_date] = AutomatedDynamicSpecial.default_report_dates[:end_date]
+    end
+
+    @automated_dynamic_specials = AutomatedDynamicSpecial.report_search(params)
+    @channel_display = Channel.display
+    @templates = DynamicSpecialTemplate.template_display_with_all
+  end
+
   # GET /automated_dynamic_specials/1
   # GET /automated_dynamic_specials/1.xml
   def show
@@ -24,6 +37,12 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
     @dynamic_special_medias = DynamicSpecialMedia.search(params)
     @index_params = clean_params(params[:index_params])
+    if params[:field_id]
+      @field_index = @automated_dynamic_special.next_editable_field_id(params[:field_id].to_i, params[:next_field_id])
+    else
+      @field_index = @automated_dynamic_special.next_editable_field_id(0, params[:next_field_id])
+    end
+    @edit_field = params[:edit_field]||false
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @automated_dynamic_special }
@@ -120,6 +139,21 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
   end
 
+  def archive
+    @automated_dynamic_special = AutomatedDynamicSpecial.find(params[:id])
+    @automated_dynamic_special.archive = true
+    @automated_dynamic_special.save
+    flash[:notice] = 'Dynamic Special archived'
+    @index_params = clean_params(params[:index_params])
+
+    respond_to do |format|
+      format.html { redirect_to automated_dynamic_specials_url(@index_params)}
+      format.xml  { head :ok }
+    end
+  end
+
+
+
   def use_media
     field = AutomatedDynamicSpecialField.find(params[:field_id])
     @index_params = clean_params(params[:index_params])
@@ -168,12 +202,18 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
   end
 
-  def delete_multiple
+  def archive_multiple
     @index_params = clean_params(params[:index_params])
     ids_to_delete = params[:automated_dynamic_special_ids]
+    archived_count = 0
     if ids_to_delete && ids_to_delete.count > 0
-      deleted_ids = AutomatedDynamicSpecial.destroy(ids_to_delete)
-      flash[:notice] = my_pluralise('special', deleted_ids.length) + ' deleted'
+      records = AutomatedDynamicSpecial.find(ids_to_delete)
+      records.each do |record|
+        record.archive = true
+        record.save
+        archived_count += 1
+      end
+      flash[:notice] = my_pluralise('special', archived_count) + ' archived'
     else
       flash[:notice] = 'Nothing deleted'
     end 
