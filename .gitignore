@@ -320,3 +320,5 @@ public/data/still/IM/ImageMagicKDownload.sh
 public/data/still/IM/liblqr-1-0_0.4.1-2ubuntu1_amd64.deb
 public/data/still/IM/libmagickcore5_6.7.7.10-6ubuntu3.13_amd64.deb
 public/data/still/IM/libmagickwand5_6.7.7.10-6ubuntu3.13_amd64.deb
+public/javascripts/component.js
+public/javascripts/jquery-2.1.1.min.js
