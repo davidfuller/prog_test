@@ -7,4 +7,6 @@ Time::DATE_FORMATS[:broadcast_datetime_no_year] = "%d/%m %H:%M"         #05/06 1
 Time::DATE_FORMATS[:broadcast_calendar_format] = "%B %-d, %Y %l:%M %p"  #June 5, 2019 5:15PM
 Time::DATE_FORMATS[:broadcast_day_month] = "%d/%m"                      #05/06
 Time::DATE_FORMATS[:broadcast_datetime_seconds] = "%d/%m/%Y %H:%M:%S"   #05/06/2019 17:15:23
+Time::DATE_FORMATS[:broadcast_calendar_date_only] = "%B %-d, %Y"        #June 5, 2019PM
+Time::DATE_FORMATS[:broadcast_filename_datetime] = "%Y%m%d-%H%M%S"      #201906-171523
 # Need to restart server
