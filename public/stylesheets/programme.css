@@ -72,6 +72,41 @@
 	text-decoration: none;
 }
 
+#show-settings a {
+  font-size: smaller;
+  margin-right: 40px;
+}
+#hide-settings a {
+  font-size: smaller;
+  margin-right: 40px;
+}
+
+#ads-edit a{
+  font-size: 11px;
+  padding: 2px 10px;
+	z-index: 999;
+	background-color: #ebd5d5;
+	border-style:solid;
+  border-color: #7a0000;
+  border-width: 1px;
+	border-radius: 5px;
+	color: #000;
+}
+#show-ads-settings a {
+  font-size: smaller;
+  margin-right: 40px;
+}
+#hide-ads-settings a {
+  font-size: smaller;
+  margin-right: 40px;
+}
+.my-header h4{
+  display: inline;
+}
+.my-header span {
+  float:right;
+}
+
 #side a:hover { 
 	color: white;
 	background: #7a0000;
@@ -272,9 +307,11 @@
 
 table.field_issues {
 	border: 2px solid #7a0000;
+  border-radius: 6px;
 	background-color: #ebd5d5;
 	margin-top: 5px;
 	margin-bottom: 20px;
+  border-collapse: separate !important;
 }
 
 th.field_issues {
@@ -290,6 +327,14 @@ td.field_issues {
 	border-collapse: collapse;
 }
 
+td.report-row{
+  padding-left: 5px;
+  padding-top: 15px;
+}
+
+fieldset.report{
+  width: 620px !important;
+}
 
 #store td, th {
 	padding-right: 1em;
@@ -303,7 +348,7 @@ td.field_issues {
 }
 
 #store td .check_box{
-  vertical-align: bottom;
+  vertical-align:text-top;
 }
 
 #store td .day_heading {
@@ -602,6 +647,20 @@ td.field_issues {
   font-size: 12px;
   color: #7a0000;
 }
+
+#main .pretend-button a {
+  font-size: 12px;
+  padding: 4px 10px;
+	z-index: 999;
+	background-color: #7a0000;
+	border-radius: 5px;
+	color: #FFF;
+}
+#main .pretend-button a:hover{
+	color: #7a0000;
+	background: #ebd5d5;
+}
+
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
