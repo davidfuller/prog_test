@@ -8,7 +8,7 @@ class JpegFolder < ActiveRecord::Base
     remove_deleted_folders
     if File.directory?(JPEG_ROOT)
       Dir.chdir(JPEG_ROOT)
-      Dir['**/**'].each do |path|
+      Dir['*'].each do |path|
         if File.directory?(path)
           f = find_or_create_by_name(path)
           f.save
@@ -90,6 +90,7 @@ class JpegFolder < ActiveRecord::Base
                   :order => 'name'
       end
     end
+    
   end
   
   
