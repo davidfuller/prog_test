@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :automated_dynamic_special_fields
 
-  map.resources :automated_dynamic_specials, :collection => { :duplicate => :get, :demo_image => :get, :delete_multiple => :delete}
+  map.resources :automated_dynamic_specials, :collection => {:duplicate => :get, :demo_image => :get, :archive_multiple => :delete, :report => :get}, :member => {:archive => :delete, :export => :get}
 
   map.resources :template_field_joins
 
@@ -92,7 +92,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :countdown_ipps
 
-  map.resources :media_files, :collection => { :unready => :get, :last_use => :get, :move_2012 => :get }
+  map.resources :media_files, :collection => { :unready => :get, :last_use => :get, :move_2012 => :get, :recent => :get }, :member => {:resize => :get, :crop => :post}
 
   map.resources :media_folders
 
