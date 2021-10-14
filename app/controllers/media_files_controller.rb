@@ -124,7 +124,13 @@ class MediaFilesController < ApplicationController
           format.html { redirect_to(trailer_path(@media_file.trailer_id)) }
           format.xml  { head :ok }
         elsif @media_file.source == 'special preview show'
-          format.html { redirect_to(special_preview_path(@media_file.special_preview_id)) }
+          format.html do
+            if @media_file.special_preview_id.present?
+              redirect_to(special_preview_path(@media_file.special_preview_id))
+            else
+              redirect_to(media_files_path_with_type)
+            end
+          end 
           format.xml  { head :ok }
         else
           format.html { redirect_to(media_files_path_with_type) }
@@ -179,6 +185,8 @@ class MediaFilesController < ApplicationController
       flash[:notice] = @media_file.notice
       if @media_file.issue
         redirect_to :back
+      elsif @media_file.resize
+        redirect_to resize_media_file_path(@media_file, :automated_dynamic_special_id => params[:automated_dynamic_special_id])
       elsif params[:source] == 'promo'
         @promo = Promo.find(@media_file.first_promo_id)
         redirect_to @promo
@@ -193,13 +201,39 @@ class MediaFilesController < ApplicationController
                                                 :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
                                                 :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media])
       elsif params[:source] == 'dynamic_special_media'
+        redirect_to dynamic_special_media_path(params[:dynamic_special_media_id], :automated_dynamic_special_id => params[:automated_dynamic_special_id])
+      else
+        redirect_to media_file_path(@media_file, :source => params[:source])
+      end
+    end
+  end
+
+  def crop
+    @media_file = MediaFile.find_by_id(params[:id])
+    if params[:cancel] == 'true'
+      @media_file.delete_temp_png
+      flash[:notice] = 'Resize cancelled'
+      if params[:automated_dynamic_special_id].present?
+        redirect_to automated_dynamic_special_path(params[:automated_dynamic_special_id])
+      else
+        redirect_to dynamic_special_media_path(@media_file.dynamic_special_media)
+      end
+    else
+      if @media_file.do_the_crop(params)
+        @media_file.complete_the_upload
+        flash[:notice] = @media_file.notice
+        if @media_file.issue
+          redirect_to media_file_path(@media_file, :source => params[:source])
+        else
+          redirect_to dynamic_special_media_path(@media_file.dynamic_special_media, :automated_dynamic_special_id => params[:automated_dynamic_special_id])
+        end
+      else
+        flash[:notice] = 'Failed to do the resize/crop'
         if params[:automated_dynamic_special_id]
           redirect_to automated_dynamic_special_path(params[:automated_dynamic_special_id])
         else
-          redirect_to dynamic_special_media_path(params[:dynamic_special_media_id])
+          redirect_to dynamic_special_media_path(@media_file.dynamic_special_media)
         end
-      else
-        redirect_to media_file_path(@media_file, :source => params[:source])
       end
     end
   end
@@ -236,7 +270,15 @@ class MediaFilesController < ApplicationController
       format.xml { render :xml => @media_files }
     end
   end
-  
+
+  # GET /media_files/1/resize
+  def resize
+    @media_file = MediaFile.find(params[:id])
+    if params[:redo]
+      @media_file.redo_the_resize
+    end
+  end
+
   def change_last_use
     if Useful.date?(params[:new_last_use])
       if params[:media_file_ids] != nil
@@ -264,6 +306,14 @@ class MediaFilesController < ApplicationController
         trailer.last_use = @media_file.last_use
         trailer.save
       end
+    end
+  end
+
+  def recent
+    @media_files = MediaFile.recent_special_previews(params)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  #_{ render :xml => @media_files }
     end
   end
 end
