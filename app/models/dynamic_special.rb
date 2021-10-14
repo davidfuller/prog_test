@@ -40,7 +40,19 @@ class DynamicSpecial < ActiveRecord::Base
             end
           end 
         else # no search (almoost never)
-          paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ?', channel_id]
+          if show_all
+            if show_only #past last use
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ?', channel_id]
+            end
+          else
+            if show_only
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
+            else
+              paginate  :per_page => 12, :page => page, :conditions => ['channel_id = ? AND last_use >= ?', channel_id,  current_time]
+            end
+          end
         end
       else #all channels
         if search then
