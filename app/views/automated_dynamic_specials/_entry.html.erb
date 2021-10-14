@@ -15,3 +15,11 @@
     <%= f.label :dynamic_special_template_id, 'Template' %><br />
     <%= f.collection_select (:dynamic_special_template_id, @templates, :id, :name, {:prompt => 'Choose a template'})%>
   </p>
+
+  <%= link_to_function('Show/hide archive') {|page| page['show-archive'].toggle} %>
+  <div id = 'show-archive', style = "display: none;">
+  <p>
+    <%= f.label :archive %><br />
+    <%= f.check_box :archive %>
+  </p>
+  </div>
