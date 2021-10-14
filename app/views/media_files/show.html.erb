@@ -30,3 +30,6 @@
 <% else %>
 	<%= link_to 'Back', :back %>
 <% end %>
+<% if @media_file.media_type_resizeable%>
+  | <%= link_to 'Resize', resize_media_file_path(@media_file, :redo => :true, :automated_dynamic_special_id => params[:automated_dynamic_special_id]) %>
+<% end %>
