@@ -3,6 +3,8 @@ class AutomatedDynamicSpecialField < ActiveRecord::Base
   belongs_to :automated_dynamic_special
   belongs_to :template_field_join
 
+  attr_accessor :next_field_id
+
   def reconcile_the_change()
     if template_field_join.dynamic_special_field.dynamic_special_image_spec.logo
       logo = DynamicSpecialLogo.find(the_id)
@@ -112,4 +114,16 @@ class AutomatedDynamicSpecialField < ActiveRecord::Base
     filename
   end
 
+  def logo_name
+    the_name = nil
+    if template_field_join.dynamic_special_field.dynamic_special_image_spec.logo
+      if the_id
+        logo = DynamicSpecialLogo.find(the_id)
+        if logo
+          the_name = logo.name
+        end
+      end
+    end
+    the_name
+  end
 end
