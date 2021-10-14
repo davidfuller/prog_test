@@ -1,0 +1,55 @@
+
+
+  <% promo_height = @media_file.media_dimensions[:height] %>
+  <% promo_width = @media_file.media_dimensions[:width] %>
+  <% container_margin = 200 %>
+  <% javascript_tag do %>
+    window.promo_height = "<%= j promo_height %>";
+    window.promo_width = "<%= j promo_width %>";
+    window.container_margin = "<%= j container_margin %>";
+  <% end %>
+	
+    <style>
+      .overlay {width: <%= h promo_width %>px; height: <%= h promo_height %>px;}
+      .component {width: <%= h (promo_width + container_margin) %>px; height: <%= h (promo_height + container_margin) %>px;}
+      .overlay:after,.overlay:before {width: <%= h (promo_width) %>px;}
+      .overlay-inner:after,.overlay-inner:before {height: <%= h (promo_width) %>px;}
+	  </style>
+    <h1>Resizing Promo Image</h1>
+    <b><%=h @media_file.name %></b><br/>
+		<div class="container">
+      <div class="component">
+        <div class="overlay">
+          <div class="overlay-inner">
+          </div>
+        </div>
+        <%= image_tag @media_file.temp_png, :class => "resize-image", :alt => "image for resizing" %>
+      </div>
+    </div><!-- /content -->
+    <button class="btn-crop js-crop">Use this</button>
+    <button class="btn-crop js-cancel">Cancel</button>
+    <button class="btn-crop js-fit">Fit</button>
+    <button class="btn-crop js-centre">Centre</button>
+    <button class="btn-crop js-reload">Reload</button>
+    <span id = 'scale' class = 'info-text'>Scale:</span>
+    <span id = 'x-offset' class = 'info-text'>X Offset:</span>
+    <span id = 'y-offset' class = 'info-text'>Y Offset:</span>
+		</div> <!-- /container -->
+
+
+    <div id = 'hidden-form', style = 'display: none;'>
+      <% form_tag crop_media_file_path(@media_file), :id => 'my-crop-form', :method => :post do %>
+        <p>
+          <%= text_field_tag :scale, '0', :id => 'scale-value' %>
+          <%= text_field_tag :x_offset, '0', :id => 'x-offset-value' %>
+          <%= text_field_tag :y_offset, '0', :id => 'y-offset-value' %>
+          <%= text_field_tag :cancel, '', :id => 'cancel-value' %>
+          <%= hidden_field_tag :automated_dynamic_special_id, params[:automated_dynamic_special_id] %>
+          <%= submit_tag 'Update' %>
+        </p>
+      <% end %>
+    </div>
+
+    <%= javascript_include_tag "jquery-2.1.1.min" %>
+    <%= javascript_include_tag "component" %>
+	
