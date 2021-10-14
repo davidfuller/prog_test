@@ -1,21 +1,44 @@
-<% #form_for (field) do |f| %>
-<% form_for field, :url => automated_dynamic_special_field_path(field.id, :index_params => @index_params), :method => :put do |f| %>
-  <%= hidden_field_tag(:automated_dynamic_special, @automated_dynamic_special.id) %>
-  <%= hidden_field_tag(:field_type, field_type.id) %>
+<% if @edit_field %>
+  <% form_for field, :url => automated_dynamic_special_field_path(field.id, :index_params => @index_params, :edit_field => @edit_field), :method => :put do |f| %>
+    <%= hidden_field_tag(:automated_dynamic_special, @automated_dynamic_special.id) %>
+    <%= hidden_field_tag(:field_type, field_type.id) %>
 
+    <% if @field_index == field.id %>
+      <% set_autofocus_text = {:autofocus => true, :size => 35, :id => 'my_text_' + field.id.to_s} %>
+      <% set_autofocus_select = {:autofocus => true, :id => 'my_select_' + field.id.to_s} %>
+    <% else %>
+      <% set_autofocus_text = {:size => 35, :id => 'my_text_' + field.id.to_s} %>
+      <% set_autofocus_select = {:id => 'my_select_' + field.id.to_s} %>
+    <% end %>
+    
+    <% if @logo_sets.empty?%>
+      <%= f.text_field :the_value, set_autofocus_text %>
+      <div id ='hidden_text' , style = "display: none;" ><%= f.text_field :next_field_id, {:id => 'my_next_field_' + field.id.to_s} %></div>
+    <% else %>
+      <% sets = @logo_sets.select { |m| m[:spec].id == field_type.id } %>
+      <% if sets.empty?%>
+        <%= f.text_field :the_value, set_autofocus_text %>
+        <div id ='hidden_text' , style = "display: none;" ><%= f.text_field :next_field_id, {:id => 'my_next_field_' + field.id.to_s} %></div>
+      <% else %>
+        <% logos = sets[0][:logos] %>
+        <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}, set_autofocus_select) %>
+      <% end %>
+    <% end %>
+    <%= f.submit "Update", :id => 'my_submit_' + field.id.to_s %><br/>
+    <% if !@logo_sets.empty? && !sets.empty? %>
+      <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
+    <% end %>
+  <% end %>
+<% else %>
   <% if @logo_sets.empty?%>
-    <%= f.text_field :the_value, :size => 35, :id => 'my_text_' + field.id.to_s %>
+    <%=h field.the_value %>
   <% else %>
     <% sets = @logo_sets.select { |m| m[:spec].id == field_type.id } %>
     <% if sets.empty?%>
-      <%= f.text_field :the_value, :size => 35, :id => 'my_text_' + field.id.to_s %>
+      <%=h field.the_value %>
     <% else %>
-      <% logos = sets[0][:logos] %>
-      <%= f.collection_select(:the_id, logos, :id, :name, {:prompt => 'Choose a logo'}, {:id => 'my_select_' + field.id.to_s}) %>
+      <%=h field.logo_name %></div>
+      <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
     <% end %>
-  <% end %>
-  <%= f.submit "Update" %><br/>
-  <% if !@logo_sets.empty? && !sets.empty? %>
-    <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
   <% end %>
 <% end %>
