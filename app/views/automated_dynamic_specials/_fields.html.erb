@@ -37,7 +37,21 @@
             end %></div>
     </th>
   </tr>	
-
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>
+      <div id = 'ads-edit'>
+        <% if @edit_field %>    
+          <%= link_to 'Finish Edit', automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params, :edit_field => false) %>
+        <% else %>
+          <%= link_to 'Edit Fields', automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params, :edit_field => true) %>
+        <% end %>
+      </div>
+    </td>
+  </tr>
  <% automated_dynamic_special_fields.each do |field| %>
     <% template = field.template_field_join %>
     <% if template.fixed%>
@@ -56,7 +70,11 @@
       <td><%= link_to (image_tag(field.dynamic_special_logo_url, :size => field_type.preview_size), dynamic_special_media_path(field.the_id)) if field.dynamic_special_logo_url %></td>
       <% if template.fixed %>
         <td>
-          <%=h field.the_display %><br/>
+          <% if field_type.name == 'Switcher'%>
+            <%=h field.the_value %><br/>
+          <% else %>
+            <%=h field.the_display %><br/>
+          <% end %>
           <% if field_type.logo %>
             <div class = 'show-filenames', style = 'display: none;'><%=h field.logo_full_filename %></div>
           <% else %>
@@ -73,7 +91,7 @@
           <% if @promo_dynamic_special_media %>
             <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media, :automated_dynamic_special_id => @automated_dynamic_special) %> |
             <% if @promo_dynamic_special_media.media_file %>
-              <%= link_to 'Upload Media', media_file_path(@promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special) %> |
+              <%= link_to 'Upload Media', media_file_path(@promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special, :dynamic_special_media_id => @promo_dynamic_special_media) %> |
             <% end %>
           <% end %>
           <%= link_to_function ('Choose Media') {|page| page['search_media'].toggle} %> | 
