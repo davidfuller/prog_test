@@ -12,11 +12,18 @@
 				<%= text_field_tag :search, params[:search], :size => 45 %>
 				<%= submit_tag "Search", :name => nil %>
 			</p>
-      <p>
-        <label>Image Type</label> 
-        <%= select_tag :image_type, options_for_select(@image_types, params[:image_type]),{:onchange => 'this.form.submit()'}%><br/>
-      </p>
-
+      <table>
+        <tr>
+          <td>
+            <%= label_tag :image_type, "Image Type", :id => 'check_label' %>
+            <%= select_tag :image_type, options_for_select(@image_types, params[:image_type]),{:onchange => 'this.form.submit()'}%>
+          </td>
+          <td>
+            <%= label_tag :created_sort, "Sort by most recently added", :id => 'check_label' %>
+            <%= check_box_tag :created_sort, value ="1", params[:created_sort],{:onchange => 'this.form.submit()', :class => 'check_box'} %><br/>
+          </td>
+        </tr>
+      </table>
 		<% end %>
 </fieldset>
 
@@ -25,19 +32,18 @@
 <%= will_paginate @dynamic_special_medias %>
 <table>
   <tr>
-    <th>Media file</th>
-    <th>Image Type</th>
-    <th>Filename</th>
-
+    <th>Media Details</th>
   </tr>
 
 <% @dynamic_special_medias.each do |dynamic_special_media| %>
   <tr>
-    <td><%=h dynamic_special_media.media_file.name if dynamic_special_media.media_file %></td>
-    <td><%=h dynamic_special_media.dynamic_special_image_spec.name if dynamic_special_media.dynamic_special_image_spec %></td>
-    <td><%=h dynamic_special_media.media_file.filename if dynamic_special_media.media_file %></td>
+    <td>
+        <b><%= link_to(dynamic_special_media.media_file.name, dynamic_special_media) if dynamic_special_media.media_file %></b><br/>
+        <%=h dynamic_special_media.dynamic_special_image_spec.name if dynamic_special_media.dynamic_special_image_spec %><br/>
+        <%=h dynamic_special_media.media_file.filename if dynamic_special_media.media_file %>
+    </td>
     <td><% if dynamic_special_media.media_file && dynamic_special_media.media_file.jpeg_exist? %>
-      <%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %>
+      <%= link_to(image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size), dynamic_special_media) if dynamic_special_media.media_file %>
     <% end %></td>
     <td><%= link_to 'Show', dynamic_special_media %></td>
     <td><%= link_to 'Edit', edit_dynamic_special_media_path(dynamic_special_media) %></td>
