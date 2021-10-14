@@ -11,17 +11,22 @@ class DynamicSpecialMedia < ActiveRecord::Base
     page = params[:page]
     search = params[:search]
     image_type = params[:image_type]
+    created_sort = params[:created_sort].present?
 
+    if created_sort
+      sort_text = 'created_at DESC'
+    else
+      sort_text = 'media_files.name'
+    end
     if !image_type || image_type == 'All'
       paginate  :all, :per_page => PER_PAGE, :page => page, :joins => :media_file,
                 :conditions => ['media_files.name LIKE ?', "%#{search}%"],
-                :order => 'media_files.name'
+                :order => sort_text
     else
       paginate  :all, :per_page => PER_PAGE, :page => page, :joins => [:media_file, :dynamic_special_image_spec],
                 :conditions => ['media_files.name LIKE ? AND dynamic_special_image_specs.name = ?', "%#{search}%", image_type], 
-                :order => 'media_files.name'
+                :order => sort_text
     end
-    
   end
 
   def self.media_name_exists?(name)
