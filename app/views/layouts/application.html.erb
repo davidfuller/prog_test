@@ -6,9 +6,8 @@
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <%= (yield :refresh) %>
 		<title><%= (yield :title) || 'MuVi2 Viasat Programme Database' %></title>
-		<%= stylesheet_link_tag "programme", "scaffold", :media => "all" %>
+		<%= stylesheet_link_tag "programme", "scaffold", "normalize", "demo", "component", :media => "all" %>
 		<%= javascript_include_tag :defaults %>
-    
 	</head>
 	<body id="store">
 		<div id="banner">
@@ -39,6 +38,12 @@
 				<h4>Preview Images</h4>
 					<%= link_to 'Scan Images', jpeg_folders_path %><br/>
 					<%= link_to 'Images', jpegs_path %>
+        <h4>Automated Dynamic Specials</h4>
+          <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
+          <%= link_to 'ADS Report', report_automated_dynamic_specials_path %><br/>
+          <%= link_to 'Recent Special Preview', recent_media_files_path %><br/>
+          <%= link_to 'Dynamic Special Media', dynamic_special_medias_path %><br/>
+          <%= link_to 'Dynamic Special Logos', dynamic_special_logos_path %><br/>
 				<h4>Media</h4>
 					<%= link_to 'Bugs', bugs_path %><br/>
 					<%= link_to 'Promo Media', promos_path %><br/>
@@ -53,39 +58,45 @@
 					<%= link_to 'Media Folders', media_folders_path %><br/>
           <%= link_to 'Trailer Import Files', trailer_files_path %><br/>
           <%= link_to 'Diva Data', diva_datas_path %><br/>
-        <h4>Automated Dynamic Specials</h4>
-          <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
-          <%= link_to 'Dynamic Special Media', dynamic_special_medias_path %><br/>
-          <%= link_to 'Dynamic Special Logos', dynamic_special_logos_path %><br/>
-				<h4>Settings</h4>
-					<%= link_to 'Media Types', media_types_path %><br/>
-					<%= link_to 'Playlist File', playlist_position_settings_path %><br/>
-					<%= link_to 'Press File', press_tab_settings_path %><br/>
-					<%= link_to 'Schedule File', schedule_tab_settings_path %><br/>
-					<%= link_to 'Common Words', commons_path %><br/>
-					<%= link_to 'Channels',channels_path %><br/>
-					<%= link_to 'Languages',languages_path %><br/>
-					<%= link_to 'Words to Ignore', ignores_path %><br/>
-					<%= link_to 'Playlist Filenames', playlist_filenames_path %><br/>
-					<%= link_to 'Press Filenames', press_filenames_path %><br/>
-					<%= link_to 'Schedule Filenames', schedule_files_path %><br/>
-					<%= link_to 'Status Messages', statuses_path %><br/>	
-					<%= link_to 'Aspect Ratio', aspects_path %><br/>
-          <%= link_to 'Trailer Tabs', trailer_tab_settings_path %><br/>			
-          <%= link_to 'Trailer House Number Prefixes', trailer_house_number_prefixes_path %><br/>
-          <%= link_to 'Diva Settings', diva_settings_path %><br/>			
-          <%= link_to 'Diva Status Messages', diva_statuses_path %><br/>
-          <%= link_to 'Diva Logs', diva_logs_path %><br/>			
-          <%= link_to 'Diva Poll Status', diva_polls_path %><br/>			
-          <%= link_to 'On Demand Services', services_path %><br/>
-		  <%= link_to 'Viafree / Viaplay Filenames', on_demand_files_path %><br/>
-		  <%= link_to 'Viafree / Viaplay Scheduling Messages', on_demand_schedulings_path %><br/>
-      <%= link_to 'Clipsource EIDR Replacements', clipsources_path %><br/>
-      <%= link_to 'Dynamic Special Templates', dynamic_special_templates_path%><br/>
-      <%= link_to 'Dynamic Special Fields', dynamic_special_fields_path%><br/>
-      <%= link_to 'Dynamic Special Field Specifications', dynamic_special_image_specs_path%><br/>
-      <%= link_to 'Template Field Joins', template_field_joins_path%><br/>
-      <%= link_to 'Automated DS Fields', automated_dynamic_special_fields_path%><br/>
+          <br/>
+				<div class = "my-header"><h4>Settings</h4>
+          <span><div id = 'show-settings'><%= link_to_function ('Show') {|page| page['the-settings'].toggle(); page['show-settings'].toggle; page['hide-settings'].toggle}%></div>
+          <div id = 'hide-settings', style = 'display: none;'><%= link_to_function ('Hide') {|page| page['the-settings'].toggle(); page['show-settings'].toggle; page['hide-settings'].toggle} %></div></span></div>
+          <div id = 'the-settings', style = 'display: none;'>
+            <%= link_to 'Media Types', media_types_path %><br/>
+            <%= link_to 'Playlist File', playlist_position_settings_path %><br/>
+            <%= link_to 'Press File', press_tab_settings_path %><br/>
+            <%= link_to 'Schedule File', schedule_tab_settings_path %><br/>
+            <%= link_to 'Common Words', commons_path %><br/>
+            <%= link_to 'Channels',channels_path %><br/>
+            <%= link_to 'Languages',languages_path %><br/>
+            <%= link_to 'Words to Ignore', ignores_path %><br/>
+            <%= link_to 'Playlist Filenames', playlist_filenames_path %><br/>
+            <%= link_to 'Press Filenames', press_filenames_path %><br/>
+            <%= link_to 'Schedule Filenames', schedule_files_path %><br/>
+            <%= link_to 'Status Messages', statuses_path %><br/>	
+            <%= link_to 'Aspect Ratio', aspects_path %><br/>
+            <%= link_to 'Trailer Tabs', trailer_tab_settings_path %><br/>			
+            <%= link_to 'Trailer House Number Prefixes', trailer_house_number_prefixes_path %><br/>
+            <%= link_to 'Diva Settings', diva_settings_path %><br/>			
+            <%= link_to 'Diva Status Messages', diva_statuses_path %><br/>
+            <%= link_to 'Diva Logs', diva_logs_path %><br/>			
+            <%= link_to 'Diva Poll Status', diva_polls_path %><br/>			
+            <%= link_to 'On Demand Services', services_path %><br/>
+            <%= link_to 'Viafree / Viaplay Filenames', on_demand_files_path %><br/>
+            <%= link_to 'Viafree / Viaplay Scheduling Messages', on_demand_schedulings_path %><br/>
+            <%= link_to 'Clipsource EIDR Replacements', clipsources_path %><br/>
+          </div><br/>
+        <div class = "my-header"><h4>ADS Settings</h4>
+          <span><div id = 'show-ads-settings'><%= link_to_function ('Show') {|page| page['ads-settings'].toggle(); page['show-ads-settings'].toggle; page['hide-ads-settings'].toggle}%></div>
+          <div id = 'hide-ads-settings', style = 'display: none;'><%= link_to_function ('Hide') {|page| page['ads-settings'].toggle(); page['show-ads-settings'].toggle; page['hide-ads-settings'].toggle} %></div></span></div>
+          <div id = 'ads-settings', style = 'display: none;'>
+            <%= link_to 'Dynamic Special Templates', dynamic_special_templates_path%><br/>
+            <%= link_to 'Dynamic Special Fields', dynamic_special_fields_path%><br/>
+            <%= link_to 'Field Specifications', dynamic_special_image_specs_path%><br/>
+            <%= link_to 'Templates and Field Numbers', template_field_joins_path%><br/>
+            <%= link_to 'Automated DS Fields', automated_dynamic_special_fields_path%><br/>
+          </div>
 			</div> 
 			<div id="main">
 				<p style="color: green">
