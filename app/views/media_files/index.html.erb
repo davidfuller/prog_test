@@ -49,7 +49,7 @@
     <td><%=h media_file.filename %></td>
     <td><%=h media_file.media_type.name unless media_file.media_type.nil? %></td>
     <td><%=h media_file.media_folder.folder unless media_file.media_folder.nil? %></td>
-		<td><%=h media_file.status_display%>
+		<td><%=h media_file.status_display%></td>
     <td><%=h media_file.first_use.to_s(:broadcast_datetime) unless media_file.first_use.nil? %></td>
     <td><%=h media_file.last_use.to_s(:broadcast_datetime) unless media_file.last_use.nil? %></td>
     <td><%= link_to 'Show', media_file %></td>
