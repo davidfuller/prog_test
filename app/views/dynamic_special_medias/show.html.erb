@@ -9,14 +9,21 @@
 <% if params[:show_upload_message] %>
   <p>
     You can now: <br/>
-    <div class = 'larger-link'>
-      <%= button_to 'Upload the actual media file ', media_file_path(@dynamic_special_media.media_file, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media, 
+    <div class = 'pretend-button'>
+      <%= link_to 'Upload the actual media file ', media_file_path(@dynamic_special_media.media_file, :source => 'dynamic_special_media', :dynamic_special_media_id => @dynamic_special_media, 
                                                                                                         :automated_dynamic_special_id => params[:automated_dynamic_special_id], 
-                                                                                                        :upload => 'true'), :method => :get %> <br/>
-      <%= button_to 'Return to the automated dynamic special ', automated_dynamic_special_path(params[:automated_dynamic_special_id]), :method => :get %> <br/>
+                                                                                                        :upload => 'true'), :method => :get %> <br/><br>
+      <%= link_to 'Return to the automated dynamic special ', automated_dynamic_special_path(params[:automated_dynamic_special_id]), :method => :get %> <br/>
     </div>
   </p>
+<% else %>
+  <% if params[:automated_dynamic_special_id].present? %>
+    <div class = 'pretend-button'>
+      <%= link_to 'Return to Automated Dynamic Special', automated_dynamic_special_path(params[:automated_dynamic_special_id]) %><br/>
+    </div>
+  <% end %>
 <% end %>
+<br/>
 
 <b>Media Name:</b><br/>
 <%=h @dynamic_special_media.media_file.name if @dynamic_special_media.media_file %></b><br/>
@@ -26,7 +33,7 @@
 <%= render :partial => 'shared/dynamic_special_image_spec', :locals	=> {:dynamic_special_image_spec => @dynamic_special_media.dynamic_special_image_spec} %>
 
 <%= link_to 'Edit', edit_dynamic_special_media_path(@dynamic_special_media) %> |
-<% if params[:automated_dynamic_special_id] %>
+<% if params[:automated_dynamic_special_id].present? %>
   <%= link_to 'Back', automated_dynamic_special_path(params[:automated_dynamic_special_id]) %> |
 <% else %>
   <%= link_to 'Back', :back %> |
