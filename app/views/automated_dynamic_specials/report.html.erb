@@ -1,0 +1,51 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special: MuVi2 Database
+<% end %>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<fieldset class = 'report'>
+	<legend>Automated Dynamic Specials Report</legend>
+  <% form_tag report_automated_dynamic_specials_path, :method =>'get' do %>
+      <div id ='search_button' , style = "display: none;" ><%= submit_tag "Search", :name => nil %><br/></div>
+      <table>
+      <tr>
+          <td class = 'report-row'><%= label_tag :channel, 'Channel', :id => 'check_label'%></td>
+          <td class = 'report-row'><%= select_tag :channel, options_for_select(@channel_display.insert(0,"All"), params[:channel]), {:onchange => 'this.form.submit()', :id => 'check_label'}%></td>
+          <td class = 'report-row'><%= label_tag :template, 'Template', :id => 'check_label'%> </td>
+          <td class = 'report-row'><%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td></tr>
+      <tr>
+          <td class = 'report-row'><%= label_tag :channel, 'Start Date', :id => 'check_label'%></td>
+          <% start_display_date = params[:start_date] %>
+          <td class = 'report-row'><%= calendar_date_select_tag :start_date, start_display_date, {:month_year => :label, :after_close => 'this.form.submit()', :id => 'check_label'} %></td>
+          <td class = 'report-row'><%= label_tag :channel, 'End Date', :id => 'check_label'%></td>
+          <% end_display_date = params[:end_date] %>
+          <td class = 'report-row'><%= calendar_date_select_tag :end_date, end_display_date, {:month_year => :label, :after_close => 'this.form.submit()', :id => 'check_label'} %></td></tr>
+      </table>
+  <% end %>
+</fieldset>
+<p>
+  <h2><%= h pluralize(@automated_dynamic_specials.length, 'Dynamic Special')%></h2>
+</p>
+<table>
+    <tr>
+      <th>Created Date</th>
+      <th>Name</th>
+      <th>Channel</th>
+      <th>Dynamic Special Template</th>
+      <th>Last Use</th>
+      <th>Archived</th>
+    </tr>
+
+  <% @automated_dynamic_specials.each do |automated_dynamic_special| %>
+    <tr>
+      <td><%=h automated_dynamic_special.created_at.to_s(:broadcast_date) %></td>
+      <td><%=h automated_dynamic_special.name %></td>
+      <td><%=h automated_dynamic_special.channel_name %></td>
+      <td><%=h automated_dynamic_special.template_name %></td>
+      <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
+      <td><%=h automated_dynamic_special.archive %></td>
+      <td><%= link_to 'Show', automated_dynamic_special_path(automated_dynamic_special) %></td>
+    </tr>
+  <% end %>
+</table>
