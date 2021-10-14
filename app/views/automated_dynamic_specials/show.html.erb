@@ -54,15 +54,23 @@
 <% elsif @automated_dynamic_special.special_preview_status == :requested %>
   <h2>Special Preview</h2>
   The preview has been requested. It will appear here within a few hours.<br/>
-  <td><%= link_to 'Remove request', special_preview_path(@automated_dynamic_special.special_preview, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %></td>
+  <%= link_to 'Remove request', special_preview_path(@automated_dynamic_special.special_preview, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
 <% elsif @automated_dynamic_special.special_preview_status == :available %>
   <h2>Special Preview</h2>
   <%= render :partial => 'special_preview', :locals => {:media_file => @automated_dynamic_special.special_preview.media_file } %>
+  | <%= link_to 'Remove special preview', special_preview_path(@automated_dynamic_special.special_preview, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
 <% end %>
 
 
 
 <%= render :partial => 'demo', :locals => {:dynamic_special_template => @automated_dynamic_special.dynamic_special_template, :message => ''} %>
+
+<% if @automated_dynamic_special.archive %>
+  <%= link_to_function('Show fully delete'){|page| page['show-delete'].toggle} %>
+  <div id = 'show-delete', style = 'display:none;' >
+    <%= link_to 'Fully delete this Automated Dynamic Special', automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params), :confirm => 'Are you sure? This is not recommended.', :method => :delete %>
+  </div>
+<% end %>
 
 <script type="text/javascript">
   window.onload = setUpMyJS;
@@ -70,7 +78,7 @@
     var status = document.getElementById("image-status");
     if (status != null){
       if(status.textContent == "Ready"){
-        setTimeout("refreshPage();", 120000); // milliseconds  2 minutes
+        setTimeout("refreshPage();", 600000); // milliseconds 10 minutes
       } else {
         setTimeout("refreshPage();", 30000); // milliseconds 30 seconds
       }
@@ -87,17 +95,25 @@
     console.log("addListenerToFields")
     var myFields = document.querySelectorAll('[id^="my_text_"]');
     myFields.forEach((myField) => {
-      myField.addEventListener("focusout", function() {saveValue(myField.id)});
+      myField.addEventListener("focusout", function(e) {saveValue(myField.id, e)});
+      myField.initialValue = myField.value
     });
     var mySelects = document.querySelectorAll('[id^="my_select_"]');
     mySelects.forEach((mySelect) => {
       mySelect.addEventListener("change", function() {saveSelect(mySelect.id)});
     });
   }
-  function saveValue(myID){
+  function saveValue(myID, e){
+    var nextID = myID.replace("my_text_","my_next_field_");
     var formID = myID.replace("my_text_","edit_automated_dynamic_special_field_");
-    var myForm = document.getElementById(formID);
-    myForm.submit()
+    var theText = document.getElementById(myID);
+    
+    if (theText.initialValue != theText.value){
+      var theNext = document.getElementById(nextID);
+      theNext.value = e.relatedTarget.id
+      var myForm = document.getElementById(formID);
+      myForm.submit()
+    }
   }
   function saveSelect(myID){
     var formID = myID.replace("my_select_","edit_automated_dynamic_special_field_");
