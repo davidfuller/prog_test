@@ -20,6 +20,7 @@ xml.automated_dynamic_specials do
           xml.default_text fool_excel_prefix(special_field.field_value)
         end
       end
+      xml.media_status fool_excel_prefix(dynamic_special.promo_media_status)
     end
   end 
 end
