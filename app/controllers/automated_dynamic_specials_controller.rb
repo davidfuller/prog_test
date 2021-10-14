@@ -50,6 +50,15 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end
   end
 
+  def export
+    automated_dynamic_special = AutomatedDynamicSpecial.find(params[:id])
+    data = automated_dynamic_special.data_for_preview
+    my_data = AutomatedDynamicSpecial.to_csv(data)
+    respond_to do |format|
+      format.csv 	{send_data my_data, :filename => "Field_Data-#{Time.current.to_s(:broadcast_filename_datetime)}.csv"}
+    end
+  end
+
   # GET /automated_dynamic_specials/new
   # GET /automated_dynamic_specials/new.xml
   def new
@@ -174,7 +183,8 @@ class AutomatedDynamicSpecialsController < ApplicationController
   def duplicate
     original = AutomatedDynamicSpecial.find(params[:id])
     @automated_dynamic_special = original.clone
-    @automated_dynamic_special.name = original.name + ' Copy'
+    @automated_dynamic_special.name = AutomatedDynamicSpecial.duplicate_name(original.name)
+    @automated_dynamic_special.special_preview_id = nil
     @automated_dynamic_special.save
     @automated_dynamic_special.add_special_fields(original)
     @channels = Channel.all
