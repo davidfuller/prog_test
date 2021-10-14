@@ -21,27 +21,34 @@
               <%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
           <td><%= label_tag :show_only, "Show only past last use", :id => 'check_label' %>
               <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
+      <tr><td><%= label_tag :include_archive, "Include Archived", :id => 'check_label' %>
+              <%= check_box_tag :include_archive, value ="1", params[:include_archive],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+          <td><%= label_tag :archive_only, "Archived Only", :id => 'check_label' %>
+              <%= check_box_tag :archive_only, value ="1", params[:archive_only],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
       <tr><td><%= label_tag :show_issues, "Issues only", :id => 'check_label' %>
               <%= check_box_tag :show_issues, value ="1", params[:show_issues],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td></tr>
     </table>
 		<% end %>
     <% index_params = {:channel => params[:channel], :search => params[:search], :show_all => params[:show_all], 
-                        :show_only => params[:show_only], :show_issues => params[:show_issues], :template => params[:template]} %>
+                        :show_only => params[:show_only], :show_issues => params[:show_issues], :template => params[:template],
+                        :include_archive => params[:include_archive], :archive_only => params[:archive_only]} %>
 </fieldset>
 
 <br/>
 <%= will_paginate @dynamic_specials %>
 <br/>
 
-<% form_tag delete_multiple_automated_dynamic_specials_path(:index_params => index_params), :method => :delete do%>
+<% form_tag archive_multiple_automated_dynamic_specials_path(:index_params => index_params), :method => :delete do%>
   <% if show_delete %>
-  <p>
+  
     <span class = 'link_button'>
     <%= link_to_function 'Check all', "$$('input.checks').each(function(checkbox) { checkbox.checked = true; });" %> |
     <%= link_to_function 'Uncheck all', "$$('input.checks').each(function(checkbox) { checkbox.checked = false; });" %><br/>
     </span>
-    <%= submit_tag "Delete all checked", :confirm => "Are you sure you want to delete all checked specials?\r\nThis cannot be undone" %>
-  </p>
+    <p>
+      <%= submit_tag "Archive all checked", :confirm => "Are you sure you want to archive all checked specials?" %>
+    </p>
+  
   <% end %>
 
   <table>
@@ -58,7 +65,7 @@
     <% if automated_dynamic_special.short_ready_message[:message] != "Good" then row_class = 'dynamic_special_error' end %>
     <tr class = <%= row_class %>>
       <% if show_delete %><td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, false , :class => 'checks' %></td><% end %>
-      <td><%=h automated_dynamic_special.name %></td>
+      <td><b><%=link_to automated_dynamic_special.name, automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></b></td>
       <td><%=h automated_dynamic_special.channel_name %></td>
       <td><%=h automated_dynamic_special.template_name %></td>
       <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
@@ -75,7 +82,11 @@
       </td>
       <td><%= link_to 'Show', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
       <td><%= link_to 'Edit', edit_automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></td>
-      <td><%= link_to 'Destroy', automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params), :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><% if automated_dynamic_special.archive %>
+        Archived
+      <% else %>
+        <%= link_to 'Archive', archive_automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params), :confirm => 'Are you sure?', :method => :delete %></td>
+      <% end %>
       <td><%= link_to 'Duplicate', :controller => :automated_dynamic_specials, :action => :duplicate, :id => automated_dynamic_special, :index_params => index_params %></td>
     </tr>
   <% end %>
