@@ -442,16 +442,17 @@ class OnDemand < ActiveRecord::Base
       end
 
       if result == :exists || result == :updated || result == :saved
-        logger.debug "Channel==========="
+        logger.debug "Channel Before creating channels==========="
         od.add_any_channels_needed
         channel_ids = channels_from_row(row)
+        logger.debug "The IDs"
         logger.debug channel_ids
         channel_ids.each do |channel_id|
           t = od.channel_on_demands.find_by_channel_id(channel_id)
           logger.debug "I am here"
           logger.debug t
           if t
-            logger.debug "Channel==========="
+            logger.debug "Channel Updating ==========="
             logger.debug t
             t.enable = true
             t.save
@@ -512,6 +513,10 @@ class OnDemand < ActiveRecord::Base
     end
     if text_to_boolean(row['Puls'])
       channel = Channel.find_by_name('Puls')
+      channel_ids << channel.id if channel
+    end
+    if text_to_boolean(row['See'])
+      channel = Channel.find_by_name('See Denmark')
       channel_ids << channel.id if channel
     end
     if text_to_boolean(row['TV3N'])
