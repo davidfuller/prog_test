@@ -18,12 +18,10 @@
               <%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %>
           <% end %></td>
       <% if include_add %>
-        <td><%= link_to "Use this",  {  :controller => :automated_dynamic_specials, :action => :use_media,
-                                        :id => params[:id], :dynamic_special_media_id => dynamic_special_media.id,  
-                                        :search => params[:search], :page => params[:page], :field_id => @promo_field, :index_params => @index_params }%><br/>
+        <td>
             <% if @promo_fields.length() > 0 %>
               <% @promo_fields.each do |thefield| %>
-                <%= link_to "Use this field " + thefield.field_number.to_s,  {  :controller => :automated_dynamic_specials, :action => :use_media,
+                <%= link_to "Use this for field " + thefield.field_number.to_s,  {  :controller => :automated_dynamic_specials, :action => :use_media,
                                                                           :id => params[:id], :dynamic_special_media_id => dynamic_special_media.id,  
                                                                           :search => params[:search], :page => params[:page], :field_id => thefield, :index_params => @index_params }%><br/>
               <% end %>
