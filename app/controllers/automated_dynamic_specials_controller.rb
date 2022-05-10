@@ -30,11 +30,12 @@ class AutomatedDynamicSpecialsController < ApplicationController
   def show
     @automated_dynamic_special = AutomatedDynamicSpecial.find(params[:id])
     @logo_sets = @automated_dynamic_special.logos
-    @promo_field = @automated_dynamic_special.promo_field
-    @promo_dynamic_special_media = @automated_dynamic_special.promo_dynamic_special_media(@promo_field)
-    if @promo_field
-      params[:image_type] = @promo_field.field_type_name
+    @promo_fields = @automated_dynamic_special.promo_fields
+    @promo_dynamic_special_medias = @automated_dynamic_special.promo_dynamic_special_medias(@promo_fields)
+    if @promo_fields.length() > 0
+      params[:image_type] = @promo_fields[0].field_type_name
     end
+
     @dynamic_special_medias = DynamicSpecialMedia.search(params)
     @index_params = clean_params(params[:index_params])
     if params[:field_id]
