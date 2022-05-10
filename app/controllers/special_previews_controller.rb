@@ -146,7 +146,8 @@ class SpecialPreviewsController < ApplicationController
     ads = AutomatedDynamicSpecial.find_by_id(params[:automated_dynamic_special_id])
     if ads
       special_preview = SpecialPreview.new
-      special_preview.name = ads.name
+      special_preview.name = SpecialPreview.new_name(ads.name)
+      logger.debug(special_preview.name)
       if special_preview.save
         result = special_preview.add_media
         if result[:success]
