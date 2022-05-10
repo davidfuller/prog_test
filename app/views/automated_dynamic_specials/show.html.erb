@@ -32,6 +32,20 @@
         </tr>
       </table>
     <% end %>
+    <% if @promo_fields.length() > 0 %>
+      <table>
+        <% @promo_fields.each do |thefield| %>
+          <tr>
+            <td class = 'dynamic_special_bold'>Field No</td><td class='dynamic_special_text'><%=h thefield.field_number %></td>
+            <td class = 'dynamic_special_bold'>Image Type</td><td class='dynamic_special_text'><%=h thefield.field_type_name %></td>
+            <td class = 'dynamic_special bold'><div class = 'larger-link'><%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, 
+                                                                                                    :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
+                                                                                                    :field_type_name => thefield.field_type_name, :field_id => thefield %></div></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+
 
     <% form_remote_tag({:url => automated_dynamic_special_path(@automated_dynamic_special, :index_params => @index_params), :method => :get, :html => {:id => 'search-form'}}) do %>
     <p>
