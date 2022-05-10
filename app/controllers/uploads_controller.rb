@@ -242,7 +242,7 @@ include REXML
           logger.debug "===> Legacy local ===>" + legacy_local_filename
           create_folder_if_not_exist(local_filename)
           url = channel.clipsource_path + url_suffixes[index]
-          
+          logger.debug("https://" + channel.clipsource_domain + url)
           start_download = Time.current
           uri =URI.parse("https://" + channel.clipsource_domain + url)
           http = Net::HTTP.new(uri.host, uri.port)
