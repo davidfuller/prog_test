@@ -445,12 +445,33 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     nil
   end
 
+  def promo_fields
+    fields = automated_dynamic_special_fields
+    results = []
+    fields.each do |field|
+      if field.template_field_join && field.template_field_join.dynamic_special_field && field.template_field_join.dynamic_special_field.dynamic_special_image_spec && field.template_field_join.dynamic_special_field.dynamic_special_image_spec.promo
+        results << field
+      end
+    end
+    results
+  end
+
   def promo_dynamic_special_media(field)
     if field && field.the_id
       DynamicSpecialMedia.find_by_id(field.the_id)
     else
       nil
     end
+  end
+
+  def promo_dynamic_special_medias(fields)
+    results = []
+    fields.each do |field|
+      if field && field.the_id
+        results << DynamicSpecialMedia.find_by_id(field.the_id)
+      end
+    end
+    results
   end
 
   def promo_media_status
