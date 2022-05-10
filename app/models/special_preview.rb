@@ -109,4 +109,18 @@ class SpecialPreview < ActiveRecord::Base
     end
     result
   end
+
+  def self.new_name(ads_name)
+    if find_by_name(ads_name)
+      version = 1
+      test_name = ads_name + "_" + "%03d" % version
+      while find_by_name(test_name) && version < 999
+        version += 1
+        test_name = ads_name + "_" + "%03d" % version
+      end
+      test_name 
+    else
+      ads_name
+    end
+  end
 end
