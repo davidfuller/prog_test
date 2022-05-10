@@ -83,21 +83,24 @@
         </td>
       <% elsif field_type.promo %>
         <td>
-          <% if @promo_dynamic_special_media && @promo_dynamic_special_media.media_file %>
-            <b>Media Name: </b><%=h @promo_dynamic_special_media.media_file.name %><br/>
-            <b>Status: </b><span id = 'image-status'><%=h @promo_dynamic_special_media.media_file.status.message if @promo_dynamic_special_media.media_file.status %></span><br/>
+          <% promo_dynamic_special_media = @promo_dynamic_special_medias.find { |media| media.id == field.the_id} %>
+          <% promo_field = @promo_fields.find { |thefield| thefield.field_number == template.field} %>
+          <% if promo_dynamic_special_media && promo_dynamic_special_media.media_file %>
+            <b>Media Name: </b><%=h promo_dynamic_special_media.media_file.name %><br/>
+            <b>Status: </b><span id = 'image-status'><%=h promo_dynamic_special_media.media_file.status.message if promo_dynamic_special_media.media_file.status %></span><br/>
           <% end %>
+          
           <div class = 'show-filenames', style = 'display: none;'><%=h field.promo_full_filename %><br/></div>
-          <% if @promo_dynamic_special_media %>
-            <%= link_to 'View Media', dynamic_special_media_path(@promo_dynamic_special_media, :automated_dynamic_special_id => @automated_dynamic_special) %> |
-            <% if @promo_dynamic_special_media.media_file %>
-              <%= link_to 'Upload Media', media_file_path(@promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special, :dynamic_special_media_id => @promo_dynamic_special_media) %> |
+          <% if promo_dynamic_special_media %>
+            <%= link_to 'View Media', dynamic_special_media_path(promo_dynamic_special_media, :automated_dynamic_special_id => @automated_dynamic_special, :field_id => template.field) %> |
+            <% if promo_dynamic_special_media.media_file %>
+              <%= link_to 'Upload Media', media_file_path(promo_dynamic_special_media.media_file, :upload => true, :source => 'dynamic_special_media', :automated_dynamic_special_id => @automated_dynamic_special, :dynamic_special_media_id => @promo_dynamic_special_media) %> |
             <% end %>
           <% end %>
           <%= link_to_function ('Choose Media') {|page| page['search_media'].toggle} %> | 
           <%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, :id => @automated_dynamic_special, 
-                                    :automated_dynamic_special_id => @automated_dynamic_special.id, :field_type_name => @promo_field.field_type_name,
-                                    :field_id => @promo_field %></div><br/>
+                                    :automated_dynamic_special_id => @automated_dynamic_special.id, :field_type_name => promo_field.field_type_name,
+                                    :field_id => promo_field %></div><br/>
 
         </td>
       <% else %>
