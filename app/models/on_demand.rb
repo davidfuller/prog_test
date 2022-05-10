@@ -315,11 +315,19 @@ class OnDemand < ActiveRecord::Base
   def add_any_channels_needed
     channels = Channel.language_scope
     channels.each do |c|
+      logger.debug('========Adding Channels')
       logger.debug c.id
-      if !self.channel_on_demands.find_by_channel_id(c.id)
+      my_cod = self.channel_on_demands.find_by_channel_id(c.id)
+      logger.debug self.id
+      logger.debug my_cod
+      if !my_cod
         t = self.channel_on_demands.new
         t.channel_id = c.id
-        t.save
+        if t.save
+          logger.debug "I have just saved"
+        else
+          logger.debug "NOT saved"
+        end
       end
     end 
   end
@@ -399,8 +407,11 @@ class OnDemand < ActiveRecord::Base
           logger.debug "-=-=-=-=-=-=-=--2"
           od.on_demand_scheduling = OnDemandScheduling.find_by_message(row['Scheduling'])
           logger.debug od.on_demand_scheduling_id
-          if already_exists(od)
+          my_exist = already_exists(od)
+          if my_exist
             logger.debug "Exists"
+            logger.debug my_exist
+            od = find(my_exist)
             logger.debug od.name
             result = :exists
           else
@@ -467,10 +478,13 @@ class OnDemand < ActiveRecord::Base
 
   def self.already_exists(od)
     current = find_all_by_name_and_title(od.name, od.title)
-    result = false
+    logger.debug "In Already Exists"
+    logger.debug current.count
+    result = nil
     current.each do |test|
       if test.attributes.except(*IGNORE.map(&:to_s)) == od.attributes.except(*IGNORE.map(&:to_s))
-        result = true
+        logger.debug test.id
+        result = test.id
       end
     end
     result
