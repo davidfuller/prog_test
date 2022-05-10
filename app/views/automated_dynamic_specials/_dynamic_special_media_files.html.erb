@@ -15,12 +15,20 @@
       <td><%=h dynamic_special_media.dynamic_special_image_spec.name if dynamic_special_media.dynamic_special_image_spec %></td>
       <td><%=h dynamic_special_media.media_file.filename if dynamic_special_media.media_file %></td>
       <td><% if dynamic_special_media.media_file && dynamic_special_media.media_file.jpeg_exist? %>
-        <%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %>
-      <% end %></td>
+              <%= image_tag(dynamic_special_media.media_file.jpeg_url, :size => dynamic_special_media.media_file.preview_size) if dynamic_special_media.media_file %>
+          <% end %></td>
       <% if include_add %>
         <td><%= link_to "Use this",  {  :controller => :automated_dynamic_specials, :action => :use_media,
                                         :id => params[:id], :dynamic_special_media_id => dynamic_special_media.id,  
-                                        :search => params[:search], :page => params[:page], :field_id => @promo_field, :index_params => @index_params }%></td>
+                                        :search => params[:search], :page => params[:page], :field_id => @promo_field, :index_params => @index_params }%><br/>
+            <% if @promo_fields.length() > 0 %>
+              <% @promo_fields.each do |thefield| %>
+                <%= link_to "Use this field " + thefield.field_number.to_s,  {  :controller => :automated_dynamic_specials, :action => :use_media,
+                                                                          :id => params[:id], :dynamic_special_media_id => dynamic_special_media.id,  
+                                                                          :search => params[:search], :page => params[:page], :field_id => thefield, :index_params => @index_params }%><br/>
+              <% end %>
+            <% end %>
+        </td>
       <% end %>
     </tr>
   <% end %>
