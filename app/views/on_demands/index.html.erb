@@ -1,8 +1,8 @@
 <% content_for(:title) do%>
-	Viafree / Viaplay Priorities: MuVi2 Database
+	Viaplay Priorities: MuVi2 Database
 <% end %>
 
-<%= link_to_function 'Upload Viafree / Viaplay Priorities File' do |page|
+<%= link_to_function 'Upload Viaplay Priorities File' do |page|
 	page['via-upload'].toggle()
 end %>
 <br/>
@@ -12,10 +12,10 @@ end %>
 
 <div id= 'via-upload', style = 'display: none;'>
   <fieldset>
-    <legend>Viafree / Viaplay file</legend>
+    <legend>Viaplay file</legend>
     <% form_tag({:action => :upload_via_file}, :multipart => true) do %>
       <p>
-      Select the Viafree / Viaplay file to process: <br/>
+      Select the Viaplay file to process: <br/>
       This must be a csv file with unicode characters
       </p>
       <%= file_field_tag 'via', {:size => 120, :accept => 'text/csv'} %><br/>
@@ -25,14 +25,14 @@ end %>
   <br/>
 </div>
 <fieldset>
-	<legend>Viafree / Viaplay Priorities</legend>
+	<legend>Viaplay Priorities</legend>
 		<% form_tag on_demands_path, :method =>'get', :id => 'search-form' do %>
 			<p>
 				<%= text_field_tag :search, params[:search], :size => 45 %>
 				<%= submit_tag "Search", :name => nil %>
 			</p>
       <p>
-        <label>Viafree / Viaplay File</label>
+        <label>Viaplay File</label>
         <%= select_tag :on_demand_filename, options_for_select(@on_demand_filenames, params[:on_demand_filename]),
 		                    {:onchange => 'this.form.submit()'} %>
       </p>
@@ -66,6 +66,7 @@ end %>
     <th>Service</th>
     <th>Start date</th>
     <th>End date</th>
+    <th>Category</th>
     <th>Navigation</th>
     <th>Message</th>
     <th>Scheduling</th>
@@ -89,6 +90,7 @@ end %>
     <td><%=h on_demand.service.name unless on_demand.service.nil? %></td>
     <td><%=h on_demand.start_date.to_s(:broadcast_date) unless on_demand.start_date.nil? %></td>
     <td><%=h on_demand.end_date_date_only.to_s(:broadcast_date) unless on_demand.end_date.nil? %></td>
+    <td><%=h on_demand.category %></td>
     <td><%=h on_demand.navigation %></td>
     <td><%=h on_demand.message %></td>
     <td><%=h on_demand.scheduling_message %></td>
