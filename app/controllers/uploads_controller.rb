@@ -87,6 +87,32 @@ include REXML
     end
   end
   
+  def upload_schedule_v4
+    if params[:schedule].nil?
+      flash[:notice] = 'Please select a file'
+      redirect_to uploads_path
+    else
+      uploaded_io = params[:schedule]
+      filename = Rails.root.join('public','data', 'schedule', uploaded_io.original_filename)
+      create_folder_if_not_exist(filename)
+      File.open(filename, 'w') do |file|
+        file.write(Iconv.iconv("UTF-8",CHARSET_FORMAT,uploaded_io.read))
+      end
+    
+      file = File.new(filename, "r")
+      dates =ScheduleLine.get_start_stop_dates(file)
+      channel = Channel.find_by_name("V4")
+      ScheduleLine.delete_date_range(dates, channel)
+      file_in_db = ScheduleFile.new_with_dates(filename, dates, channel)
+    
+      file = File.new(filename, "r")
+      ScheduleLine.process_file(file, file_in_db)
+    
+      redirect_to schedule_line_path_with_filename(file_in_db)
+    end
+  end
+
+
   def web_upload_press_file
     channel = Channel.find_by_name(params[:channel]) 
     if channel.nil?
@@ -363,13 +389,12 @@ include REXML
     
     legacy_base_filename = File.basename(legacy_filename)
     legacy_press_filename = PressFilename.find_by_filename(legacy_base_filename)
-    logger.debug "=== process === LBF =>>" + legacy_base_filename
     Priority.store_priority press_filename.id
     
-    PressLine.destroy_all(['press_filename_id = ?', press_filename.id])
+    num_deleted = PressLine.destroy_all(['press_filename_id = ? AND channel_id = ?', press_filename.id, channel.id]).count
     
     if legacy_press_filename
-    	PressLine.destroy_all(['press_filename_id = ?', legacy_press_filename.id])
+    	num_deleted = PressLine.destroy_all(['press_filename_id = ? AND channel_id = ?', legacy_press_filename.id, channel.id]).count
     end
     xml_string = ''
     if File.file?(filename)
