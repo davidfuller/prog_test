@@ -57,7 +57,7 @@ class OnDemandsController < ApplicationController
     respond_to do |format|
       if @on_demand.save
         @on_demand.add_any_channels_needed
-        flash[:notice] = 'Viafree / Viaplay Priority was successfully created.'
+        flash[:notice] = 'Viaplay Priority was successfully created.'
         format.html { redirect_to(on_demands_path) }
         format.xml  { render :xml => @on_demand, :status => :created, :location => @on_demand }
       else
@@ -75,7 +75,7 @@ class OnDemandsController < ApplicationController
 
     respond_to do |format|
       if @on_demand.update_attributes(params[:on_demand])
-        flash[:notice] = 'Viafree / Viaplay Priority was successfully updated.'
+        flash[:notice] = 'Viaplay Priority was successfully updated.'
         format.html { redirect_to(on_demands_path) }
         format.xml  { head :ok }
       else
