@@ -82,6 +82,11 @@ class JpegFolder < ActiveRecord::Base
       selected_channel = Channel.find_by_name(channel)
       if selected_channel
         prefix = selected_channel.prefix
+        # Awful kludge to separate TV3PLUS and TV3PLUSNOR
+        if prefix == 'TV3PLUS'
+          prefix = 'TV3PLUS\\_'
+        end
+        logger.debug prefix
         paginate  :per_page => 12, :page => page,
                   :conditions => ['name like ?', "%#{prefix}%"],
                   :order => 'name DESC'
