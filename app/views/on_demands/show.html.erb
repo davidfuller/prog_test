@@ -1,5 +1,5 @@
 <% content_for(:title) do%>
-  Viafree / Viaplay Priority: MuVi2 Database
+  Viaplay Priority: MuVi2 Database
 <% end %>
 <% content_for(:refresh) do%>
   <meta http-equiv="refresh" content="20" />
@@ -21,7 +21,7 @@
 					 	          } %>
 					
 
-<h1>Viafree / Viaplay Priority</h1>
+<h1>Viaplay Priority</h1>
 
 <p>
   <label>Name</label></br>
@@ -39,6 +39,10 @@
 <p>
   <label>Service</label><br/>
   <%=h @on_demand.service.name if @on_demand.service %>
+</p>
+<p>
+  <label>Category</label><br/>
+  <%=h @on_demand.category %>
 </p>
 <p>
   <label>Navigation</label><br/>
@@ -126,7 +130,7 @@
 <%= render :partial => 'promo_wrapper', :locals => {:max_num => 2, :source => :show, :search => search } %>
 
 <%= link_to 'Edit', edit_on_demand_path(@on_demand) %> |
-<%= link_to 'Viafree / Viaplay Priorities', on_demands_path(:search => params[:index_search], :page => params[:index_page], 
+<%= link_to 'Viaplay Priorities', on_demands_path(:search => params[:index_search], :page => params[:index_page], 
                                                             :on_demand_filename => params[:on_demand_filename], :channel => params[:channel], 
                                                             :on_air_date => params[:on_air_date], :show_all => params[:show_all], :show_no_media => params[:show_no_media]) %> |
 <%= link_to 'Back', :back %>
