@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210216111248) do
+ActiveRecord::Schema.define(:version => 20220524104931) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -423,6 +423,7 @@ ActiveRecord::Schema.define(:version => 20210216111248) do
     t.integer  "promo_id"
     t.string   "country_code"
     t.integer  "on_demand_scheduling_id"
+    t.string   "category"
   end
 
   create_table "playlist_filenames", :force => true do |t|
