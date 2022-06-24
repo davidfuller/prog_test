@@ -21,6 +21,7 @@ xml.on_demands do
       xml.logo_filename on_demand.service.logo_filename unless on_demand.service.nil?
       xml.promo_id on_demand.promo_id unless on_demand.promo_id.nil?
       xml.scheduling on_demand.scheduling_message
+      xml.category on_demand.category
     end
   end
 end
