@@ -1,8 +1,17 @@
 
 
 <fieldset>
-	<legend>Schedule file</legend>
+	<legend>Schedule file (all except V4 Norway)</legend>
 	<% form_tag({:action => :upload_schedule}, :multipart => true) do %>
+		<p>Select the schedule file to process:</p>
+  	<%= file_field_tag 'schedule', {:size => 60} %><br/>
+		<%= submit_tag("Process") %>
+	<% end %>
+</fieldset>
+<br/>
+<fieldset>
+	<legend>Schedule file (V4 Norway Only)</legend>
+	<% form_tag({:action => :upload_schedule_v4}, :multipart => true) do %>
 		<p>Select the schedule file to process:</p>
   	<%= file_field_tag 'schedule', {:size => 60} %><br/>
 		<%= submit_tag("Process") %>
@@ -33,7 +42,7 @@
 	<% end %>
 </fieldset>
 <% end %>
-
+<br/>
 <fieldset>
 	<%= calendar_date_select_includes "custom", :locale=>'uk' %>
 	<legend>Web access XML Clipsource</legend>
