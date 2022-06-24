@@ -221,7 +221,13 @@ class Title < ActiveRecord::Base
     else
       comparison = Comparison.find_by_id(comparison_id)
     end
-    s = SeriesIdent.find_by_number(comparison.series_ident)
+    if comparison.series_ident != ""
+      s = SeriesIdent.find_by_number(comparison.series_ident)
+    else
+      if comparison.eidr != ""
+        s = SeriesIdent.find_by_eidr(comparison.eidr)
+      end
+    end
     if s
       code = comparison.comparison_code.to_sym 
       case code
