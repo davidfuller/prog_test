@@ -398,6 +398,7 @@ class OnDemand < ActiveRecord::Base
       if od.start_date
         od.end_date = five_am_datetime(row['End Date'], 1)
         if od.end_date
+          od.category = row['Category']
           od.navigation = row['Navigation Message']
           od.message = row['Promotional Message']
           od.priority = row['Priority'].to_i
@@ -543,6 +544,10 @@ class OnDemand < ActiveRecord::Base
     end
     if text_to_boolean(row['V4N'])
       channel = Channel.find_by_name('V4')
+      channel_ids << channel.id if channel
+    end
+    if text_to_boolean(row['TV3+N'])
+      channel = Channel.find_by_name('TV3+ Norway')
       channel_ids << channel.id if channel
     end
     channel_ids
