@@ -1,0 +1,2 @@
+module GenerateStatusSettingsHelper
+end
