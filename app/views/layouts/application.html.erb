@@ -16,7 +16,7 @@
 		</div> 
 		<div id="columns">
 			<div id="side">
-				<p>Version 3.4 LIVE</p>
+				<p>Version 3.5 LIVE</p>
         <%= link_to 'Home', root_url%><br /> 
 				
 				<h4>Titles Database</h4>
@@ -37,6 +37,8 @@
 				<h4>Preview Images</h4>
 					<%= link_to 'Scan Images', jpeg_folders_path %><br/>
 					<%= link_to 'Images', jpegs_path %>
+        <h4>Generate Status</h4>
+          <%= link_to 'Generate Status', generate_status_with_date(nil, '1' ) %><br/>
         <h4>Automated Dynamic Specials</h4>
           <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
           <%= link_to 'ADS Report', report_automated_dynamic_specials_path %><br/>
@@ -84,6 +86,8 @@
             <%= link_to 'Viaplay Filenames', on_demand_files_path %><br/>
             <%= link_to 'Viaplay Scheduling Messages', on_demand_schedulings_path %><br/>
             <%= link_to 'Clipsource EIDR Replacements', clipsources_path %><br/>
+            <%= link_to 'Generate Status Settings', generate_status_settings_path %><br/>
+            
           </div><br/>
         <div class = "my-header"><h4>ADS Settings</h4>
           <span><div id = 'show-ads-settings'><%= link_to_function ('Show') {|page| page['ads-settings'].toggle(); page['show-ads-settings'].toggle; page['hide-ads-settings'].toggle}%></div>
