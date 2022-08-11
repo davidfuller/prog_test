@@ -1,0 +1,35 @@
+<% content_for(:title) do%>
+	Generate Status Settings: MuVi2 Database
+<% end %>
+<h1>Settings</h1>
+<h2>Generate Status</h2>
+
+<table>
+  <tr>
+    <th>Order</th>
+    <th>Channel</th>
+    <th>Enabled</th>
+    <th>Folder</th>
+    <th>Prefix</th>
+    <th>Source Filename</th>
+  </tr>
+
+<% @generate_status_settings.each do |generate_status_setting| %>
+  <tr>
+    <td><%=h generate_status_setting.channel_order %></td>
+    <td><%=h generate_status_setting.channel.name %></td>
+    <td><%=h generate_status_setting.enabled %></td>
+    <td><%=h generate_status_setting.folder %></td>
+    <td><%=h generate_status_setting.prefix %></td>
+    <td><%=h generate_status_setting.filename %></td>
+    <td><%= link_to 'Show', generate_status_setting %></td>
+    <td><%= link_to 'Edit', edit_generate_status_setting_path(generate_status_setting) %></td>
+    <td><%= link_to 'Destroy', generate_status_setting, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Generate Status Setting', new_generate_status_setting_path %>
+

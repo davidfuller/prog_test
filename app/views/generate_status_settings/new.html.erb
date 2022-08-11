@@ -1,0 +1,15 @@
+<% content_for(:title) do%>
+	Generate Status Setting: MuVi2 Database
+<% end %>
+<h1>New Generate Status Setting</h1>
+
+<% form_for(@generate_status_setting) do |f| %>
+  <%= f.error_messages %>
+
+  <%= render :partial => 'entry', :locals	=> {:f => f} 	%>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', generate_status_settings_path %>

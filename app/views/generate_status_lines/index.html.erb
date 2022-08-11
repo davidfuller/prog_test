@@ -1,0 +1,71 @@
+<% content_for(:title) do%>
+	Generate Status: MuVi2 Database
+<% end %>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %> 
+<% display_date = params[:on_air_date] %>
+<%- session[:on_air_date] = params[:on_air_date] %>
+
+<%= link_to 'Re-poll data', generate_status_with_date(session[:on_air_date], '1') %><br/>
+<fieldset>
+	<legend>Generate Status</legend>
+		<% form_tag generate_status_lines_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+        <label>TX date</label>
+        <%= calendar_date_select_tag :on_air_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        <%= link_to_function 'Clear',  'document.getElementById("on_air_date").value = ""; document.getElementById("search-form").submit()'%>
+      </p>
+      <% if session[:on_air_date] %>
+        <%= link_to 'Previous day', generate_status_with_date(previous_day(session[:on_air_date]), '0') %> | 
+        <%= link_to 'Next day', generate_status_with_date(next_day(session[:on_air_date]), '0') %> <br/>
+		  <% end %>
+      <%= label_tag :show_all, "Show All Generates" %>
+			<%= check_box_tag :show_all, value ="1", params[:show_all],{:onclick => 'this.form.submit()'} %>
+		<% end %>
+</fieldset>
+<p>
+<table>
+  <tr>
+    <% if @generate_data[:issues] > 0 %>
+    <td><b>Issues: </b></td><td><%=h @generate_data[:issues] %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <td><b>Generate time: </b></td>
+    <td><%=h the_time_formatter(@generate_data[:generate_time], 'No generate time') %></td>
+  </tr>
+  <tr>
+    <td><b>Poll time: </b></td>
+    <td><%=h the_time_formatter(@generate_data[:poll_time], 'No poll time') %></td>
+  </tr>
+  <tr>
+    <td><b>File time: </b></td>
+    <td><%=h the_time_formatter(@generate_data[:file_time], 'No file time') %></td>
+  </tr>
+</table>
+</p>
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Filename</th>
+    <th>Status</th>
+  </tr>
+
+<% @generate_status_lines.each do |generate_status_line| %>
+  <% if generate_status_line.status != 'Complete' %>
+    <tr id = 'generate_issue'>
+  <% else %>
+    <tr>
+  <% end %>
+    <td><%=h generate_status_line.channel.name unless generate_status_line.channel.nil? %></td>
+    <td><%=h generate_status_line.short_filename %></td>
+    <td><%=h generate_status_line.status %></td>
+    <td><%= link_to 'Show', generate_status_line %></td>
+    <td><%= link_to 'Edit', edit_generate_status_line_path(generate_status_line) %></td>
+    <td><%= link_to 'Destroy', generate_status_line, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Generate Status Line', new_generate_status_line_path %>

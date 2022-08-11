@@ -1,0 +1,48 @@
+<p>
+  <b>Channel:</b>
+  <%=h @generate_status_line.channel_id %>
+</p>
+
+<p>
+  <b>Full filename:</b>
+  <%=h @generate_status_line.full_filename %>
+</p>
+
+<p>
+  <b>Short filename:</b>
+  <%=h @generate_status_line.short_filename %>
+</p>
+
+<p>
+  <b>Tx date:</b>
+  <%=h @generate_status_line.tx_date %>
+</p>
+
+<p>
+  <b>Tx version:</b>
+  <%=h @generate_status_line.tx_version %>
+</p>
+
+<p>
+  <b>Generate date time:</b>
+  <%=h @generate_status_line.generate_date_time %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @generate_status_line.status %>
+</p>
+
+<p>
+  <b>Poll date time:</b>
+  <%=h @generate_status_line.poll_date_time %>
+</p>
+
+<p>
+  <b>File modified date time:</b>
+  <%=h @generate_status_line.file_modified_date_time %>
+</p>
+
+
+<%= link_to 'Edit', edit_generate_status_line_path(@generate_status_line) %> |
+<%= link_to 'Back', generate_status_lines_path %>

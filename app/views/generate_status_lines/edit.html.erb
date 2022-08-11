@@ -1,0 +1,48 @@
+<h1>Editing generate_status_line</h1>
+
+<% form_for(@generate_status_line) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :channel_id %><br />
+    <%= f.text_field :channel_id %>
+  </p>
+  <p>
+    <%= f.label :full_filename %><br />
+    <%= f.text_field :full_filename %>
+  </p>
+  <p>
+    <%= f.label :short_filename %><br />
+    <%= f.text_field :short_filename %>
+  </p>
+  <p>
+    <%= f.label :tx_date %><br />
+    <%= f.date_select :tx_date %>
+  </p>
+  <p>
+    <%= f.label :tx_version %><br />
+    <%= f.text_field :tx_version %>
+  </p>
+  <p>
+    <%= f.label :generate_date_time %><br />
+    <%= f.datetime_select :generate_date_time %>
+  </p>
+  <p>
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </p>
+  <p>
+    <%= f.label :poll_date_time %><br />
+    <%= f.datetime_select :poll_date_time %>
+  </p>
+  <p>
+    <%= f.label :file_modified_date_time %><br />
+    <%= f.datetime_select :file_modified_date_time %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @generate_status_line %> |
+<%= link_to 'Back', generate_status_lines_path %>
