@@ -16,7 +16,9 @@ class Channel < ActiveRecord::Base
   has_many :channel_special_previews
   has_many :special_previews, :through => :channel_special_previews
   has_many :automated_dynamic_specials
-  
+  has_many :generate_status_settings
+  has_many :generate_status_settings
+
   validates_presence_of :name, :language_id
   default_scope :order => :name
   named_scope :language_scope, :order => "language_id, name"
