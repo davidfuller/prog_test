@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  channel_id: 1
+  full_filename: MyString
+  short_filename: MyString
+  tx_date: 2022-08-03
+  tx_version: MyString
+  generate_date_time: 2022-08-03 10:34:59
+  status: MyString
+  poll_date_time: 2022-08-03 10:34:59
+  file_modified_date_time: 2022-08-03 10:34:59
+
+two:
+  channel_id: 1
+  full_filename: MyString
+  short_filename: MyString
+  tx_date: 2022-08-03
+  tx_version: MyString
+  generate_date_time: 2022-08-03 10:34:59
+  status: MyString
+  poll_date_time: 2022-08-03 10:34:59
+  file_modified_date_time: 2022-08-03 10:34:59

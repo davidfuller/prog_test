@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  channel_id: 1
+  enabled: false
+  folder: MyString
+  prefix: MyString
+
+two:
+  channel_id: 1
+  enabled: false
+  folder: MyString
+  prefix: MyString
