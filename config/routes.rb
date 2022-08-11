@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :generate_status_lines
+
+  map.resources :generate_status_settings
+
   map.resources :dynamic_special_medias
 
   map.resources :dynamic_special_logos

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220524104931) do
+ActiveRecord::Schema.define(:version => 20220810102939) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -311,6 +311,32 @@ ActiveRecord::Schema.define(:version => 20220524104931) do
     t.string   "message"
     t.string   "existing_title"
     t.string   "clipsource_title"
+  end
+
+  create_table "generate_status_lines", :force => true do |t|
+    t.integer  "channel_id"
+    t.string   "full_filename"
+    t.string   "short_filename"
+    t.date     "tx_date"
+    t.string   "tx_version"
+    t.datetime "generate_date_time"
+    t.string   "status"
+    t.datetime "poll_date_time"
+    t.datetime "file_modified_date_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "channel_order"
+  end
+
+  create_table "generate_status_settings", :force => true do |t|
+    t.integer  "channel_id"
+    t.boolean  "enabled"
+    t.string   "folder"
+    t.string   "prefix"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "filename"
+    t.integer  "channel_order"
   end
 
   create_table "houses", :force => true do |t|
