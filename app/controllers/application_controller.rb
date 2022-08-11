@@ -293,6 +293,13 @@ class ApplicationController < ActionController::Base
     {:controller => :media_files, :action => :last_use, :last_use_date => date, 
       :media_type_display => 'Special Preview'}
   end
+
+  def generate_status_with_date(date, repoll)
+    if not date
+      date=format_date_time(DateTime.tomorrow,"%B %e, %Y")
+    end
+    {:controller => :generate_status_lines, :action => :index, :on_air_date => date, :repoll => repoll }
+  end
   
   helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 
                 :playlist_lines_path_with_show_and_filename, :comparison_path_with_filter_and_filename,
@@ -308,6 +315,7 @@ class ApplicationController < ActionController::Base
                 :toggle_channel_trailer_enable, :trailer_auto_enable, :trailer_delete_not_available, :trailer_add_media,
                 :trailer_request_media, :trailer_request_workflow, :trailer_media_search, :trailer_workflow,
                 :trailer_delete_diva_references, :trailer_workflow_update, :special_preview_add_media,
-                :toggle_channel_special_preview_enable, :special_preview_media_files_past_last_use_path
+                :toggle_channel_special_preview_enable, :special_preview_media_files_past_last_use_path, 
+                :generate_status_with_date
   
 end
