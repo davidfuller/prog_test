@@ -633,6 +633,10 @@ fieldset.report{
 	background: #ebd5d5;	
 }
 
+#store #generate_issue {
+  background: #ebd5d5;	
+}
+
 #store #title-text {
   font-size: 14px;
 }
