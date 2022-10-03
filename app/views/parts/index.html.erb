@@ -1,0 +1,25 @@
+<% content_for(:title) do%>
+	Part Settings
+<% end %>
+<h1>Parts</h1>
+
+<table>
+  <tr>
+    <th>Order</th>
+    <th>Name</th>
+  </tr>
+
+<% @parts.each do |part| %>
+  <tr>
+    <td><%=h part.order_number %></td>
+    <td><%=h part.name %></td>
+    <td><%= link_to 'Show', part %></td>
+    <td><%= link_to 'Edit', edit_part_path(part) %></td>
+    <td><%= link_to 'Destroy', part, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New part', new_part_path %>
