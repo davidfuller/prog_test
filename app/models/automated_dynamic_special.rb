@@ -4,6 +4,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   belongs_to :dynamic_special_template
   belongs_to :special_preview
   has_many :automated_dynamic_special_fields, :dependent => :destroy
+  has_many :press_line_automated_dynamic_special_join
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :channel_id , :message => 'has been already taken for this channel'
@@ -912,5 +913,18 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 	  end
 		output
 	end
+
+  def self.available_for_schedule(params)
+    channel_id = Channel.find_by_name(params[:channel])
+    priority_date = params[:priority_date]
+    if priority_date.blank?
+      schedule_date = Date.parse(Time.new().to_s) # midnight today
+    else
+      schedule_date = Date.parse(priority_date)
+    end
+    
+    find  :all, :conditions => ['channel_id = ? AND last_use >= ?', channel_id, schedule_date]
+    
+  end
 
 end
