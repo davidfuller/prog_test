@@ -5,7 +5,8 @@ class AutomatedDynamicSpecialsController < ApplicationController
     respond_to do |format|
       format.html do
         @automated_dynamic_specials = AutomatedDynamicSpecial.search(params)
-        @channel_display = Channel.display
+        remove_v4 = true
+        @channel_display = Channel.display(remove_v4)
         @templates = DynamicSpecialTemplate.template_display_with_all
       end# index.html.erb
       format.xml  { @automated_dynamic_specials = AutomatedDynamicSpecial.xml_data(params[:channel]) }
@@ -65,6 +66,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
   def new
     @automated_dynamic_special = AutomatedDynamicSpecial.new
     @automated_dynamic_special.fix_nil_last_use
+    @automated_dynamic_special.offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
     @channels = Channel.all
     @templates = DynamicSpecialTemplate.all
     @index_params = clean_params(params[:index_params])
