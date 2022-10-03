@@ -1,0 +1,81 @@
+<% content_for(:title) do%>
+	Dynamic Special Schedule
+<% end %>
+
+<fieldset>
+<legend>Dynamic Special Schedule</legend>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<% display_date = params[:priority_date] || Time.new.to_s(:broadcast_date_full_month) %>
+<%- session[:priority_date] = display_date %>
+<%- session[:priority_channel] = params[:channel] %>
+<%- session[:priority_show] = params[:show] %>
+
+<% form_tag schedule_press_lines_path, :method =>'get' do %>
+	
+		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
+    <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show]) %> | 
+		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show]) %>
+</fieldset>
+<br/>
+<table>
+  <%- this_day = day_header(Date.parse(display_date))%>
+  <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
+  <tr>
+    <th>Time</th>
+    <th>Title</th>
+    <th>Specials</th>
+  </tr>
+
+<% @press_lines.each do |press_line| %>
+  <% if params[:programme] == press_line.id.to_s %>
+    <tr class = 'selected_special'>
+  <% else %>
+    <tr>
+  <% end %>
+		<td><%=h format_date_time(press_line.start, "%H:%M") %></td>
+    <td width = '200'><%=h press_line.display_title %></td>
+    <td><%= h press_line.id %></td>
+    <td>
+      <table>
+      <% press_line.specials.each do |special|%>
+        <tr>
+          <td width = 50><%=h special.part.name unless special.part.nil? %></td>
+          <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
+          <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
+        </tr>
+      <% end %>
+      </table>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+  <%= select_tag :programme, options_for_select(@programmes, params[:programme]),{:onchange => 'this.form.submit()'}%>
+  <%= select_tag :part, options_for_select(@parts, params[:part]),{:onchange => 'this.form.submit()'}%>
+
+<% end %>
+
+<br/>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Template</th>
+    <th>Last Use</th>
+    <th>Status</th>
+  </tr>
+
+<% @available.each do |automated_dynamic_special| %>
+  <tr>
+    <td><%=h automated_dynamic_special.name %></td>
+		<td><%=h automated_dynamic_special.template_name %></td>
+    <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
+    <td><%=h automated_dynamic_special.short_ready_message[:message] %></td>
+    <td><%= link_to 'Add', add_special_to_schedule(params[:programme], automated_dynamic_special, params[:part], display_date, params[:channel], params[:show]), :title => 'Add this special to schedule' %></td>
+  </tr>
+<% end %>
+</table>
