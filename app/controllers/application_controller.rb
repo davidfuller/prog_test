@@ -300,7 +300,19 @@ class ApplicationController < ActionController::Base
     end
     {:controller => :generate_status_lines, :action => :index, :on_air_date => date, :repoll => repoll }
   end
-  
+
+  def add_special_to_schedule(press_line_id, automated_dynamic_special_id, part_id, priority_date, channel, show)
+    {:controller => :press_lines, :action => :add_special, :id => press_line_id, :ads_id => automated_dynamic_special_id, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show }
+  end
+
+  def remove_special_from_schedule(id, programme, part_id, priority_date, channel, show)
+    {:controller => :press_lines, :action => :remove_special, :id => id, :programme => programme, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show }
+  end
+
+  def special_schedule_with_date(priority_date, channel, show)
+    {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show }
+  end
+
   helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 
                 :playlist_lines_path_with_show_and_filename, :comparison_path_with_filter_and_filename,
                 :comparison_path_with_last_filename, :jpeg_with_folder, :press_lines_with_date,
@@ -316,6 +328,7 @@ class ApplicationController < ActionController::Base
                 :trailer_request_media, :trailer_request_workflow, :trailer_media_search, :trailer_workflow,
                 :trailer_delete_diva_references, :trailer_workflow_update, :special_preview_add_media,
                 :toggle_channel_special_preview_enable, :special_preview_media_files_past_last_use_path, 
-                :generate_status_with_date
+                :generate_status_with_date, :add_special_to_schedule, :remove_special_from_schedule, 
+                :special_schedule_with_date
   
 end
