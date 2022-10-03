@@ -1,0 +1,19 @@
+<% content_for(:title) do%>
+	Promo Details: MuVi2 Database
+<% end %>
+<h1>Media File</h1>
+<b><%=h @media_file.name %></b><br/>
+
+<%= render :partial => 'shared/media_file', :locals	=> {:media_file => @media_file, :extended => true, :source => params[:source], 
+                                                          :dynamic_special_media_id => params[:dynamic_special_media_id],
+                                                          :show_details => false, :show_upload => !params[:upload]} 	%>
+
+<%= link_to 'Edit', edit_media_file_path(@media_file) %> |
+<% if params[:source] == 'promo index'%>
+	<%= link_to 'Back', promos_path %>
+<% else %>
+	<%= link_to 'Back', :back %>
+<% end %>
+<% if @media_file.media_type_resizeable%>
+  | <%= link_to 'Resize', resize_media_file_path(@media_file, :redo => :true, :automated_dynamic_special_id => params[:automated_dynamic_special_id]) %>
+<% end %>
