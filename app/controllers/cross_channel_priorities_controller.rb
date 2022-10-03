@@ -17,8 +17,9 @@ class CrossChannelPrioritiesController < ApplicationController
 		
     @cross_channel_priorities = CrossChannelPriority.search(params)
     @press_lines = PressLine.search(params[:search], params[:press_date], params[:channel]) 
-    @tx_channel_display = Channel.display
-    @press_channel_display = Channel.display
+    remove_v4 = true
+    @tx_channel_display = Channel.display(remove_v4)
+    @press_channel_display = Channel.display(remove_v4)
 
     respond_to do |format|
       format.html #
