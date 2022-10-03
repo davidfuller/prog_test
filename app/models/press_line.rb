@@ -2,6 +2,9 @@ class PressLine < ActiveRecord::Base
   
   belongs_to :channel
   belongs_to :press_filename
+  has_many :press_line_automated_dynamic_special_joins
+  has_many :automated_dynamic_specials, :through => :press_line_automated_dynamic_special_joins
+
   validates_presence_of :channel_id, :press_filename_id
   
   def self.search(search, press_date, channel_name)
@@ -45,7 +48,7 @@ class PressLine < ActiveRecord::Base
     channel = get_channel(channel_name)
     
     if priority_date.blank?
-      date = Time.new("00:00:00") # midnight today
+      date = Date.parse(Time.new().to_s) # midnight today
     else
       date = Date.parse(priority_date)
     end
@@ -64,7 +67,67 @@ class PressLine < ActiveRecord::Base
     end
 
   end
+
+  def self.schedule_lines(show, priority_date, channel_name)
+    
+    channel = get_channel(channel_name)
+    
+    if priority_date.blank?
+      date = Date.parse(Time.new().to_s) # midnight today
+    else
+      date = Date.parse(priority_date)
+    end
+    
+    end_date = date
+    
+    if show == 'All'
+      find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ?',
+                                date.strftime('%F'), end_date.strftime('%F'), channel.id], :order => :start)
+    else
+      find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ? and TIME(start) >= ?',
+                                date.strftime('%F'), end_date.strftime('%F'), channel.id, "15:00:00"], :order => :start)
+    end
+
+  end
+
+  def self.selected_programme(my_press_lines, my_programme)
+
+    result = my_press_lines[0].id.to_s
+    my_press_lines.each do |press_line|
+      if press_line.id.to_s == my_programme
+        result = my_programme
+      end
+    end
+    result
+  end
+
+  def self.schedule_lines_for_xml(start_date, channel_name, num_days)
+    channel = get_channel(channel_name)
+    date = Date.parse(start_date)
+    end_date = date + num_days.to_i.days
+    find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ?',
+                                  date.strftime('%F'), end_date.strftime('%F'), channel.id], :order => :start)
+
+  end
   
+  def self.schedule_filter
+    filters = ['All', '15.00 - 23.59']
+  end
+
+  def specials
+    press_line_automated_dynamic_special_joins
+  end
+
+  def self.programme_list(press_lines)
+    result = []
+    selected_text = ''
+    press_lines.each do |press_line|
+      display = press_line.start.strftime("%H:%M") + " - " + press_line.display_title
+      result << [display, press_line.id.to_s]
+    end
+    result
+  end
+
   def self.get_channel(channel_name)
     channel = Channel.find_by_name(channel_name)
     if channel.nil?
