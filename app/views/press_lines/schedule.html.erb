@@ -17,8 +17,8 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show]) %> | 
-		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show]) %>
+    <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show], params[:template]) %> | 
+		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template]) %>
 </fieldset>
 <br/>
 <table>
@@ -38,17 +38,17 @@
   <% end %>
 		<td><%=h format_date_time(press_line.start, "%H:%M") %></td>
     <td width = '200'><%=h press_line.display_title %></td>
-    <td><%= h press_line.id %></td>
     <td>
       <table>
       <% press_line.specials.each do |special|%>
         <tr>
-          <td width = 50><%=h special.part.name unless special.part.nil? %></td>
+          <td width = 80><%=h special.part.name unless special.part.nil? %></td>
           <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
           <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
         </tr>
       <% end %>
       </table>
+    </td>
   </tr>
 <% end %>
 </table>
@@ -56,8 +56,13 @@
 <br />
 
   <%= select_tag :programme, options_for_select(@programmes, params[:programme]),{:onchange => 'this.form.submit()'}%>
-  <%= select_tag :part, options_for_select(@parts, params[:part]),{:onchange => 'this.form.submit()'}%>
-
+  <%= select_tag :part, options_for_select(@parts, params[:part]),{:onchange => 'this.form.submit()'}%><br/>
+  <p>
+		<%= text_field_tag :search, params[:search], :size => 45 %>
+		<%= submit_tag "Search", :name => nil %>
+	</p>
+  <%= label_tag :template, 'Template' %>
+  <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()'} %>
 <% end %>
 
 <br/>
@@ -75,7 +80,8 @@
 		<td><%=h automated_dynamic_special.template_name %></td>
     <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
     <td><%=h automated_dynamic_special.short_ready_message[:message] %></td>
-    <td><%= link_to 'Add', add_special_to_schedule(params[:programme], automated_dynamic_special, params[:part], display_date, params[:channel], params[:show]), :title => 'Add this special to schedule' %></td>
+    <td><%= link_to 'Add/Replace', add_special_to_schedule(params[:programme], automated_dynamic_special, params[:part], display_date, params[:channel], params[:show]), :title => 'Add this special to schedule' %></td>
+    <td><%= link_to 'Show Special', automated_dynamic_special %></td>
   </tr>
 <% end %>
 </table>
