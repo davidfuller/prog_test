@@ -7,6 +7,9 @@
   <tr><td class='dynamic_special_bold'>Name</td><td class='dynamic_special_title'><%=h @automated_dynamic_special.name %></td><td rowspan = '3'></tr>
   <tr><td class='dynamic_special_bold'>Channel</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.channel_name %></td></tr>
   <tr><td class='dynamic_special_bold'>Last Use</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.last_use.to_s(:broadcast_date) unless @automated_dynamic_special.last_use.nil?%></td></tr>
+  <tr><td><%= link_to_function('Show/hide Advanced') {|page| page.select('.show-advanced').each {|x| x.toggle}} %></td></tr>
+  <tr class = 'show-advanced', style = "display: none;"><td class='dynamic_special_bold'>Offset (secs)</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.offset %></td></div></tr>
+  <tr class = 'show-advanced', style = "display: none;"><td class='dynamic_special_bold'>Archived</td><td class='dynamic_special_text'><%=h @automated_dynamic_special.archive %></td></div></tr>
 </table>
 <br />
 
