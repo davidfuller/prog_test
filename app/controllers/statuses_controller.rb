@@ -2,11 +2,11 @@ class StatusesController < ApplicationController
   # GET /statuses
   # GET /statuses.xml
   def index
-    @statuses = Status.all
+    @statuses = Status.search(params)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @statuses }
+      format.xml  #{ render :xml => @statuses }
     end
   end
 
