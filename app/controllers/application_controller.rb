@@ -309,8 +309,8 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :remove_special, :id => id, :programme => programme, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show }
   end
 
-  def special_schedule_with_date(priority_date, channel, show)
-    {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show }
+  def special_schedule_with_date(priority_date, channel, show, template)
+    {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show, :template => template }
   end
 
   helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 

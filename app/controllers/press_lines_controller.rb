@@ -225,6 +225,7 @@ class PressLinesController < ApplicationController
     logger.debug("============++++++++++++++++=============")
     logger.debug (params[:programme])
     @available = AutomatedDynamicSpecial.available_for_schedule(params)
+    @templates = DynamicSpecialTemplate.template_display_with_all
   end
 
   def schedule_for_xml

@@ -917,13 +917,18 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   def self.available_for_schedule(params)
     channel_id = Channel.find_by_name(params[:channel])
     priority_date = params[:priority_date]
+    template_id = DynamicSpecialTemplate.find_by_name(params[:template])
     if priority_date.blank?
       schedule_date = Date.parse(Time.new().to_s) # midnight today
     else
       schedule_date = Date.parse(priority_date)
     end
-    
-    find  :all, :conditions => ['channel_id = ? AND last_use >= ?', channel_id, schedule_date]
+
+    if template_id
+      find  :all, :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, template_id]
+    else
+      find  :all, :conditions => ['channel_id = ? AND last_use >= ?', channel_id, schedule_date]
+    end
     
   end
 
