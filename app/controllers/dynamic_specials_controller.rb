@@ -3,9 +3,10 @@ class DynamicSpecialsController < ApplicationController
   # GET /dynamic_specials.xml
   def index
     @show_new_edit = Date.today <= Date.new(2021,4,1)
+    remove_v4 = true
     respond_to do |format|
       format.html { @dynamic_specials = DynamicSpecial.search(params[:search],params[:channel], params[:page], params[:show_duplicates], params[:show_all], params[:show_only])
-                    @channel_display = Channel.display
+                    @channel_display = Channel.display(remove_v4)
                     @show_duplicates = params[:show_duplicates]}
       format.xml  { @dynamic_specials = DynamicSpecial.xml_data(params[:channel]) }
     end
