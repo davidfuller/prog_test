@@ -11,7 +11,7 @@ class GenerateStatusLine < ActiveRecord::Base
       lines = all
     end
     
-    test_channels = GenerateStatusSetting.all
+    test_channels = GenerateStatusSetting.all(:conditions => { :enabled => true})
     test_channels.each do |channel|
       if !lines.any? {|line| line[:channel_id] == channel.channel_id}
         logger.debug "Missing channel " + channel.channel.name
@@ -99,6 +99,7 @@ class GenerateStatusLine < ActiveRecord::Base
           file.each_line do |line|
             xml_string += line
           end
+          file.close
         else
           xml_string = "No File"
         end
