@@ -24,8 +24,12 @@ class Channel < ActiveRecord::Base
   named_scope :language_scope, :order => "language_id, name"
   
   
-  def self.display
-    all(:select => :name).map{|m| m.name}
+  def self.display(remove_v4 = false)
+    channels = all(:select => :name).map{|m| m.name}
+    if remove_v4
+      channels = channels - ['V4']
+    end
+    channels
   end
   
   def hd_display
