@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :parts
+
+  map.resources :special_schedule_settings
+
   map.resources :generate_status_lines
 
   map.resources :generate_status_settings
@@ -96,7 +100,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :countdown_ipps
 
-  map.resources :media_files, :collection => { :unready => :get, :last_use => :get, :move_2012 => :get, :recent => :get }, :member => {:resize => :get, :crop => :post}
+  map.resources :media_files, :collection => { :unready => :get, :last_use => :get, :move_2012 => :get, :recent => :get }, :member => {:resize => :get, :crop => :post, :queue => :get}
 
   map.resources :media_folders
 
@@ -129,7 +133,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :comparisons, :member => {:add_series =>:get, :add_title_series => :get, :add_local_title => :get, :add_eidr_to_house => :get }
   
-  map.resources :press_lines, :collection => { :priority => :get, :cross_channel_selection => :get }
+  map.resources :press_lines, :collection => { :priority => :get, :cross_channel_selection => :get, :schedule => :get }
 
   map.resources :playlist_lines
 
