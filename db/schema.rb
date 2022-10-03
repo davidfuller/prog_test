@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20220810102939) do
+ActiveRecord::Schema.define(:version => 20220926171344) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20220810102939) do
     t.datetime "updated_at"
     t.integer  "special_preview_id"
     t.boolean  "archive"
+    t.integer  "offset"
   end
 
   create_table "bugs", :force => true do |t|
@@ -452,6 +453,13 @@ ActiveRecord::Schema.define(:version => 20220810102939) do
     t.string   "category"
   end
 
+  create_table "parts", :force => true do |t|
+    t.integer  "order_number"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "playlist_filenames", :force => true do |t|
     t.string   "filename"
     t.date     "schedule_date"
@@ -489,6 +497,15 @@ ActiveRecord::Schema.define(:version => 20220810102939) do
   create_table "press_filenames", :force => true do |t|
     t.string   "filename"
     t.datetime "import_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "press_line_automated_dynamic_special_joins", :force => true do |t|
+    t.integer  "press_line_id"
+    t.integer  "automated_dynamic_special_id"
+    t.integer  "part_id"
+    t.integer  "offset"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -640,6 +657,13 @@ ActiveRecord::Schema.define(:version => 20220810102939) do
   create_table "special_previews", :force => true do |t|
     t.string   "name"
     t.integer  "media_file_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "special_schedule_settings", :force => true do |t|
+    t.string   "name"
+    t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
