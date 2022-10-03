@@ -1,7 +1,7 @@
 
 
 <fieldset>
-	<legend>Schedule file (all except V4 Norway)</legend>
+	<legend>Schedule file</legend>
 	<% form_tag({:action => :upload_schedule}, :multipart => true) do %>
 		<p>Select the schedule file to process:</p>
   	<%= file_field_tag 'schedule', {:size => 60} %><br/>
@@ -9,6 +9,7 @@
 	<% end %>
 </fieldset>
 <br/>
+<% if false %>
 <fieldset>
 	<legend>Schedule file (V4 Norway Only)</legend>
 	<% form_tag({:action => :upload_schedule_v4}, :multipart => true) do %>
@@ -17,7 +18,6 @@
 		<%= submit_tag("Process") %>
 	<% end %>
 </fieldset>
-<% if false %>
 <fieldset>
 	<%= calendar_date_select_includes "custom", :locale=>'uk' %>
 	<legend>Web access Press File</legend>
