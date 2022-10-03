@@ -16,7 +16,7 @@
 		</div> 
 		<div id="columns">
 			<div id="side">
-				<p>Version 3.5 LIVE</p>
+				<p>Version 3.7 LIVE</p>
         <%= link_to 'Home', root_url%><br /> 
 				
 				<h4>Titles Database</h4>
@@ -43,6 +43,7 @@
           <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
           <%= link_to 'ADS Report', report_automated_dynamic_specials_path %><br/>
           <%= link_to 'Recent Special Preview', recent_media_files_path %><br/>
+          <%= link_to 'Specials Schedule', special_schedule_with_date(Time.new.to_s(:broadcast_date_full_month), "Puls", "15.00 - 23.59") %><br/>
           <%= link_to 'Dynamic Special Media', dynamic_special_medias_path %><br/>
           <%= link_to 'Dynamic Special Logos', dynamic_special_logos_path %><br/>
 				<h4>Media</h4>
@@ -98,6 +99,8 @@
             <%= link_to 'Field Specifications', dynamic_special_image_specs_path%><br/>
             <%= link_to 'Templates and Field Numbers', template_field_joins_path%><br/>
             <%= link_to 'Automated DS Fields', automated_dynamic_special_fields_path%><br/>
+            <%= link_to 'Special Schedule Settings', special_schedule_settings_path%><br/>
+            <%= link_to 'Part Settings', parts_path%><br/>
           </div>
 			</div> 
 			<div id="main">
