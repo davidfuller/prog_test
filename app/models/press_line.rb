@@ -92,10 +92,14 @@ class PressLine < ActiveRecord::Base
 
   def self.selected_programme(my_press_lines, my_programme)
 
-    result = my_press_lines[0].id.to_s
-    my_press_lines.each do |press_line|
-      if press_line.id.to_s == my_programme
-        result = my_programme
+    if my_press_lines.length == 0
+      result = nil
+    else
+      result = my_press_lines[0].id.to_s
+      my_press_lines.each do |press_line|
+        if press_line.id.to_s == my_programme
+          result = my_programme
+        end
       end
     end
     result
