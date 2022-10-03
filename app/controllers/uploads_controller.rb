@@ -5,7 +5,8 @@ require 'rexml/document'
 include REXML
 
   def index
-    @channels = Channel.display
+    remove_v4 = true
+    @channels = Channel.display(remove_v4)
     respond_to do |format|
       format.html # index.html.erb
     end
