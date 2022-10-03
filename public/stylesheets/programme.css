@@ -676,3 +676,7 @@ fieldset.report{
 #store .dynamic_special_error{
   background: #FCA3A3; 
 }
+
+tr.selected_special{
+  background: #ebd5d5 !important;
+}
