@@ -77,6 +77,10 @@
     <b>Status:</b><br/>
     <%=h media_file.status.message unless media_file.status.nil? %>
   </p>
+  <p>
+    <b>Original Filename:</b><br/>
+    <%=h media_file.original_filename %>
+  </p>
 
   <% if show_details %>
     <%= link_to 'Details', media_file_path(media_file, :source => source, :dynamic_special_media_id => dynamic_special_media_id, :upload => 'false')%> | 
