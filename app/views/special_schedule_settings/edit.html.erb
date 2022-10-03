@@ -1,0 +1,20 @@
+<h1>Editing special_schedule_setting</h1>
+
+<% form_for(@special_schedule_setting) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :value %><br />
+    <%= f.text_field :value %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @special_schedule_setting %> |
+<%= link_to 'Back', special_schedule_settings_path %>

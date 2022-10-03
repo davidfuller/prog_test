@@ -1,0 +1,13 @@
+<p>
+  <b>Name:</b>
+  <%=h @special_schedule_setting.name %>
+</p>
+
+<p>
+  <b>Value:</b>
+  <%=h @special_schedule_setting.value %>
+</p>
+
+
+<%= link_to 'Edit', edit_special_schedule_setting_path(@special_schedule_setting) %> |
+<%= link_to 'Back', special_schedule_settings_path %>
