@@ -316,4 +316,18 @@ class MediaFilesController < ApplicationController
       format.xml  #_{ render :xml => @media_files }
     end
   end
+
+# GET /media_files/1/queue
+  def queue
+    @media_file = MediaFile.find(params[:id])
+    @media_file.status = Status.find_by_message('Queued')
+    if params[:original_filename]
+      @media_file.original_filename = params[:original_filename]
+    end
+    @media_file.save
+    respond_to do |format|
+      format.html
+      format.xml 
+    end
+  end
 end
