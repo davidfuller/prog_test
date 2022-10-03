@@ -3,7 +3,8 @@ class BugsController < ApplicationController
   # GET /bugs.xml
   def index
     @bugs = Bug.search(params[:channel])
-    @channel_display = Channel.display
+    remove_v4 = true
+    @channel_display = Channel.display(remove_v4)
 
     respond_to do |format|
       format.html # index.html.erb
