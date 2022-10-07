@@ -8,6 +8,10 @@
     <%= f.collection_select (:channel_id, @channels, :id, :name, {:prompt => 'Choose a channel'})%>
   </p>
   <p>
+    <%= f.label :first_use %><br />
+    <%= f.calendar_date_select :first_use, {:month_year => :label} %><br/>
+  </p>
+  <p>
     <%= f.label :last_use %><br />
     <%= f.calendar_date_select :last_use, {:month_year => :label} %><br/>
   </p>
