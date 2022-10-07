@@ -10,4 +10,44 @@ class Part < ActiveRecord::Base
     end
     result
   end
+
+  def self.selected_part(my_part, force_part_1)
+    result = my_part
+    if result.nil?||force_part_1
+      result = find_by_name("Part 1").id.to_s
+    end
+    result
+  end
+
+  def self.previous(current_id)
+    current = find(current_id)
+    if current
+      result = find :last, :conditions => ['order_number < ?', current.order_number]
+      if result.nil?
+        result_id = current_id
+      else
+        result_id =result.id.to_s
+      end
+    else
+      result_id = current_id
+    end
+    result_id
+  end
+
+  def self.next(current_id)
+    current = find(current_id)
+    if current
+      result = find :first, :conditions => ['order_number > ?', current.order_number]
+      if result.nil?
+        result_id = current_id
+      else
+        result_id =result.id.to_s
+      end
+    else
+      result_id = current_id
+    end
+    result_id
+  end
+
+
 end
