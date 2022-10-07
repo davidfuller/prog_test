@@ -215,55 +215,114 @@ class PressLinesController < ApplicationController
   end
 
   def schedule_for_html
-    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel])     
+    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], params[:press_line_ids])     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
     @filter_display = PressLine.schedule_filter
     @programmes = PressLine.programme_list(@press_lines)
     @parts = Part.parts_display
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
+    logger.debug(params[:part])
+    params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
     logger.debug("============++++++++++++++++=============")
-    logger.debug (params[:programme])
+    logger.debug(params[:part])
+    logger.debug(params[:programme])
     @available = AutomatedDynamicSpecial.available_for_schedule(params)
     @templates = DynamicSpecialTemplate.template_display_with_all
+    @message = PressLine.count_message(@press_lines)
   end
 
   def schedule_for_xml
     @press_lines = PressLine.schedule_lines_for_xml(params[:start_date], params[:channel], params[:days])
   end
 
+  def random
+    respond_to do |format|
+      format.html { random_for_html }
+    end
+  end
+
+  def random_for_html
+    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel])     
+    remove_v4 = true
+    @channel_display = Channel.display(remove_v4)
+    @filter_display = PressLine.schedule_filter
+    @parts = Part.parts_display
+    @available = AutomatedDynamicSpecial.available_for_schedule(params)
+    @templates = DynamicSpecialTemplate.template_display_with_all
+  end
+
   def add_special
-    specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(params[:id], params[:part_id])
-    if specials.length > 1
-      for index in (specials.length-1).downto(1) do
-        specials[index].destroy
+    the_ids = params[:press_line_ids]
+    count_added = 0
+    count_updated = 0
+    count_issues = 0
+    if the_ids
+      the_ids.each do |my_id|
+        specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(my_id, params[:part_id])
+        if specials.length > 1
+          for index in (specials.length-1).downto(1) do
+            specials[index].destroy
+          end
+        end
+        specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(my_id, params[:part_id])
+        if specials.length == 1
+          special = specials[0]
+          updated = true
+        else
+          special = PressLineAutomatedDynamicSpecialJoin.new
+          updated = false
+        end
+        special.press_line_id = my_id
+        special.automated_dynamic_special_id = params[:ads_id]
+        special.part_id = params[:part_id]
+        special.offset = -240
+
+        if special.save
+          if updated
+            count_updated += 1
+          else
+            count_added += 1
+          end
+        else
+          count_issues += 1
+        end
       end
     end
-    specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(params[:id], params[:part_id])
-    if specials.length == 1
-      special = specials[0]
-      notice = 'Special schedule updated'
-    else
-      special = PressLineAutomatedDynamicSpecialJoin.new
-      notice = 'Special added to schedule'
-    end
-    special.press_line_id = params[:id]
-    special.automated_dynamic_special_id = params[:ads_id]
-    special.part_id = params[:part_id]
-    special.offset = -240
-
-    if special.save
-      flash[:notice] = notice
-    else
-      flash[:notice] = "Issue with adding/updating special"
-    end
-
+    flash[:notice] = count_message(count_added, count_updated, count_issues)
+    params[:part_id] = Part.next(params[:part_id])
     respond_to do |format|
-      format.html {redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:id], :part => params[:part_id], :show => params[:show])}
+      format.html {redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :part => params[:part_id], :show => params[:show], :press_line_ids => params[:press_line_ids], :previous_press_line_ids => params[:press_line_ids])}
       format.xml  { render :xml => @press_lines }
     end
   end
-  
+
+  def count_message(count_added, count_updated, count_issues)
+    if count_added == 0 && count_updated == 0 && count_issues == 0
+      message = "Nothing updated or added and no issues"
+    elsif count_added == 0 && count_updated == 0 && count_issues > 0
+      message = "Nothing updated or added with " + count_issues.to_s + " issues"
+    elsif count_added == 1 && count_updated == 0 && count_issues == 0
+      message = "1 special added"
+    elsif count_added > 1 && count_updated == 0 && count_issues == 0
+      message = count_added.to_s + " specials added"
+    elsif count_added == 0 && count_updated == 1 && count_issues == 0
+      message = "1 special updated"
+    elsif count_added == 0 && count_updated > 1 && count_issues == 0
+      message = count_updated.to_s + " specials updated"
+    elsif count_added == 1 && count_updated == 1 && count_issues == 0
+      message = "1 special added and 1 updated"
+    elsif count_added > 1 && count_updated == 1 && count_issues == 0
+      message = count_added.to_s + " special added and 1 updated"
+    elsif count_added == 1 && count_updated > 1 && count_issues == 0
+      message = "1 special added and " + count_updated.ts_s + " updated"
+    elsif count_added > 1 && count_updated > 1 && count_issues == 0
+      message = count_added.to_s + " special added and " + count_updated.to_s + " updated"
+    else
+      message = count_added.to_s + " special added and " + count_updated.to_s + " updated and" + count_issues.to_s + " issues"  
+    end
+    message
+  end
   def remove_special
     special = PressLineAutomatedDynamicSpecialJoin.find(params[:id])
     if special
