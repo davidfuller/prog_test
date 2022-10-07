@@ -6,7 +6,9 @@ class PressLine < ActiveRecord::Base
   has_many :automated_dynamic_specials, :through => :press_line_automated_dynamic_special_joins
 
   validates_presence_of :channel_id, :press_filename_id
-  
+
+  attr_accessor :checked
+
   def self.search(search, press_date, channel_name)
 
     channel = get_channel(channel_name)
@@ -68,7 +70,7 @@ class PressLine < ActiveRecord::Base
 
   end
 
-  def self.schedule_lines(show, priority_date, channel_name)
+  def self.schedule_lines(show, priority_date, channel_name, checked_ids)
     
     channel = get_channel(channel_name)
     
@@ -81,13 +83,25 @@ class PressLine < ActiveRecord::Base
     end_date = date
     
     if show == 'All'
-      find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ?',
+      results = find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ?',
                                 date.strftime('%F'), end_date.strftime('%F'), channel.id], :order => :start)
     else
-      find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ? and TIME(start) >= ?',
+      results = find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ? and TIME(start) >= ?',
                                 date.strftime('%F'), end_date.strftime('%F'), channel.id, "15:00:00"], :order => :start)
     end
 
+    if checked_ids
+      results.each do |result|
+        if checked_ids.include? result.id.to_s
+          result.checked = true
+        else
+          result.checked = false
+        end
+      end
+    end
+
+    results
+    
   end
 
   def self.selected_programme(my_press_lines, my_programme)
@@ -536,7 +550,22 @@ class PressLine < ActiveRecord::Base
     {:notice => notice, :success => success, :added => added, :issues => issues}
   end
   
-  
+  def self.count_message(press_lines)
+    count = 0
+    if press_lines
+      press_lines.each do |press_line|
+        count = count + press_line.specials.length
+      end
+    end
+    if count == 0
+      message = "0 specials scheduled"
+    elsif count == 1
+      message = "1 special scheduled"
+    else
+      message = count.to_s + " specials scheduled"
+    end
+    message
+  end  
   
   private
   def start_date_time (start_date, start_time)
