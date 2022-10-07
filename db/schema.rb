@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20221006133902) do
+ActiveRecord::Schema.define(:version => 20221007155529) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -665,6 +665,14 @@ ActiveRecord::Schema.define(:version => 20221006133902) do
   create_table "special_schedule_settings", :force => true do |t|
     t.string   "name"
     t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "special_schedule_stores", :force => true do |t|
+    t.datetime "start"
+    t.integer  "press_filename_id"
+    t.integer  "join_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
