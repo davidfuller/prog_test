@@ -11,14 +11,18 @@
 	
 	
 */
+/** Greens
+  Dark green #007a00
+  Light Green #d5ebe0
+*/
 
 #banner { 
-	background: #ebd5d5; 
+	background: #d5ebe0; 
 	padding-top: 10px; 
 	padding-bottom: 10px; 
 	border-bottom: 2px solid; 
 	font: 40px "Verdana", sans-serif; 
-	color: #7a0000; 
+	color: #007a00; 
 	text-align: center;
 }
 
@@ -27,7 +31,7 @@
 }ebd5d5
 
 #columns { 
-	background: #7a0000;
+	background: #007a00;
 }
 
 #main { 
@@ -41,13 +45,13 @@
 
 #main a {
 	font-size: 10px;
-	color: #7a0000;
+	color: #007a00;
 	text-decoration: none;
 }
 
 #main a:hover {
-	color:  #ebd5d5;
-	background: #7a0000;
+	color:  #d5ebe0;
+	background: #007a00;
 }
 
 #side { 
@@ -56,18 +60,18 @@
 	padding-left: 1em; 
 	padding-bottom: 100em; 
 	width: 17em; 
-	background: #7a0000;
-	color: #ebd5d5;
+	background: #007a00;
+	color: #d5ebe0;
 }
 
 #side h3, h4 { 
-	color:  #ebd5d5;
+	color:  #d5ebe0;
 	font-size: medium;
 	margin-bottom: 3px;
 }
 	
 #side a { 
-	color: #ebd5d5; 
+	color: #d5ebe0; 
 	font-size: small;
 	text-decoration: none;
 }
@@ -85,9 +89,9 @@
   font-size: 11px;
   padding: 2px 10px;
 	z-index: 999;
-	background-color: #ebd5d5;
+	background-color: #d5ebe0;
 	border-style:solid;
-  border-color: #7a0000;
+  border-color: #007a00;
   border-width: 1px;
 	border-radius: 5px;
 	color: #000;
@@ -109,7 +113,7 @@
 
 #side a:hover { 
 	color: white;
-	background: #7a0000;
+	background: #007a00;
 	text-decoration: underline;
 }
 
@@ -235,7 +239,7 @@
 }
 
 #store .titled_contained {
-	background: #ebd5d5;
+	background: #d5ebe0;
 }
 
 #store .heading {
@@ -273,7 +277,7 @@
 }
 
 #store .countdown{
-	color: #7a0000;
+	color: #007a00;
 }
 
 #store .countdown td{
@@ -294,21 +298,21 @@
 }
 
 #store h1, h2 { 
-	color:  #7a0000; 
+	color:  #007a00; 
 	font-size: medium;
   	font-family: verdana, arial, helvetica, sans-serif;
 }
 
 #store h3 { 
-	color:  #7a0000; 
+	color:  #007a00; 
 	font-size: 10px;
 	line-height: 0px;
 }
 
 table.field_issues {
-	border: 2px solid #7a0000;
+	border: 2px solid #007a00;
   border-radius: 6px;
-	background-color: #ebd5d5;
+	background-color: #d5ebe0;
 	margin-top: 5px;
 	margin-bottom: 20px;
   border-collapse: separate !important;
@@ -316,7 +320,7 @@ table.field_issues {
 
 th.field_issues {
 	font-size: 12px !important;
-	color:  #7a0000; 
+	color:  #007a00; 
 	padding: 5px;
 }
 td.field_issues {
@@ -352,7 +356,7 @@ fieldset.report{
 }
 
 #store td .day_heading {
-	color: #7a0000;
+	color: #007a00;
 	font-weight: bold;
 }
 
@@ -362,7 +366,7 @@ fieldset.report{
 
 #store .comparison_date th {
 	font-size: 12px;
-	color: #7a0000;
+	color: #007a00;
 	font-weight: bold;
 }
 
@@ -381,17 +385,18 @@ fieldset.report{
 }
 
 #link a:hover{
-	color: #7a0000;
-	background: #ebd5d5;
+	color: #007a00;
+	background: #d5ebe0;
 	text-decoration: underline;
 }
 
 #store fieldset {
-	width: 600px;
+	width: 80%;
+  margin-top: 20px;
 }
 
 #store fieldset legend{
-	color:  #7a0000; 
+	color:  #007a00; 
 	font-size: medium;
 	font-weight: bold;
 }
@@ -399,17 +404,17 @@ fieldset.report{
 .link_button a {
 	font-size: 10px;
 	text-decoration: none;
-	color: #7a0000;
+	color: #007a00;
 }
 
 .link_button a:hover{
-	background: #ebd5d5;
+	background: #d5ebe0;
 	text-decoration: underline;
 }
 
 .info_text {
 	font-size: 11px;
-	color: #7a0000;
+	color: #007a00;
 }
 
 #colour_key  {
@@ -448,7 +453,7 @@ fieldset.report{
 
 #main label{
 	font-weight: bold;
-	color:	#7a0000;
+	color:	#007a00;
 }
 
 #title_fieldset fieldset {
@@ -466,8 +471,8 @@ fieldset.report{
 }
 
 .folder_link a:hover{
-	color: #7a0000;
-	background: #ebd5d5;
+	color: #007a00;
+	background: #d5ebe0;
 	text-decoration: underline;
 }
 
@@ -508,8 +513,8 @@ fieldset.report{
 	padding-bottom: 30px;
 	width: 80%;
 	height: 200px;
-	background: #ebd5d5;
-	border: 1px solid #7a0000;
+	background: #d5ebe0;
+	border: 1px solid #007a00;
 	overflow: auto;
 }
 .cross_channel_press{
@@ -519,7 +524,7 @@ fieldset.report{
 	width: 80%;
 	height: 200px;
 	background: white;
-	border: 1px solid #7a0000;
+	border: 1px solid #007a00;
 	overflow: auto;
 }
 .list-line-odd{
@@ -533,7 +538,7 @@ fieldset.report{
 	padding-top: 10px;
 	margin-top:20px;
 	width: 90%;
-	background: #ebd5d5;
+	background: #d5ebe0;
 }
 #search_media {
 	padding-left: 15px;
@@ -542,7 +547,7 @@ fieldset.report{
 	padding-top: 10px;
 	margin-top:20px;
 	width: 90%;
-	background: #ebd5d5;
+	background: #d5ebe0;
 }
 #channel_panel {
 	padding-left: 15px;
@@ -551,7 +556,7 @@ fieldset.report{
 	padding-top: 10px;
 	margin-top:20px;
 	width: 250px;
-	background: #ebd5d5;
+	background: #d5ebe0;
 }
 
 #on_demand_search_panel {
@@ -561,23 +566,23 @@ fieldset.report{
 	padding-top: 10px;
 	margin-top:20px;
 	width: 80%;
-	background: #ebd5d5;
+	background: #d5ebe0;
 }
 
 #search_table{
-	border: 1px solid #7a0000;
+	border: 1px solid #007a00;
 	width: 100%;
 }
 
 #channel_table{
-  border: 1px solid #7a0000;
+  border: 1px solid #007a00;
   width: 100%;
 }
 
 
 #description {
 	position: relative;
-	color: #7a0000;
+	color: #007a00;
 }
 
 #value {
@@ -591,7 +596,7 @@ fieldset.report{
 }
 
 #new_promo_message{
-	color: #7a0000;
+	color: #007a00;
 	font-style: italic;
 }
 
@@ -614,7 +619,7 @@ fieldset.report{
 .hint {
 	width :500px;
 	background: #FFF0F5;
-	border: 1px solid #7a0000;
+	border: 1px solid #007a00;
 	padding-left: 15px;
 	padding-right: 15px;
 	padding-bottom: 10px;
@@ -630,11 +635,11 @@ fieldset.report{
 }
 
 #store #missing_od_media {
-	background: #ebd5d5;	
+	background: #d5ebe0;	
 }
 
 #store #generate_issue {
-  background: #ebd5d5;	
+  background: #d5ebe0;	
 }
 
 #store #title-text {
@@ -644,25 +649,25 @@ fieldset.report{
 #store .dynamic_special_bold {
   font-weight: bold;
   font-size: 12px;
-  color: #7a0000;
+  color: #007a00;
 }
 #main .larger-link a {
   font-weight: bold;
   font-size: 12px;
-  color: #7a0000;
+  color: #007a00;
 }
 
 #main .pretend-button a {
   font-size: 12px;
   padding: 4px 10px;
 	z-index: 999;
-	background-color: #7a0000;
+	background-color: #007a00;
 	border-radius: 5px;
 	color: #FFF;
 }
 #main .pretend-button a:hover{
-	color: #7a0000;
-	background: #ebd5d5;
+	color: #007a00;
+	background: #d5ebe0;
 }
 
 #store .dynamic_special_title {
@@ -678,5 +683,23 @@ fieldset.report{
 }
 
 tr.selected_special{
-  background: #ebd5d5 !important;
+  background: #d5ebe0 !important;
+}
+
+.part-label {
+  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.part-checks {
+  margin-bottom: 10px;
+}
+
+.date-time-table{
+  font-size: 13px !important;
+  margin-bottom: 5px;
+}
+
+.random-template{
+  margin-bottom: 10px;
 }
