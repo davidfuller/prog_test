@@ -391,6 +391,7 @@ include REXML
     legacy_base_filename = File.basename(legacy_filename)
     legacy_press_filename = PressFilename.find_by_filename(legacy_base_filename)
     Priority.store_priority press_filename.id
+    SpecialScheduleStore.store_ads_join press_filename.id
     
     num_deleted = PressLine.destroy_all(['press_filename_id = ? AND channel_id = ?', press_filename.id, channel.id]).count
     
@@ -412,6 +413,7 @@ include REXML
           press = PressLine.new
           press.add_clipsource_xml(start_time, content_ref_id, channel, press_filename, content_data)
           if press.save
+            SpecialScheduleStore.add_press_line_ids_to_joins(press.start, press_filename.id, press.id)
             results << {:success => true, :message => 'Good'}
           else
             results << {:success => false, :message => 'Issue saving data'}
