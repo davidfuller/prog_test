@@ -65,7 +65,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
   # GET /automated_dynamic_specials/new.xml
   def new
     @automated_dynamic_special = AutomatedDynamicSpecial.new
-    @automated_dynamic_special.fix_nil_last_use
+    @automated_dynamic_special.fix_nil_first_last_use
     @automated_dynamic_special.offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
     @channels = Channel.all
     @templates = DynamicSpecialTemplate.all
@@ -82,6 +82,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
     @channels = Channel.all
     @templates = DynamicSpecialTemplate.all
     @automated_dynamic_special = AutomatedDynamicSpecial.find(params[:id])
+    @automated_dynamic_special.fix_nil_first_last_use
     @index_params = clean_params(params[:index_params])
   end
 
