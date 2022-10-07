@@ -17,25 +17,29 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show], params[:template]) %> | 
-		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template]) %>
+    <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:part]) %> | 
+		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:part]) %> <br/>
 </fieldset>
 <br/>
+<label><%=h @message %></label>
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
   <tr>
+    <th></th>
     <th>Time</th>
     <th>Title</th>
     <th>Specials</th>
   </tr>
 
 <% @press_lines.each do |press_line| %>
-  <% if params[:programme] == press_line.id.to_s %>
+  <% if press_line.checked %>
+    <%= hidden_field_tag "previous_press_line_ids[]", press_line.id %>
     <tr class = 'selected_special'>
   <% else %>
     <tr>
   <% end %>
+    <td><%= check_box_tag "press_line_ids[]", press_line.id, press_line.checked, {:onchange => 'this.form.submit()'}  %></td>
 		<td><%=h format_date_time(press_line.start, "%H:%M") %></td>
     <td width = '200'><%=h press_line.display_title %></td>
     <td>
@@ -55,33 +59,45 @@
 
 <br />
 
-  <%= select_tag :programme, options_for_select(@programmes, params[:programme]),{:onchange => 'this.form.submit()'}%>
-  <%= select_tag :part, options_for_select(@parts, params[:part]),{:onchange => 'this.form.submit()'}%><br/>
+
+  
+  
+
+<fieldset>
+  <legend>Available Specials</legend>  
+  <div class = 'pretend-button'>
+    <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search]) %>
+  </div>
   <p>
-		<%= text_field_tag :search, params[:search], :size => 45 %>
-		<%= submit_tag "Search", :name => nil %>
-	</p>
+    <%= text_field_tag :search, params[:search], :size => 45 %>
+    <%= submit_tag "Search", :name => nil %>
+    
+  </p>
   <%= label_tag :template, 'Template' %>
-  <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()'} %>
-<% end %>
+  <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()'} %><br/>
+  
+  <br/>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Template</th>
+      <th>First Use</th>
+      <th>Last Use</th>
+      <th>Status</th>
+      <th><%= select_tag :part, options_for_select(@parts, params[:part]),{:onchange => 'this.form.submit()'}%><br/></th>
+    </tr>
 
-<br/>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Template</th>
-    <th>Last Use</th>
-    <th>Status</th>
-  </tr>
-
-<% @available.each do |automated_dynamic_special| %>
-  <tr>
-    <td><%=h automated_dynamic_special.name %></td>
-		<td><%=h automated_dynamic_special.template_name %></td>
-    <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
-    <td><%=h automated_dynamic_special.short_ready_message[:message] %></td>
-    <td><%= link_to 'Add/Replace', add_special_to_schedule(params[:programme], automated_dynamic_special, params[:part], display_date, params[:channel], params[:show]), :title => 'Add this special to schedule' %></td>
-    <td><%= link_to 'Show Special', automated_dynamic_special %></td>
-  </tr>
+  <% @available.each do |automated_dynamic_special| %>
+    <tr>
+      <td><%=h automated_dynamic_special.name %></td>
+      <td><%=h automated_dynamic_special.template_name %></td>
+      <td><%=h automated_dynamic_special.first_use.to_s(:broadcast_datetime) %></td>
+      <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_datetime) %></td>
+      <td><%=h automated_dynamic_special.short_ready_message[:message] %></td>
+      <td><%= link_to 'Add/Replace', add_special_to_schedule(params[:programme], automated_dynamic_special, params[:part], display_date, params[:channel], params[:show], params[:press_line_ids]), :title => 'Add this special to schedule' %></td>
+      <td><%= link_to 'Show Special', automated_dynamic_special %></td>
+    </tr>
+  <% end %>
+  </table>
+</fieldset>
 <% end %>
-</table>
