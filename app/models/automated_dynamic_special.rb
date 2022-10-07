@@ -379,7 +379,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     end
   end
   
-  def fix_nil_last_use
+  def fix_nil_first_last_use
     if last_use.nil?
       if updated_at
         last_use = updated_at.to_date + 1.month + 1.day + 6.hours
@@ -390,6 +390,15 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
       end
       self.last_use = last_use
     end
+    if first_use.nil?
+      if created_at
+        first_use = created_at.to_date + 6.hours
+      else
+        first_use = Time.current.to_date + 6.hours
+      end
+      self.first_use = first_use
+    end
+
   end
 
   def create_fields
@@ -923,13 +932,41 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     else
       schedule_date = Date.parse(priority_date)
     end
+    search = params[:search]
 
-    if template_id
-      find  :all, :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, template_id]
+    if search
+      if template_id
+        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ?', channel_id, schedule_date, schedule_date, template_id, "%#{search}%"]
+      else
+        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ?', channel_id, schedule_date, schedule_date, "%#{search}%"]
+      end
+      
     else
-      find  :all, :conditions => ['channel_id = ? AND last_use >= ?', channel_id, schedule_date]
+      if template_id
+        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, schedule_date, template_id]
+      else
+        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ?', channel_id, schedule_date, schedule_date]
+      end
     end
-    
   end
 
+
+
+  def self.fix_first_use
+    my_count = 0
+    adss = find :all, :conditions => ['first_use is NULL']
+    adss.each do |ads|
+      if ads.first_use.nil?
+        if ads.created_at
+          ads.first_use = ads.created_at.to_date + 6.hours
+        else
+          ads.first_use = Time.current.to_date + 6.hours
+        end
+        if ads.save
+          my_count += 1
+        end
+      end  
+    end
+    my_count
+  end
 end
