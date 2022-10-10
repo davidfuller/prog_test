@@ -66,7 +66,7 @@
 <fieldset>
   <legend>Available Specials</legend>  
   <div class = 'pretend-button'>
-    <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search]) %>
+    <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil) %>
   </div>
   <p>
     <%= text_field_tag :search, params[:search], :size => 45 %>
