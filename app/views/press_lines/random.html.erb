@@ -18,8 +18,8 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search]) %> | 
-		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search]) %>
+    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %> | 
+		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %>
 </fieldset>
 <br/>
 <table>
@@ -31,27 +31,22 @@
     <th>Specials</th>
   </tr>
 
-<% @press_lines.each do |press_line| %>
-  <% if params[:programme] == press_line.id.to_s %>
-    <tr class = 'selected_special'>
-  <% else %>
-    <tr>
+  <% @press_lines.each do |press_line| %>
+      <td><%=h format_date_time(press_line.start, "%H:%M") %></td>
+      <td width = '200'><%=h press_line.display_title %></td>
+      <td>
+        <table>
+        <% press_line.specials.each do |special|%>
+          <tr>
+            <td width = 80><%=h special.part.name unless special.part.nil? %></td>
+            <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
+            <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
+          </tr>
+        <% end %>
+        </table>
+      </td>
+    </tr>
   <% end %>
-		<td><%=h format_date_time(press_line.start, "%H:%M") %></td>
-    <td width = '200'><%=h press_line.display_title %></td>
-    <td>
-      <table>
-      <% press_line.specials.each do |special|%>
-        <tr>
-          <td width = 80><%=h special.part.name unless special.part.nil? %></td>
-          <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
-          <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
-        </tr>
-      <% end %>
-      </table>
-    </td>
-  </tr>
-<% end %>
 </table>
 
 <fieldset>
@@ -80,8 +75,8 @@
 	  <%= link_to_function 'Uncheck all parts', "$$('input.part-checks').each(function(checkbox) { checkbox.checked = false; });" %>
 	</span><br/>
   <% @parts.each do |part|%>
-    <%= check_box_tag "part_ids[]", part[1], false, :class => 'part-checks'%>
-    <span class = 'part-label'><%=h part[0]%></span>
+    <%= check_box_tag "part_ids[]", part.id, part.checked, {:class => 'part-checks', :onchange => 'this.form.submit()'}%>
+    <span class = 'part-label'><%=h part.name%></span>
   <% end %>
   <br/>
   <%= label_tag :minimum_gap, 'Minimum Gap (minutes)' %>
@@ -113,7 +108,7 @@
   </table>
   <br/>
   <div class = 'pretend-button'>
-    <%= link_to 'Do The Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search]) %>
+    <%= link_to 'Do The Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %>
   </div>
 </fieldset>
 <% end %>
