@@ -243,11 +243,11 @@ class PressLinesController < ApplicationController
   end
 
   def random_for_html
-    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel])     
+    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
     @filter_display = PressLine.schedule_filter
-    @parts = Part.parts_display
+    @parts = Part.all_with_checked(params[:part_ids])
     @available = AutomatedDynamicSpecial.available_for_schedule(params)
     @templates = DynamicSpecialTemplate.template_display_with_all
   end

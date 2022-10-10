@@ -313,8 +313,8 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :part => part}
   end
 
-  def special_random_with_date(priority_date, channel, show, template, search)
-    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search}
+  def special_random_with_date(priority_date, channel, show, template, search, part_ids)
+    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids}
   end
 
   helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 
