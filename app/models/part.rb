@@ -3,6 +3,8 @@ class Part < ActiveRecord::Base
   has_many :press_line_automated_dynamic_special_joins
   default_scope :order => 'order_number'
 
+  attr_accessor :checked
+
   def self.parts_display
     result = []
     all.each do |part|
@@ -49,5 +51,16 @@ class Part < ActiveRecord::Base
     result_id
   end
 
+  def self.all_with_checked(part_ids)
+    parts = all
+    parts.each do |part|
+      if part_ids.include? part.id.to_s
+        part.checked = true
+      else
+        part.checked = false
+      end
+    end
+    parts
+  end
 
 end
