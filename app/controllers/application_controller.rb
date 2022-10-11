@@ -317,6 +317,11 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids}
   end
 
+  def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids)
+    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, 
+        :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids}
+  end
+
   helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 
                 :playlist_lines_path_with_show_and_filename, :comparison_path_with_filter_and_filename,
                 :comparison_path_with_last_filename, :jpeg_with_folder, :press_lines_with_date,
@@ -333,6 +338,6 @@ class ApplicationController < ActionController::Base
                 :trailer_delete_diva_references, :trailer_workflow_update, :special_preview_add_media,
                 :toggle_channel_special_preview_enable, :special_preview_media_files_past_last_use_path, 
                 :generate_status_with_date, :add_special_to_schedule, :remove_special_from_schedule, 
-                :special_schedule_with_date, :special_random_with_date
+                :special_schedule_with_date, :special_random_with_date, :special_random_generate
   
 end
