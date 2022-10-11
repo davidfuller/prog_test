@@ -250,6 +250,24 @@ class PressLinesController < ApplicationController
     @parts = Part.all_with_checked(params[:part_ids])
     @available = AutomatedDynamicSpecial.available_for_schedule(params)
     @templates = DynamicSpecialTemplate.template_display_with_all
+    if params[:start_date].nil?
+      params[:start_date] = params[:priority_date]
+    end
+    if params[:end_date].nil?
+      params[:end_date] = params[:priority_date]
+    end
+    if params[:start_time].nil?
+      params[:start_time] = '16:00'
+    end
+    if params[:end_time].nil?
+      params[:end_time] = '23:59'
+    end
+    if params[:minimum_gap].nil?
+      params[:minimum_gap] = '60'
+    end
+    @message = PressLine.random_generate_message(params)
+    logger.debug 'This is the message'
+    logger.debug @message
   end
 
   def add_special
