@@ -14,6 +14,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   default_scope :order => :name
 
   PER_PAGE = 12
+  attr_accessor :checked
 
   def self.search(params)
     channel_id = Channel.find_by_name(params[:channel])
@@ -936,18 +937,28 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 
     if search
       if template_id
-        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ?', channel_id, schedule_date, schedule_date, template_id, "%#{search}%"]
+        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ?', channel_id, schedule_date, schedule_date, template_id, "%#{search}%"]
       else
-        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ?', channel_id, schedule_date, schedule_date, "%#{search}%"]
+        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ?', channel_id, schedule_date, schedule_date, "%#{search}%"]
       end
-      
     else
       if template_id
-        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, schedule_date, template_id]
+        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, schedule_date, template_id]
       else
-        find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ?', channel_id, schedule_date, schedule_date]
+        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ?', channel_id, schedule_date, schedule_date]
       end
     end
+
+    if params[:automated_dynamic_special_ids]
+      results.each do |result|
+        if params[:automated_dynamic_special_ids].include? result.id.to_s
+          result.checked = true
+        else
+          result.checked = false
+        end
+      end
+    end
+    results
   end
 
 
