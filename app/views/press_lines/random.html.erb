@@ -62,27 +62,24 @@
   </p>
   <table class = 'date-time-table'>
     <tr>
-      <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, display_date, {:month_year => :label, :class => 'date-time-table'} %></td>
-      <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, display_date, {:month_year => :label, :class => 'date-time-table'} %></td>
+      <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :after_close => 'this.form.submit()'} %></td>
+      <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :after_close => 'this.form.submit()'} %></td>
     </tr>
     <tr>
-      <td><%= label_tag :start_time, 'Start Time', :class => 'date-time-table' %></td><td><%= text_field_tag :start_time, "16:00", :class => 'date-time-table' %></td>
-      <td><%= label_tag :end_time, 'End Time', :class => 'date-time-table' %></td><td><%= text_field_tag :end_time, "23:59", :class => 'date-time-table' %></td>
+      <td><%= label_tag :start_time, 'Start Time', :class => 'date-time-table' %></td><td><%= text_field_tag :start_time, params[:start_time], :class => 'date-time-table', :onchange => 'this.form.submit()' %></td>
+      <td><%= label_tag :end_time, 'End Time', :class => 'date-time-table' %></td><td><%= text_field_tag :end_time, params[:end_time], :class => 'date-time-table', :onchange => 'this.form.submit()' %></td>
     </tr>
   </table>
-  <span class = 'link_button'>
-	  <%= link_to_function 'Check all parts', "$$('input.part-checks').each(function(checkbox) { checkbox.checked = true; });" %> |
-	  <%= link_to_function 'Uncheck all parts', "$$('input.part-checks').each(function(checkbox) { checkbox.checked = false; });" %>
-	</span><br/>
+  
   <% @parts.each do |part|%>
     <%= check_box_tag "part_ids[]", part.id, part.checked, {:class => 'part-checks', :onchange => 'this.form.submit()'}%>
     <span class = 'part-label'><%=h part.name%></span>
   <% end %>
   <br/>
   <%= label_tag :minimum_gap, 'Minimum Gap (minutes)' %>
-  <%= text_field_tag :minimum_gap, "60" %><br/>
+  <%= text_field_tag :minimum_gap, params[:minimum_gap], :onchange => 'this.form.submit()' %><br/>
   <%= label_tag :replace, 'Replace existing scheduled specials', :class => 'random-template' %>
-  <%= check_box_tag :replace, @replace, false, :class => 'random-template' %><br/>
+  <%= check_box_tag :replace, @replace, params[:replace], {:class => 'random-template', :onchange => 'this.form.submit()'} %><br/>
   <table>
     <tr>
       <th></th>
@@ -97,7 +94,7 @@
 	</span>
   <% @available.each do |automated_dynamic_special| %>
     <tr>
-      <td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, false,  :class => 'checks'  %></td>
+      <td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, automated_dynamic_special.checked, {:class => 'checks', :onchange => 'this.form.submit()'}  %></td>
       <td><%=h automated_dynamic_special.name %></td>
       <td><%=h automated_dynamic_special.template_name %></td>
       <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
@@ -108,7 +105,8 @@
   </table>
   <br/>
   <div class = 'pretend-button'>
-    <%= link_to 'Do The Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %>
+    <%= link_to 'Do The Random Scheduling', special_random_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
+                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @message %>
   </div>
 </fieldset>
 <% end %>
