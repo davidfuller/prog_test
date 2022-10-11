@@ -566,7 +566,124 @@ class PressLine < ActiveRecord::Base
     end
     message
   end  
-  
+
+  def self.random_generate_message(params)
+    start_date = Time.parse(params[:start_date])
+    end_date = Time.parse(params[:end_date])
+    start_time = Time.parse(params[:start_time])
+    end_time = Time.parse(params[:end_time])
+    if params[:part_ids] 
+      parts = Part.find(params[:part_ids])
+    end
+    minimum_gap = params[:minimum_gap]
+    replace = params[:replace]
+
+    if params[:automated_dynamic_special_ids]
+      specials = AutomatedDynamicSpecial.find(params[:automated_dynamic_special_ids])
+    end
+
+    message = ''
+    one_day = false
+    issue = false
+    issue_message = ''
+    if start_date == end_date
+      message = 'The random scheduling will be for ' + start_date.to_s(:broadcast_date) + "\n" 
+      one_day = true
+    else
+      if start_date > end_date
+        issue = true
+        issue_message = 'Start date cannot be after end date' + "\n"
+      else
+        message = 'The random scheduling will be from' + start_date.to_s + ' to ' + end_date.to_s + "\n"
+      end
+    end
+
+    if start_time < end_time
+      if one_day
+        message = message + 'The generate will be between: ' + start_time.to_s(:broadcast_hm) + ' to ' + end_time.to_s(:broadcast_hm) + "\n"
+      else
+        message = message + 'The generate will be between: ' + start_time.to_s(:broadcast_hm) + ' to ' + end_time.to_s(:broadcast_hm) + ' (on each day)' + "\n"
+      end
+    else
+      issue = true
+      issue_message = issue_message + 'Start time must be before end time' + "\n"
+    end
+    if parts.nil? || parts.length == 0
+      issue = true
+      issue_message = issue_message + 'No parts selected.' + "\n"
+    else
+      if parts.length == 1
+        message = message + 'The generate will happen on this part: ' + "\n"
+      else
+        message = message + 'The generate will happen on these parts: ' + "\n"
+      end
+      parts.each do |part|
+        message = message + part.name + ", "
+      end
+      message = message[0, message.length - 2] + "\n"
+    end
+
+    if minimum_gap.nil? || minimum_gap == 0
+      message = message + 'There is no minimum gap' + "\n"
+    else
+      message = message + 'Minimum gap: ' + minimum_gap + ' minutes' + "\n"
+    end
+
+    if replace.nil?
+      message = message + 'Existing specials will be kept' + "\n"
+    else
+      message = message + 'Existing specials will be replaced' + "\n"
+    end
+
+    if specials.nil? || specials.length == 0
+      issue = true
+      issue_message = issue_message + 'No specials selected for the generate' + "\n"
+    else
+      if specials.length == 1
+        message = message + 'This special will be used for the generate:' + "\n"
+      else
+        message = message + 'These specials will be used for the generate:' + "\n"
+      end
+      specials.each do |special|
+        message = message + special.name + "\n"
+      end
+    end
+    
+    if issue
+      issue_message
+    else
+      message
+    end
+
+  end
+
+  def self.randomly_schedule(params)
+
+    start_date = Time.parse(params[:start_date])
+    end_date = Time.parse(params[:end_date])
+    start_time = Time.parse(params[:start_time])
+    end_time = Time.parse(params[:end_time])
+    channel = get_channel(params[:channel])
+
+    the_date = start_date
+    my_dates = []
+    while the_date <= end_date
+      my_dates << the_date
+      the_date = the_date + 1.day
+    end
+    results = nil
+    my_dates.each do |date|
+      results = find(:all, :conditions => ['DATE(start) = ? and channel_id = ? and TIME(start) >= ?', date.strftime('%F'), channel.id, start_time.strftime('%T')], :order => :start)
+    end
+    # For each date
+      # find pres_lines that start within the times
+
+    results
+
+  end
+
+
+
   private
   def start_date_time (start_date, start_time)
     # Expects start_date to be a string in the format yyyy-mm-dd
