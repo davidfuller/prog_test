@@ -53,11 +53,13 @@ class Part < ActiveRecord::Base
 
   def self.all_with_checked(part_ids)
     parts = all
-    parts.each do |part|
-      if part_ids.include? part.id.to_s
-        part.checked = true
-      else
-        part.checked = false
+    if part_ids
+      parts.each do |part|
+        if part_ids.include? part.id.to_s
+          part.checked = true
+        else
+          part.checked = false
+        end
       end
     end
     parts
