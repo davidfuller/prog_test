@@ -65,4 +65,77 @@ class Part < ActiveRecord::Base
     parts
   end
 
+  def self.special_tx_time_from_ids(press_line_id, part_id)
+    tx_time = nil
+    press_line = PressLine.find(press_line_id)
+    if press_line
+      part = find(part_id)
+      if part
+        tx_time = special_tx_time(press_line, part)
+      end
+    end
+    tx_time
+  end
+
+  def self.special_tx_time(press_line, part)
+
+    duration_minutes = press_line.duration_minutes
+    special_start_minutes = special_start(duration_minutes, part)
+
+    tx_time = nil
+    if special_start_minutes >= 0
+      tx_time = press_line.start + special_start_minutes.minutes
+    end
+    
+    tx_time
+
+  end
+
+  def self.special_start(duration_minutes, part)
+    num_parts = num_parts(duration_minutes)
+    part_duration = part_duration(duration_minutes)
+    offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
+    
+    start_minutes = -1
+    if duration_minutes.to_f >= 4.0
+      if part.name == 'Last Part'
+        start_minutes = duration_minutes.to_f + (offset/60)
+      else  
+        if part.order_number <= num_parts
+          start_minutes = (part.order_number * part_duration) + (offset/60)
+        end
+      end
+    end
+
+    start_minutes
+    
+  end
+
+  def self.num_parts(duration_minutes)
+    part_breaks = [0, 25, 45, 75, 95, 115]
+    num_parts = 0
+    if duration_minutes.to_f > 0.0
+      part_breaks.each_with_index do |dur, index|
+        if index < part_breaks.length - 1
+          if duration_minutes.to_f >= part_breaks[index] && duration_minutes.to_f < part_breaks[index+1]
+            num_parts = index + 1
+            break
+          end
+        else
+          num_parts = part_breaks.length
+        end
+      end
+    end
+    num_parts
+  end
+
+  def self.part_duration(duration_minutes)
+    num_parts = num_parts(duration_minutes)
+    if num_parts > 0
+      duration_minutes.to_f/num_parts
+    else
+      0
+    end
+  end
+
 end
