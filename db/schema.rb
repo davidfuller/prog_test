@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20221007155529) do
+ActiveRecord::Schema.define(:version => 20221012170307) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -509,6 +509,7 @@ ActiveRecord::Schema.define(:version => 20221007155529) do
     t.integer  "offset"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "tx_time"
   end
 
   create_table "press_lines", :force => true do |t|

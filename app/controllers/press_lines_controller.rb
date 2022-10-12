@@ -295,7 +295,7 @@ class PressLinesController < ApplicationController
         special.automated_dynamic_special_id = params[:ads_id]
         special.part_id = params[:part_id]
         special.offset = -240
-
+        special.tx_time = Part.special_tx_time_from_ids(my_id, params[:part_id])
         if special.save
           if updated
             count_updated += 1
