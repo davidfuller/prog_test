@@ -241,6 +241,12 @@ class PressLinesController < ApplicationController
       format.html { random_for_html }
     end
   end
+  
+  def add_random
+    message = PressLine.randomly_schedule(params)
+    logger.debug message.join("\n")
+    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids])
+  end
 
   def random_for_html
     @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     

@@ -318,7 +318,7 @@ class ApplicationController < ActionController::Base
   end
 
   def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids)
-    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, 
+    {:controller => :press_lines, :action => :add_random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, 
         :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids}
   end
 

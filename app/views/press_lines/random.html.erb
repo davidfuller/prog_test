@@ -38,6 +38,7 @@
         <table>
         <% press_line.specials.each do |special|%>
           <tr>
+            <td width = 80><%=h special.tx_time.to_s(:broadcast_hm) unless special.tx_time.nil? %></td>
             <td width = 80><%=h special.part.name unless special.part.nil? %></td>
             <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
             <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
