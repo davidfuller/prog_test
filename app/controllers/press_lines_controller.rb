@@ -244,8 +244,9 @@ class PressLinesController < ApplicationController
   
   def add_random
     message = PressLine.randomly_schedule(params)
+    logger.debug('Random generate message $$$$$$========')
     logger.debug message.join("\n")
-    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids])
+    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], message.join("\n"))
   end
 
   def random_for_html
@@ -272,8 +273,9 @@ class PressLinesController < ApplicationController
       params[:minimum_gap] = '60'
     end
     @message = PressLine.random_generate_message(params)
-    logger.debug 'This is the message'
-    logger.debug @message
+    @result_message = params[:result_message]
+    logger.debug "Mama-------"
+    logger.debug @result_message
   end
 
   def add_special
