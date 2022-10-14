@@ -670,6 +670,16 @@ fieldset.report{
 	background: #d5ebe0;
 }
 
+#random-message {
+  color: #007a00 !important;
+	background-color: #d5ebe0;
+  font-size: 12px;
+  padding: 4px 10px;
+	z-index: 999;
+	border-radius: 5px;
+  white-space: pre-wrap;
+}
+
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
