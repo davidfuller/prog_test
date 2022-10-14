@@ -18,8 +18,8 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %> | 
-		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids]) %>
+    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil) %> | 
+		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil) %>
 </fieldset>
 <br/>
 <table>
@@ -106,8 +106,13 @@
   </table>
   <br/>
   <div class = 'pretend-button'>
-    <%= link_to 'Do The Random Scheduling', special_random_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
-                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @message %>
+    <% if @message[:issue] %>
+      <div id="random-message"><%=h @message[:message] %></div>
+    <% else %>
+      <%= link_to 'Do The Random Scheduling', special_random_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
+                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @message[:message] %>
+    <% end %>                                                                      
   </div>
 </fieldset>
+<div id="random-message"><%=h @result_message %></div>
 <% end %>
