@@ -680,6 +680,20 @@ fieldset.report{
   white-space: pre-wrap;
 }
 
+#random-long-message{
+  color: #007a00 !important;
+	background-color: #d5ebe0;
+  font-size: 12px;
+  padding: 4px 10px;
+	z-index: 999;
+	border-radius: 5px;
+  white-space: pre-wrap;
+  width: 80%;
+  height: 400px;
+  overflow-y: scroll;
+  margin-top: 10px;
+}
+
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
