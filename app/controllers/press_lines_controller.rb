@@ -243,10 +243,13 @@ class PressLinesController < ApplicationController
   end
   
   def add_random
-    message = PressLine.randomly_schedule(params)
-    logger.debug('Random generate message $$$$$$========')
-    logger.debug message.join("\n")
-    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], message.join("\n"))
+    messages = PressLine.randomly_schedule(params)
+    notes = messages[:notes].join("\n")
+    short_message = messages[:short_message]
+    logger.debug('Short Message 1')
+    logger.debug short_message
+
+    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, notes)
   end
 
   def random_for_html
@@ -273,9 +276,11 @@ class PressLinesController < ApplicationController
       params[:minimum_gap] = '60'
     end
     @message = PressLine.random_generate_message(params)
-    @result_message = params[:result_message]
-    logger.debug "Mama-------"
-    logger.debug @result_message
+    @notes = params[:notes]
+    @short_message = params[:short_message]
+    flash[:notice] = @short_message
+    logger.debug ('Short Message')
+    logger.debug @short_message
   end
 
   def add_special
@@ -302,7 +307,7 @@ class PressLinesController < ApplicationController
         special.press_line_id = my_id
         special.automated_dynamic_special_id = params[:ads_id]
         special.part_id = params[:part_id]
-        special.offset = -240
+        special.offset = AutomatedDynamicSpecial.find(params[:ads_id]).offset
         special.tx_time = Part.special_tx_time_from_ids(my_id, params[:part_id])
         if special.save
           if updated

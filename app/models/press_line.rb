@@ -687,6 +687,8 @@ class PressLine < ActiveRecord::Base
     minimum_gap = params[:minimum_gap].to_i
     final_results =[]
 
+    count_added = 0
+    count_updated = 0
     results = nil
     my_dates.each do |date|
       the_times = start_and_end_datetimes(date, start_time, end_time)
@@ -731,12 +733,14 @@ class PressLine < ActiveRecord::Base
                   special_join.press_line_id = result.id
                   special_join.automated_dynamic_special_id = special_to_add.id
                   special_join.part_id = part.id
-                  special_join.offset = special_to_add.id
+                  special_join.offset = special_to_add.offset
                   special_join.tx_time = Part.special_tx_time_from_ids(result.id, part.id)
                   if special_join.save
                     if updated
+                      count_updated += 1
                       message << "Special updated"
                     else
+                      count_added += 1
                       message << "Special added"
                     end
                   else
@@ -760,8 +764,27 @@ class PressLine < ActiveRecord::Base
         end
       end
     end
-
-    final_results
+    short_message = ""
+    if count_added == 0 && count_updated == 0
+      short_message = 'No specials added or updated'
+    elsif count_added == 1 && count_updated == 0
+      short_message = '1 special added'
+    elsif count_added > 1 && count_updated == 0
+      short_message = "#{count_added} specials added"
+    elsif count_added == 1 && count_updated == 1
+      short_message = '1 special added and 1 updated'
+    elsif count_added == 1 && count_updated > 1
+      short_message = "1 special added and #{count_updated} updated"
+    elsif count_added == 0 && count_updated == 1
+      short_message = '1 special updated'
+    elsif count_added == 0 && count_updated > 1
+      short_message = "#{count_updated} specials updated"
+    elsif count_added > 1 && count_updated >= 1
+      short_message = "#{count_added} specials added and #{count_updated} updated"
+    else
+      short_message = "Bad message #{count_added} and #{count_updated}"
+    end
+    {:short_message => short_message, :notes =>final_results}
 
   end
 
