@@ -313,8 +313,8 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :part => part}
   end
 
-  def special_random_with_date(priority_date, channel, show, template, search, part_ids, result_message)
-    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, :result_message => result_message}
+  def special_random_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes)
+    {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, :short_message => short_message, :notes => notes}
   end
 
   def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids)
