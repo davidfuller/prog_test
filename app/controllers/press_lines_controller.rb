@@ -227,6 +227,7 @@ class PressLinesController < ApplicationController
     logger.debug("============++++++++++++++++=============")
     logger.debug(params[:part])
     logger.debug(params[:programme])
+    logger.debug(params[:search])
     @available = AutomatedDynamicSpecial.available_for_schedule(params)
     @templates = DynamicSpecialTemplate.template_display_with_all
     @message = PressLine.count_message(@press_lines)
@@ -246,10 +247,7 @@ class PressLinesController < ApplicationController
     messages = PressLine.randomly_schedule(params)
     notes = messages[:notes].join("\n")
     short_message = messages[:short_message]
-    logger.debug('Short Message 1')
-    logger.debug short_message
-
-    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, notes)
+    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, notes, params[:start_date], params[:end_date])
   end
 
   def random_for_html
@@ -275,12 +273,12 @@ class PressLinesController < ApplicationController
     if params[:minimum_gap].nil?
       params[:minimum_gap] = '60'
     end
-    @message = PressLine.random_generate_message(params)
+    @message = PressLine.count_message(@press_lines)
+    @random_message = PressLine.random_generate_message(params)
     @notes = params[:notes]
     @short_message = params[:short_message]
     flash[:notice] = @short_message
-    logger.debug ('Short Message')
-    logger.debug @short_message
+    
   end
 
   def add_special
@@ -367,9 +365,23 @@ class PressLinesController < ApplicationController
     end
     flash[:notice] = 'Special removed'
     respond_to do |format|
-      format.html {redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show])}
+      format.html {
+        if params[:source] == 'random'
+          redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date])
+        else
+          redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show], :template => params[:template],
+                                                  :search => params[:search])
+        end
+      }
       format.xml  { render :xml => @press_lines }
     end
   end
-    
+
+  def remove_all_specials
+    message = PressLineAutomatedDynamicSpecialJoin.delete_all_for_a_date_and_channel(params[:priority_date], params[:channel])
+    flash[:notice] = message
+    respond_to do |format|
+      format.html {redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show])}
+    end
+  end
 end
