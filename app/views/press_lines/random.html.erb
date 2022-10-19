@@ -18,10 +18,11 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil) %> | 
-		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil) %>
+    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil) %> | 
+		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil) %>
 </fieldset>
 <br/>
+<label><%=h @message %></label>
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
@@ -41,7 +42,7 @@
             <td width = 80><%=h special.tx_time.to_s(:broadcast_hm) unless special.tx_time.nil? %></td>
             <td width = 80><%=h special.part.name unless special.part.nil? %></td>
             <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
-            <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:programme], params[:part], display_date, params[:channel], params[:show]), :confirm => 'Are you sure?', :method => :delete %></td>
+            <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], 'random', params[:search], params[:template], params[:start_date], params[:end_date]), :confirm => 'Are you sure?', :method => :delete %></td>
           </tr>
         <% end %>
         </table>
@@ -109,11 +110,11 @@
   </table>
   <br/>
   <div class = 'pretend-button'>
-    <% if @message[:issue] %>
-      <div id="random-message"><%=h @message[:message] %></div>
+    <% if @random_message[:issue] %>
+      <div id="random-message"><%=h @random_message[:message] %></div>
     <% else %>
       <%= link_to 'Do The Random Scheduling', special_random_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
-                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @message[:message] %>
+                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @random_message[:message] %>
     <% end %>                                                                      
   </div>
 </fieldset>
