@@ -24,4 +24,43 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
     end
   end
 
+  def self.find_all_for_a_date_and_channel(date, channel_name)
+    test_date = Date.parse(date)
+    channel = Channel.find_by_name(channel_name)
+    results = nil
+    if channel && test_date
+      results = PressLineAutomatedDynamicSpecialJoin.find :all, :conditions => ['DATE(tx_time) = ? AND press_lines.channel_id = ?', test_date, channel.id], :joins => :press_line
+    end
+    results
+  end
+
+  def self.delete_all_for_a_date_and_channel(date, channel_name)
+    test_date = Date.parse(date)
+    channel = Channel.find_by_name(channel_name)
+    count_deleted = 0
+    count_not_deleted = 0
+    if channel && test_date
+      results = PressLineAutomatedDynamicSpecialJoin.find :all, :conditions => ['DATE(tx_time) = ? AND press_lines.channel_id = ?', test_date, channel.id], :joins => :press_line
+      results.each do |result|
+        if result.destroy
+          count_deleted += 1
+        else
+          count_not_deleted += 1
+        end
+      end
+    end
+    if count_deleted == 0 && count_not_deleted == 0
+      message = "Nothing deleted"
+    elsif count_deleted == 1 && count_not_deleted == 0
+      message = "1 item deleted"
+    elsif count_deleted > 1 && count_not_deleted == 0
+      message = "#{count_deleted} items deleted"
+    elsif count_not_deleted > 0
+      message = "#{count_deleted} item(s) deleted and #{count_not_deleted} items(s) not deleted"
+    else
+      message = "Badd message #{count_deleted} item(s) deleted and #{count_not_deleted} items(s) not deleted"
+    end
+    message
+  end
+
 end
