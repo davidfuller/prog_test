@@ -133,7 +133,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :comparisons, :member => {:add_series =>:get, :add_title_series => :get, :add_local_title => :get, :add_eidr_to_house => :get }
   
-  map.resources :press_lines, :collection => { :priority => :get, :cross_channel_selection => :get, :schedule => :get, :random => :get, :add_random => :get }
+  map.resources :press_lines, :collection => { :priority => :get, :cross_channel_selection => :get, :schedule => :get, :random => :get, :add_random => :get, :remove_all_specials => :get }
 
   map.resources :playlist_lines
 
