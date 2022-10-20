@@ -18,11 +18,12 @@
 		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
 		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil) %> | 
-		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil) %>
+    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil, nil, nil, nil, nil, nil) %> | 
+		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil, nil, nil, nil, nil, nil) %>
 </fieldset>
 <br/>
 <label><%=h @message %></label>
+<%= link_to 'Remove all', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :random), :confirm => 'Are you sure you want to remove all specials on this date?' %>
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
@@ -42,7 +43,8 @@
             <td width = 80><%=h special.tx_time.to_s(:broadcast_hm) unless special.tx_time.nil? %></td>
             <td width = 80><%=h special.part.name unless special.part.nil? %></td>
             <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
-            <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], 'random', params[:search], params[:template], params[:start_date], params[:end_date]), :confirm => 'Are you sure?', :method => :delete %></td>
+            <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], 'random', params[:search], params[:template], params[:start_date], 
+                                                                      params[:end_date], params[:start_time], params[:end_time], params[:part_ids], params[:minimum_gap], params[:replace]), :confirm => 'Are you sure?', :method => :delete %></td>
           </tr>
         <% end %>
         </table>

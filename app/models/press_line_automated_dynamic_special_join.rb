@@ -37,6 +37,9 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
   def self.delete_all_for_a_date_and_channel(date, channel_name)
     test_date = Date.parse(date)
     channel = Channel.find_by_name(channel_name)
+    logger.debug '-=-=-=-=-=='
+    logger.debug test_date
+    logger.debug channel.name
     count_deleted = 0
     count_not_deleted = 0
     if channel && test_date
@@ -61,6 +64,19 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
       message = "Badd message #{count_deleted} item(s) deleted and #{count_not_deleted} items(s) not deleted"
     end
     message
+  end
+
+  def self.fix_missing_tx_time
+    results = find :all, :conditions => ['tx_time IS NULL']
+    count = 0
+    results.each do |result|
+      my_tx_time = Part.special_tx_time_from_ids(result.press_line_id, result.part_id)
+      result.tx_time = my_tx_time
+      if result.save
+        count += 1
+      end
+    end
+    count
   end
 
 end
