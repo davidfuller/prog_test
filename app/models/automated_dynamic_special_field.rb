@@ -28,7 +28,7 @@ class AutomatedDynamicSpecialField < ActiveRecord::Base
     url = nil
     if template_field_join.dynamic_special_field.dynamic_special_image_spec.logo
       if the_id
-        logo = DynamicSpecialLogo.find(the_id)
+        logo = DynamicSpecialLogo.find_by_id(the_id)
         if logo
           url = logo.display_url
         end
@@ -105,7 +105,7 @@ class AutomatedDynamicSpecialField < ActiveRecord::Base
     filename = nil
     if template_field_join.dynamic_special_field.dynamic_special_image_spec.logo
       if the_id
-        logo = DynamicSpecialLogo.find(the_id)
+        logo = DynamicSpecialLogo.find_by_id(the_id)
         if logo
           filename = logo.full_filename
         end
@@ -118,7 +118,7 @@ class AutomatedDynamicSpecialField < ActiveRecord::Base
     the_name = nil
     if template_field_join.dynamic_special_field.dynamic_special_image_spec.logo
       if the_id
-        logo = DynamicSpecialLogo.find(the_id)
+        logo = DynamicSpecialLogo.find_by_id(the_id)
         if logo
           the_name = logo.name
         end
