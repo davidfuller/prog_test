@@ -69,8 +69,8 @@
   </p>
   <table class = 'date-time-table'>
     <tr>
-      <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :after_close => 'this.form.submit()'} %></td>
-      <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :after_close => 'this.form.submit()'} %></td>
+      <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
+      <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
     </tr>
     <tr>
       <td><%= label_tag :start_time, 'Start Time', :class => 'date-time-table' %></td><td><%= text_field_tag :start_time, params[:start_time], :class => 'date-time-table', :onchange => 'this.form.submit()' %></td>

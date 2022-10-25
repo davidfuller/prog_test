@@ -1,0 +1,33 @@
+<% content_for(:title) do%>
+	Automated Dynamic Special: Placings
+<% end %>
+
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<fieldset>
+	<legend>Automated Dynamic Special Placings</legend>
+  <% form_tag placing_automated_dynamic_specials_path, :method =>'get' do %>
+    <label>Start Date</label>
+    <%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
+    <label>End Date</label>
+    <%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
+    <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+  <% end %>
+</fieldset>
+
+
+
+<table class = 'placing-table'>
+  <tr>
+    <th>Special</th>
+    <th>Number of Placings</th>
+  </tr>
+
+  <% @placings.each do |placing| %>
+    <tr>
+      <td><%=h placing[:special].name %></td>
+      <td><%=h placing[:count] %></td>
+    </tr>
+  <% end %>
+</table>

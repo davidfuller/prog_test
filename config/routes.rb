@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :automated_dynamic_special_fields
 
-  map.resources :automated_dynamic_specials, :collection => {:duplicate => :get, :demo_image => :get, :archive_multiple => :delete, :report => :get}, :member => {:archive => :delete, :export => :get}
+  map.resources :automated_dynamic_specials, :collection => {:duplicate => :get, :demo_image => :get, :archive_multiple => :delete, :report => :get, :placing => :get}, :member => {:archive => :delete, :export => :get}
 
   map.resources :template_field_joins
 

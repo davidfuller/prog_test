@@ -26,6 +26,30 @@ class AutomatedDynamicSpecialsController < ApplicationController
     @templates = DynamicSpecialTemplate.template_display_with_all
   end
 
+  def placing
+    if params[:start_date].blank?
+      params[:start_date] = DateTime.now.to_s(:broadcast_calendar_date_only)
+    end
+
+    if params[:end_date].blank?
+      params[:end_date] = (DateTime.parse(params[:start_date]) + 7.days).to_s(:broadcast_calendar_date_only)
+    else
+      if Time.parse(params[:start_date]) > Time.parse(params[:end_date])
+        params[:end_date] = params[:start_date]
+      end 
+    end
+
+    remove_v4 = true
+    @channel_display = Channel.display(remove_v4)
+
+    start_time = Time.parse(params[:start_date]) + 6.hours
+    end_time = Time.parse(params[:end_date]) + 30.hours - 1.second
+
+    @placings = AutomatedDynamicSpecial.scheduled_on_date_channel(params[:channel], start_time, end_time)
+
+  end
+
+
   # GET /automated_dynamic_specials/1
   # GET /automated_dynamic_specials/1.xml
   def show
