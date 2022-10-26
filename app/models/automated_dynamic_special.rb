@@ -984,16 +984,16 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   def self.scheduled_on_date_channel(channel_name, start, stop)
     channel = Channel.find_by_name(channel_name)
     result = []
-
-    ads = AutomatedDynamicSpecial.find :all, :conditions => ['channel_id = ? and press_line_automated_dynamic_special_joins.tx_time >= ? and press_line_automated_dynamic_special_joins.tx_time <= ?',channel.id, start, stop ], 
-                                        :joins => :press_line_automated_dynamic_special_join
-    ads.each do |special|
-      if !special_exists_in_list(special, result)
-        result << {:special => special, :count => 1}
+    if channel
+      ads = AutomatedDynamicSpecial.find :all, :conditions => ['channel_id = ? and press_line_automated_dynamic_special_joins.tx_time >= ? and press_line_automated_dynamic_special_joins.tx_time <= ?',channel.id, start, stop ], 
+                                          :joins => :press_line_automated_dynamic_special_join
+      ads.each do |special|
+        if !special_exists_in_list(special, result)
+          result << {:special => special, :count => 1}
+        end
       end
     end
     result
-
   end
 
   def self.special_exists_in_list(special, list)
