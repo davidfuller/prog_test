@@ -8,11 +8,39 @@
 <fieldset>
 	<legend>Automated Dynamic Special Placings</legend>
   <% form_tag placing_automated_dynamic_specials_path, :method =>'get' do %>
-    <label>Start Date</label>
-    <%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
-    <label>End Date</label>
-    <%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
-    <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+    <table>
+      <tr>
+        <td>
+          <label>Start Date</label>
+        </td>
+        <td>  
+          <%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        </td>
+        <td>
+          <label>End Date</label>
+        </td>
+        <td>
+          <%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        </td>
+        <td>
+            <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>    
+          <%= link_to 'Previous day', placing_with_date_and_channel(previous_day(params[:start_date]), previous_day(params[:end_date]), params[:channel]) %> | 
+          <%= link_to 'Next day', placing_with_date_and_channel(next_day(params[:start_date]), next_day(params[:end_date]), params[:channel]) %>
+        </td>
+        </td>
+        <td>
+        <td>
+          <%= link_to 'Same day', placing_with_date_and_channel(params[:start_date], params[:start_date], params[:channel]) %> | 
+          <%= link_to 'One Week', placing_with_date_and_channel(params[:start_date], one_week(params[:start_date]), params[:channel]) %>
+        </td>
+      </tr>
+    </table>
   <% end %>
 </fieldset>
 
