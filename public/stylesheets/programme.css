@@ -731,4 +731,12 @@ tr.selected_special{
 .placing-table{
   margin-left: 10px;
   margin-top: 30px;
+  font-size: 13px !important;
+}
+
+.placing-table th{
+  color: #007a00; 
+}
+.placing-centred{
+  text-align: center !important;
 }
