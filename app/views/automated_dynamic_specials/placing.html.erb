@@ -8,22 +8,13 @@
 <fieldset>
 	<legend>Automated Dynamic Special Placings</legend>
   <% form_tag placing_automated_dynamic_specials_path, :method =>'get' do %>
-    <table>
+    <table class = 'date-time-table'>
       <tr>
-        <td>
-          <label>Start Date</label>
-        </td>
-        <td>  
-          <%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
-        </td>
-        <td>
-          <label>End Date</label>
-        </td>
-        <td>
-          <%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
-        </td>
-        <td>
-            <%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+        <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td>
+        <td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
+        <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td>
+        <td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
+        <td><%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:class => 'date-time-table', :onchange => 'this.form.submit()'}%>
         </td>
       </tr>
       <tr>
@@ -48,14 +39,14 @@
 
 <table class = 'placing-table'>
   <tr>
-    <th>Special</th>
-    <th>Number of Placings</th>
+    <th class = 'placing-table'>Special</th>
+    <th class = 'placing-table'>Placings</th>
   </tr>
 
   <% @placings.each do |placing| %>
     <tr>
-      <td><%=h placing[:special].name %></td>
-      <td><%=h placing[:count] %></td>
+      <td class = 'placing-table'><%=h placing[:special].name %></td>
+      <td class = 'placing-table placing-centred'><%=h placing[:count] %></td>
     </tr>
   <% end %>
 </table>
