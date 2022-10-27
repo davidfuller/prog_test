@@ -21,8 +21,10 @@
 		<%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:part]) %> <br/>
 </fieldset>
 <br/>
-<label><%=h @message %></label>
-<%= link_to 'Remove all', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :schedule), :confirm => 'Are you sure you want to remove all specials on this date?' %>
+<label><%=h @message %></label><br/>
+<%= link_to 'Remove all', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :schedule), :confirm => 'Are you sure you want to remove all specials on this date?' %> |
+<%= link_to 'Placings today', placing_with_date_and_channel(display_date, display_date, params[:channel])%> |
+<%= link_to 'Placings this week', placing_with_date_and_channel(monday_this_week(display_date), one_week(monday_this_week(display_date)), params[:channel])%> 
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
@@ -50,7 +52,7 @@
           <td width = 80><%=h special.tx_time.to_s(:broadcast_hm) unless special.tx_time.nil? %></td>
           <td width = 80><%=h special.part.name unless special.part.nil? %></td>
           <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
-          <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], 'schedule', params[:search], params[:template], nil, nil, nil, nil, nil, nil, nil), :confirm => 'Are you sure?', :method => :delete %></td>
+          <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], 'schedule', params[:search], params[:template], nil, nil, nil, nil, nil, nil, nil, nil), :confirm => 'Are you sure?', :method => :delete %></td>
         </tr>
       <% end %>
       </table>
@@ -68,7 +70,7 @@
 <fieldset>
   <legend>Available Specials</legend>  
   <div class = 'pretend-button'>
-    <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil) %>
+    <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil) %>
   </div>
   <p>
     <%= text_field_tag :search, params[:search], :size => 45 %>
