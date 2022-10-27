@@ -305,9 +305,9 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :add_special, :id => press_line_id, :ads_id => automated_dynamic_special_id, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show, :press_line_ids => press_line_ids}
   end
 
-  def remove_special_from_schedule(id, part_id, priority_date, channel, show, source, search, template, start_date, end_date, start_time, end_time, part_ids, minimum_gap, replace)
+  def remove_special_from_schedule(id, part_id, priority_date, channel, show, source, search, template, start_date, end_date, start_time, end_time, part_ids, minimum_gap, replace, automated_dynamic_special_ids)
     {:controller => :press_lines, :action => :remove_special, :id => id, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show, :source => source, :search => search, :template => template,
-      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :part_ids => part_ids, :minimum_gap => minimum_gap, :replace => replace }
+      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :part_ids => part_ids, :minimum_gap => minimum_gap, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids }
   end
 
   def remove_all_special_from_schedule(part_id, priority_date, channel, show, source)
@@ -318,9 +318,9 @@ class ApplicationController < ActionController::Base
     {:controller => :press_lines, :action => :schedule, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :part => part}
   end
 
-  def special_random_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes, start_date, end_date, start_time, end_time, minimum_gap, replace, notice)
+  def special_random_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes, start_date, end_date, start_time, end_time, minimum_gap, replace, notice, automated_dynamic_special_ids)
     {:controller => :press_lines, :action => :random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, :short_message => short_message, :notes => notes,
-      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :notice => notice }
+      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :notice => notice, :automated_dynamic_special_ids => automated_dynamic_special_ids }
   end
 
   def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids)
