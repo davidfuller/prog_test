@@ -71,7 +71,7 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
     count = 0
     results.each do |result|
       my_tx_time = Part.special_tx_time_from_ids(result.press_line_id, result.part_id)
-      result.tx_time = my_tx_time
+      result.tx_time = my_tx_time[:time]
       if result.save
         count += 1
       end
