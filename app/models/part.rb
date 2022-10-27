@@ -74,7 +74,7 @@ class Part < ActiveRecord::Base
         tx_time = special_tx_time(press_line, part)
       end
     end
-    tx_time
+    tx_time #hash
   end
 
   def self.special_tx_time(press_line, part)
@@ -83,31 +83,41 @@ class Part < ActiveRecord::Base
     special_start_minutes = special_start(duration_minutes, part)
 
     tx_time = nil
-    if special_start_minutes >= 0
-      tx_time = press_line.start + special_start_minutes.minutes
+    if special_start_minutes[:start] >= 0
+      tx_time = press_line.start + special_start_minutes[:start].minutes
     end
     
-    tx_time
+    {:time => tx_time, :valid_part => special_start_minutes[:valid_part]}
 
   end
 
   def self.special_start(duration_minutes, part)
     num_parts = num_parts(duration_minutes)
+    logger.debug "9009090909090"
+    logger.debug "============"
+    logger.debug num_parts
     part_duration = part_duration(duration_minutes)
+    logger.debug part_duration
+    logger.debug duration_minutes
     offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
     
     start_minutes = -1
     if duration_minutes.to_f >= 4.0
       if part.name == 'Last Part'
         start_minutes = duration_minutes.to_f + (offset/60)
+        valid_part = true
       else  
         if part.order_number <= num_parts
           start_minutes = (part.order_number * part_duration) + (offset/60)
+          valid_part = true
+        else
+          start_minutes = duration_minutes - 1
+          valid_part = false
         end
       end
     end
 
-    start_minutes
+    {:start => start_minutes, :valid_part => valid_part}
     
   end
 
