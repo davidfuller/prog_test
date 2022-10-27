@@ -698,66 +698,71 @@ class PressLine < ActiveRecord::Base
           message = []
           message << "Press Line #{result.start.to_s(:broadcast_datetime)}: #{result.display_title}"
           parts.each do |part|
-            part_tx_time = Part.special_tx_time_from_ids(result.id, part.id)
-            if part_tx_time && part_tx_time < the_times[:end_date_time] && part_tx_time >= the_times[:start_date_time]
-              message << "Doing #{part.name}"
-              specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
-              message << "There are currently #{specials.length} on this part"
-              if specials.length > 1
-                for index in (specials.length-1).downto(1) do
-                  specials[index].destroy
+            part_tx = Part.special_tx_time_from_ids(result.id, part.id)
+            if part_tx[:valid_part]
+              part_tx_time = part_tx[:time]
+              if part_tx_time && part_tx_time < the_times[:end_date_time] && part_tx_time >= the_times[:start_date_time]
+                message << "Doing #{part.name}"
+                specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
+                message << "There are currently #{specials.length} on this part"
+                if specials.length > 1
+                  for index in (specials.length-1).downto(1) do
+                    specials[index].destroy
+                  end
                 end
-              end
-              specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
-              do_this_press_line = true
-              if specials.length == 1
-                do_this_press_line = replace
-              end
-              message << "Are we doing this press line: #{do_this_press_line}"
-              if do_this_press_line
-                message << "The minimum gap is #{minimum_gap} minutes"
-                poss = valid_specials(result, automated_dynamic_specials, minimum_gap, part)
-                possible_specials = poss[:result]
-                message += poss[:message]
-                message << "There are #{possible_specials.length} possible specials"
-                if possible_specials.length > 0
-                  special_to_add = possible_specials[rand(possible_specials.length)]
-                  message << "Special to add: #{special_to_add.name}"
-                  updated = false
-                  if specials.length == 1
-                    special_join = specials[0]
-                    updated = true
-                  else
-                    special_join = PressLineAutomatedDynamicSpecialJoin.new
-                  end
-                  special_join.press_line_id = result.id
-                  special_join.automated_dynamic_special_id = special_to_add.id
-                  special_join.part_id = part.id
-                  special_join.offset = special_to_add.offset
-                  special_join.tx_time = Part.special_tx_time_from_ids(result.id, part.id)
-                  if special_join.save
-                    if updated
-                      count_updated += 1
-                      message << "Special updated"
+                specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
+                do_this_press_line = true
+                if specials.length == 1
+                  do_this_press_line = replace
+                end
+                message << "Are we doing this press line: #{do_this_press_line}"
+                if do_this_press_line
+                  message << "The minimum gap is #{minimum_gap} minutes"
+                  poss = valid_specials(result, automated_dynamic_specials, minimum_gap, part)
+                  possible_specials = poss[:result]
+                  message += poss[:message]
+                  message << "There are #{possible_specials.length} possible specials"
+                  if possible_specials.length > 0
+                    special_to_add = possible_specials[rand(possible_specials.length)]
+                    message << "Special to add: #{special_to_add.name}"
+                    updated = false
+                    if specials.length == 1
+                      special_join = specials[0]
+                      updated = true
                     else
-                      count_added += 1
-                      message << "Special added"
+                      special_join = PressLineAutomatedDynamicSpecialJoin.new
                     end
-                  else
-                    message << 'Issue saving special'
+                    special_join.press_line_id = result.id
+                    special_join.automated_dynamic_special_id = special_to_add.id
+                    special_join.part_id = part.id
+                    special_join.offset = special_to_add.offset
+                    special_join.tx_time = part_tx_time
+                    if special_join.save
+                      if updated
+                        count_updated += 1
+                        message << "Special updated"
+                      else
+                        count_added += 1
+                        message << "Special added"
+                      end
+                    else
+                      message << 'Issue saving special'
+                    end
                   end
+                end
+              else
+                if part_tx_time
+                  if part_tx_time >= the_times[:end_date_time]
+                    message << "Not doing: #{part.name} due to part time: #{part_tx_time.to_s(:broadcast_datetime)} being after the last scheduled time: #{the_times[:end_date_time].to_s(:broadcast_datetime)}"
+                  else
+                    message << "Not doing: #{part.name} due to part time: #{part_tx_time.to_s(:broadcast_datetime)} being before the first scheduled time: #{the_times[:start_date_time].to_s(:broadcast_datetime)}"
+                  end
+                else
+                  message << "Not doing: #{part.name} as this doesn't exist on this programme length"
                 end
               end
             else
-              if part_tx_time
-                if part_tx_time >= the_times[:end_date_time]
-                  message << "Not doing: #{part.name} due to part time: #{part_tx_time.to_s(:broadcast_datetime)} being after the last scheduled time: #{the_times[:end_date_time].to_s(:broadcast_datetime)}"
-                else
-                  message << "Not doing: #{part.name} due to part time: #{part_tx_time.to_s(:broadcast_datetime)} being before the first scheduled time: #{the_times[:start_date_time].to_s(:broadcast_datetime)}"
-                end
-              else
-                message << "Not doing: #{part.name} as this doesn't exist on this programme length"
-              end
+              message << "Not doing: #{part.name} due to invalid part number due to programme duration."
             end
           end
           final_results << message
@@ -799,20 +804,25 @@ class PressLine < ActiveRecord::Base
     message =[]
     automated_dynamic_specials.each do |ads|
       if ads.first_use <= press_line.start && ads.last_use >= press_line.start
-        part_tx_time = Part.special_tx_time_from_ids(press_line.id, part.id)
-        if part_tx_time.present?
-          last_time_difference = PressLineAutomatedDynamicSpecialJoin.time_difference_last_placing(ads.id, part_tx_time)
-          if last_time_difference.present?
-            if last_time_difference >= minimum_gap
-              results << ads
+        part_tx = Part.special_tx_time_from_ids(press_line.id, part.id)
+        if part_tx[:valid_part]
+          part_tx_time = part_tx[:time]
+          if part_tx_time.present?
+            last_time_difference = PressLineAutomatedDynamicSpecialJoin.time_difference_last_placing(ads.id, part_tx_time)
+            if last_time_difference.present?
+              if last_time_difference >= minimum_gap
+                results << ads
+              else
+                message << "#{ads.name} excluded for minimum gap. #{last_time_difference} minutes"
+              end
             else
-              message << "#{ads.name} excluded for minimum gap. #{last_time_difference} minutes"
+              message << "#{ads.name} excluded for no last time"
             end
           else
-            message << "#{ads.name} excluded for no last time"
+            message << "#{ads.name} excluded for no part time"
           end
         else
-          message << "#{ads.name} excluded for no part time"
+            message << "#{ads.name} excluded for invald part number"
         end
       else
         message << "#{ads.name} excluded for first/last use date"
@@ -822,7 +832,7 @@ class PressLine < ActiveRecord::Base
   end
 
   def next_programme
-    PressLine.find :first, :conditions => ['channel_id = ? and start > ?', self.channel_id, self.start]
+    PressLine.find :first, :conditions => ['channel_id = ? and start > ?', self.channel_id, self.start], :order => :start
   end
 
   def duration_minutes
