@@ -924,7 +924,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 		output
 	end
 
-  def self.available_for_schedule(params)
+  def self.available_for_schedule(params, date_range)
     channel_id = Channel.find_by_name(params[:channel])
     priority_date = params[:priority_date]
     template_id = DynamicSpecialTemplate.find_by_name(params[:template])
@@ -935,17 +935,47 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     end
     search = params[:search]
 
-    if search
-      if template_id
-        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ?', channel_id, schedule_date, schedule_date, template_id, "%#{search}%"]
+    if date_range
+      if params[:start_date]
+        date_range_start = Date.parse(params[:start_date])
       else
-        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ?', channel_id, schedule_date, schedule_date, "%#{search}%"]
+        date_range_start = schedule_date
+      end
+      if params[:end_date]
+        date_range_end = Date.parse(params[:end_date])
+      else
+        date_range_end = schedule_date
+      end
+      
+    end
+
+    if date_range
+      if search
+        if template_id
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ? AND archive = false', channel_id, date_range_end, date_range_start, template_id, "%#{search}%"]
+        else
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ? AND archive = false', channel_id, date_range_end, date_range_start, "%#{search}%"]
+        end
+      else
+        if template_id
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?  AND archive = false', channel_id, date_range_end, date_range_start, template_id]
+        else
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND archive = false', channel_id, date_range_end, date_range_start]
+        end
       end
     else
-      if template_id
-        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?', channel_id, schedule_date, schedule_date, template_id]
+      if search
+        if template_id
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ? AND name LIKE ? AND archive = false', channel_id, schedule_date, schedule_date, template_id, "%#{search}%"]
+        else
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND name LIKE ? AND archive = false', channel_id, schedule_date, schedule_date, "%#{search}%"]
+        end
       else
-        results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ?', channel_id, schedule_date, schedule_date]
+        if template_id
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND dynamic_special_template_id = ?  AND archive = false', channel_id, schedule_date, schedule_date, template_id]
+        else
+          results = find  :all, :conditions => ['channel_id = ? AND DATE(first_use) <= ? AND DATE(last_use) >= ? AND archive = false', channel_id, schedule_date, schedule_date]
+        end
       end
     end
 
