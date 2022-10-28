@@ -694,6 +694,16 @@ fieldset.report{
   margin-top: 10px;
 }
 
+#random-schedule{
+  width: 80%;
+  max-height: 400px;
+  overflow-y: scroll;
+  margin-top: 10px;
+  border-color: #007a00;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+}
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
