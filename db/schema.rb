@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20221012170307) do
+ActiveRecord::Schema.define(:version => 20221028150908) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -661,6 +661,18 @@ ActiveRecord::Schema.define(:version => 20221012170307) do
     t.integer  "media_file_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "special_schedule_logs", :force => true do |t|
+    t.integer  "channel_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "long_notes", :limit => 2147483647
   end
 
   create_table "special_schedule_settings", :force => true do |t|
