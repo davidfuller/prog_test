@@ -245,9 +245,10 @@ class PressLinesController < ApplicationController
   
   def add_random
     messages = PressLine.randomly_schedule(params)
-    notes = messages[:notes].join("\n")
+    notes = (messages[:notes].join("\n"))
+    special_schedule_log_id = SpecialScheduleLog.add_note(params, notes)
     short_message = messages[:short_message]
-    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, notes, params[:start_date], params[:end_date], 
+    redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, special_schedule_log_id, params[:start_date], params[:end_date], 
                                             params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, nil)
   end
 
@@ -287,6 +288,7 @@ class PressLinesController < ApplicationController
     @message = PressLine.count_message(@press_lines)
     @random_message = PressLine.random_generate_message(params)
     @notes = params[:notes]
+    
     if params[:short_message] && params[:notice].nil?
       flash[:notice] = params[:short_message]
     elsif params[:short_message].nil? && params[:notice]
