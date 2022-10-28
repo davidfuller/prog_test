@@ -36,14 +36,18 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
 
   def self.delete_all_for_a_date_and_channel(date, channel_name)
     test_date = Date.parse(date)
+    start_time = test_date + 6.hour
+    end_time = start_time + 1.day
     channel = Channel.find_by_name(channel_name)
     logger.debug '-=-=-=-=-=='
     logger.debug test_date
     logger.debug channel.name
+    logger.debug start_time
+    logger.debug end_time
     count_deleted = 0
     count_not_deleted = 0
     if channel && test_date
-      results = PressLineAutomatedDynamicSpecialJoin.find :all, :conditions => ['DATE(tx_time) = ? AND press_lines.channel_id = ?', test_date, channel.id], :joins => :press_line
+      results = PressLineAutomatedDynamicSpecialJoin.find :all, :conditions => ['tx_time >= ? AND tx_time <=? AND press_lines.channel_id = ?', start_time, end_time, channel.id], :joins => :press_line
       results.each do |result|
         if result.destroy
           count_deleted += 1
