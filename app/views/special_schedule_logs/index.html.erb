@@ -1,0 +1,30 @@
+<h1>Listing special_schedule_logs</h1>
+
+<table>
+  <tr>
+    <th>Channel</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Notes</th>
+  </tr>
+
+<% @special_schedule_logs.each do |special_schedule_log| %>
+  <tr>
+    <td><%=h special_schedule_log.channel_id %></td>
+    <td><%=h special_schedule_log.start_date %></td>
+    <td><%=h special_schedule_log.end_date %></td>
+    <td><%=h special_schedule_log.start_time %></td>
+    <td><%=h special_schedule_log.end_time %></td>
+    <td><%=h special_schedule_log.notes %></td>
+    <td><%= link_to 'Show', special_schedule_log %></td>
+    <td><%= link_to 'Edit', edit_special_schedule_log_path(special_schedule_log) %></td>
+    <td><%= link_to 'Destroy', special_schedule_log, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New special_schedule_log', new_special_schedule_log_path %>

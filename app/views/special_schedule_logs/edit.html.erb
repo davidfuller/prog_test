@@ -1,0 +1,36 @@
+<h1>Editing special_schedule_log</h1>
+
+<% form_for(@special_schedule_log) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :channel_id %><br />
+    <%= f.text_field :channel_id %>
+  </p>
+  <p>
+    <%= f.label :start_date %><br />
+    <%= f.datetime_select :start_date %>
+  </p>
+  <p>
+    <%= f.label :end_date %><br />
+    <%= f.datetime_select :end_date %>
+  </p>
+  <p>
+    <%= f.label :start_time %><br />
+    <%= f.datetime_select :start_time %>
+  </p>
+  <p>
+    <%= f.label :end_time %><br />
+    <%= f.datetime_select :end_time %>
+  </p>
+  <p>
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @special_schedule_log %> |
+<%= link_to 'Back', special_schedule_logs_path %>

@@ -1,0 +1,16 @@
+
+<table>
+  <tr><td><label>Channel</label></td><td><%=h @special_schedule_log.channel.name if @special_schedule_log.channel %></td>
+      <td><label>Start date</label></td><td><%=h @special_schedule_log.start_date.to_s(:broadcast_date_full_month) %></td>
+      <td><label>End date</label></td><td><%=h @special_schedule_log.end_date.to_s(:broadcast_date_full_month) %></td>
+  </tr>
+  <tr>
+    <td></td><td></td>
+    <td><label>Start time</label></td><td><%=h @special_schedule_log.start_time.to_s(:broadcast_hm) unless @special_schedule_log.start_time.nil? %></td>
+    <td><label>End time</label></td><td><%=h @special_schedule_log.end_time.to_s(:broadcast_hm) unless @special_schedule_log.end_time.nil? %></td>
+  </tr>
+</table> 
+
+<label>Notes</label>  
+<div id="random-long-message"><%=h @special_schedule_log.long_notes %></div>
+

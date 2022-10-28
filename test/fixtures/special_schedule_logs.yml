@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  channel_id: 1
+  start_date: 2022-10-28 15:35:53
+  end_date: 2022-10-28 15:35:53
+  start_time: 2022-10-28 15:35:53
+  end_time: 2022-10-28 15:35:53
+  notes: MyText
+
+two:
+  channel_id: 1
+  start_date: 2022-10-28 15:35:53
+  end_date: 2022-10-28 15:35:53
+  start_time: 2022-10-28 15:35:53
+  end_time: 2022-10-28 15:35:53
+  notes: MyText
