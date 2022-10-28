@@ -46,7 +46,12 @@ class AutomatedDynamicSpecialsController < ApplicationController
     end_time = Time.parse(params[:end_date]) + 30.hours - 1.second
 
     @placings = AutomatedDynamicSpecial.scheduled_on_date_channel(params[:channel], start_time, end_time)
-
+    count = 0
+    @placings.each do |placing|
+      count += placing[:count]
+    end
+    @placing_message = "There are #{count} placings"
+    logger.debug @placing_message
   end
 
 
