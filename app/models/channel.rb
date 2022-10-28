@@ -18,6 +18,7 @@ class Channel < ActiveRecord::Base
   has_many :automated_dynamic_specials
   has_many :generate_status_settings
   has_many :generate_status_settings
+  has_many :special_schedule_logs
 
   validates_presence_of :name, :language_id
   default_scope :order => :name
