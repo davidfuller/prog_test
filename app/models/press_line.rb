@@ -73,26 +73,18 @@ class PressLine < ActiveRecord::Base
   def self.schedule_lines(show, priority_date, channel_name, checked_ids)
     
     channel = get_channel(channel_name)
-    
-    if priority_date.blank?
-      date = Time.parse(Time.new.to_s(:broadcast_date_full_month)) # midnight today
+
+    if show == 'All'
+      the_times = schedule_start_end_time(priority_date, "06:00", "29:59")
     else
-      date = Time.parse(priority_date)
+      the_times = schedule_start_end_time(priority_date, "15:00", "23:59")
     end
     
-    start_time_30h = Time.utc(date.year, date.month, date.day, 6, 0, 0)
-    end_time_30h = start_time_30h + 1.day - 1.second
-
-    end_date = date
-    
-    if show == 'All'
-      #results = find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ?',
-       #                         date.strftime('%F'), end_date.strftime('%F'), channel.id], :order => :start)
-
-      results = find :all, :conditions => ['start >= ? and start <= ? and channel_id =?', start_time_30h, end_time_30h, channel.id], :order => :start
-    else
-      results = find(:all, :conditions => ['DATE(start) >= ? and DATE(start) <= ? and channel_id = ? and TIME(start) >= ?',
-                                date.strftime('%F'), end_date.strftime('%F'), channel.id, "15:00:00"], :order => :start)
+    logger.debug "*********"
+    logger.debug the_times[:end_time]
+    results = nil
+    if the_times[:valid]
+      results = find :all, :conditions => ['start >= ? and start <= ? and channel_id =?', the_times[:start_time], the_times[:end_time], channel.id], :order => :start
     end
 
     if checked_ids
@@ -555,19 +547,36 @@ class PressLine < ActiveRecord::Base
     {:notice => notice, :success => success, :added => added, :issues => issues}
   end
   
-  def self.count_message(press_lines)
+  def self.count_message(press_lines, priority_date, channel_name)
     count = 0
     if press_lines
       press_lines.each do |press_line|
         count = count + press_line.specials.length
       end
     end
-    if count == 0
+
+    all_day_press_lines = schedule_lines('All', priority_date, channel_name, nil)
+    all_day_count = 0
+    if all_day_press_lines
+      all_day_press_lines.each do |press_line|
+        all_day_count = all_day_count + press_line.specials.length
+      end
+    end
+
+    if count == 0 && all_day_count == 0
       message = "0 specials scheduled"
-    elsif count == 1
+    elsif count == 0 && all_day_count >= 1
+      message = "0 specials scheduled. (#{all_day_count} scheduled all day)"
+    elsif count == 1 && all_day_count == 1
       message = "1 special scheduled"
+    elsif count == 1 && all_day_count > 1
+      message = "1 special scheduled. (#{all_day_count} scheduled all day)"
+    elsif count == all_day_count 
+      message = "#{count} specials scheduled"
+    elsif count > 1 && all_day_count > 1
+      message = "#{count} specials scheduled. (#{all_day_count} scheduled all day)"
     else
-      message = count.to_s + " specials scheduled"
+      message = "Odd event: #{count} specials scheduled. (#{all_day_count} scheduled all day)"
     end
     message
   end  
@@ -682,41 +691,7 @@ class PressLine < ActiveRecord::Base
 
   end
 
-  def self.validate_30h_time(my_time)
-    #Expects string HH:MM - returns time object if OK
-    elements = my_time.split(':')
-    message = ''
-    if elements.length > 1
-      if valid_integer_between(elements[1], 0, 59)
-        if valid_integer_between(elements[0], 6, 23)
-          result_time = Time.utc(0, 1, 1, elements[0].to_i, elements[1].to_i, 0)
-          next_day = false
-          valid = true
-        elsif valid_integer_between(elements[0], 24, 29)
-          result_time = Time.utc(0, 1, 1, elements[0].to_i - 24, elements[1].to_i, 0)
-          next_day = true
-          valid = true
-        else
-          result_time = nil
-          next_day = false
-          valid = false
-          message = "Hours should be between 06 and 29"
-        end
-      else
-        result_time = nil
-        next_day = false
-        valid = false
-          message = "Hours should be between 06 and 29 and minutes between 0 and 59"
-      end
-    else
-      result_time = nil
-      next_day = false
-      valid = false
-      message = "Not a valid time. It should be between 06:00 and 29:59"
-    end
-    {:time => result_time, :valid => valid, :next_day => next_day, :message => message}
-  end
-
+  
   def self.valid_integer_between(number_string, lower, upper)
     if number_string.match(/^(\d)+$/).present? #integer?
       number = number_string.to_i
@@ -751,6 +726,7 @@ class PressLine < ActiveRecord::Base
     automated_dynamic_specials = nil
     if params[:automated_dynamic_special_ids]
       automated_dynamic_specials = AutomatedDynamicSpecial.find(params[:automated_dynamic_special_ids])
+      automated_dynamic_specials = AutomatedDynamicSpecial.calculate_priorities(automated_dynamic_specials, params[:ads_ids], params[:priority_ids])
     end
 
     minimum_gap = params[:minimum_gap].to_i
@@ -791,7 +767,7 @@ class PressLine < ActiveRecord::Base
                     poss = valid_specials(result, automated_dynamic_specials, minimum_gap, part)
                     possible_specials = poss[:result]
                     message += poss[:message]
-                    message << "There are #{possible_specials.length} possible specials"
+                    message << "There are #{poss[:number]} possible specials. Randomly chosen from the weighted number of choices: #{possible_specials.length}"
                     if possible_specials.length > 0
                       special_to_add = possible_specials[rand(possible_specials.length)]
                       message << "Special to add: #{special_to_add.name}"
@@ -888,6 +864,8 @@ class PressLine < ActiveRecord::Base
   def self.valid_specials(press_line, automated_dynamic_specials, minimum_gap, part)
     results = []
     message =[]
+    number_unique = 0
+    scheduling_priorities = SpecialScheduleSetting.scheduling_priorities
     automated_dynamic_specials.each do |ads|
       if ads.first_use <= press_line.start && ads.last_use >= press_line.start
         part_tx = Part.special_tx_time_from_ids(press_line.id, part.id)
@@ -897,7 +875,11 @@ class PressLine < ActiveRecord::Base
             last_time_difference = PressLineAutomatedDynamicSpecialJoin.time_difference_last_placing(ads.id, part_tx_time)
             if last_time_difference.present?
               if last_time_difference >= minimum_gap
-                results << ads
+                number_unique += 1
+                num_to_add = scheduling_priorities[ads.priority.to_i]
+                num_to_add.times do
+                  results << ads
+                end
               else
                 message << "#{ads.name} excluded for minimum gap. #{last_time_difference} minutes"
               end
@@ -914,7 +896,7 @@ class PressLine < ActiveRecord::Base
         message << "#{ads.name} excluded for first/last use date"
       end
     end
-    {:result => results, :message => message}
+    {:result => results, :message => message, :number => number_unique}
   end
 
   def next_programme
@@ -958,6 +940,70 @@ class PressLine < ActiveRecord::Base
   def date_part(t)
     DateTime.new(t.year,t.month,t.day)
   end
-  
+
+  def self.schedule_start_end_time(date_string, start_time_string, end_time_string)
+    
+    valid = false
+    start_time_30h = nil
+    end_time_30h = nil
+
+    if date_string.blank?
+      date = Time.parse(Time.new.to_s(:broadcast_date_full_month)) # midnight today
+    else
+      date = Time.parse(date_string)
+    end
+    
+    my_start_time = validate_30h_time(start_time_string)
+    if my_start_time[:valid]
+      my_end_time = validate_30h_time(end_time_string)
+      if my_end_time[:valid]
+        start_time_30h = Time.utc(date.year, date.month, date.day, my_start_time[:time].hour, my_start_time[:time].min, my_start_time[:time].sec)
+        if my_start_time[:next_day]
+          start_time_30h = start_time_30h + 1.day
+        end
+        end_time_30h = Time.utc(date.year, date.month, date.day, my_end_time[:time].hour, my_end_time[:time].min, my_end_time[:time].sec)
+        if my_end_time[:next_day]
+          end_time_30h = end_time_30h + 1.day
+        end
+        valid = true
+      end
+    end
+    {:start_time => start_time_30h, :end_time => end_time_30h, :valid => valid}
+  end
+
+  def self.validate_30h_time(my_time)
+    #Expects string HH:MM - returns time object if OK
+    elements = my_time.split(':')
+    message = ''
+    if elements.length > 1
+      if valid_integer_between(elements[1], 0, 59)
+        if valid_integer_between(elements[0], 6, 23)
+          result_time = Time.utc(0, 1, 1, elements[0].to_i, elements[1].to_i, 0)
+          next_day = false
+          valid = true
+        elsif valid_integer_between(elements[0], 24, 29)
+          result_time = Time.utc(0, 1, 1, elements[0].to_i - 24, elements[1].to_i, 0)
+          next_day = true
+          valid = true
+        else
+          result_time = nil
+          next_day = false
+          valid = false
+          message = "Hours should be between 06 and 29"
+        end
+      else
+        result_time = nil
+        next_day = false
+        valid = false
+          message = "Hours should be between 06 and 29 and minutes between 0 and 59"
+      end
+    else
+      result_time = nil
+      next_day = false
+      valid = false
+      message = "Not a valid time. It should be between 06:00 and 29:59"
+    end
+    {:time => result_time, :valid => valid, :next_day => next_day, :message => message}
+  end
   
 end
