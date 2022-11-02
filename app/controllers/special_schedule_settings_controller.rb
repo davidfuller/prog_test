@@ -44,8 +44,8 @@ class SpecialScheduleSettingsController < ApplicationController
 
     respond_to do |format|
       if @special_schedule_setting.save
-        flash[:notice] = 'SpecialScheduleSetting was successfully created.'
-        format.html { redirect_to(@special_schedule_setting) }
+        flash[:notice] = 'Setting was successfully created.'
+        format.html { redirect_to(special_schedule_settings_path) }
         format.xml  { render :xml => @special_schedule_setting, :status => :created, :location => @special_schedule_setting }
       else
         format.html { render :action => "new" }
