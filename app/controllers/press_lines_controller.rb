@@ -230,7 +230,7 @@ class PressLinesController < ApplicationController
     logger.debug(params[:search])
     @available = AutomatedDynamicSpecial.available_for_schedule(params, false)
     @templates = DynamicSpecialTemplate.template_display_with_all
-    @message = PressLine.count_message(@press_lines)
+    @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
   end
 
   def schedule_for_xml
@@ -285,7 +285,7 @@ class PressLinesController < ApplicationController
     if params[:minimum_gap].nil?
       params[:minimum_gap] = '60'
     end
-    @message = PressLine.count_message(@press_lines)
+    @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
     @random_message = PressLine.random_generate_message(params)
     @notes = params[:notes]
     
@@ -296,7 +296,8 @@ class PressLinesController < ApplicationController
     elsif params[:short_message] && params[:notice]
       flash[:notice] = params[:short_message] + ". " + params[:notice]
     end
-    
+    @priorities = SpecialScheduleSetting.priority_options
+    logger.debug @priorities
   end
 
   def add_special

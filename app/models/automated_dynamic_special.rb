@@ -15,6 +15,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 
   PER_PAGE = 12
   attr_accessor :checked
+  attr_accessor :priority
 
   def self.search(params)
     channel_id = Channel.find_by_name(params[:channel])
@@ -988,10 +989,34 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
         end
       end
     end
+
+    results = calculate_priorities(results, params[:ads_ids], params[:priority_ids])
     results
   end
 
+  def self.calculate_priorities(adss, ids, priorities)
+    my_priorities = priority_hash(ids, priorities)
+    adss.each do |ads|
+      the_priority = my_priorities.select {|priority| priority[:id] == ads.id.to_s}
+      if the_priority.present?
+        ads.priority = the_priority[0][:priority]
+      else
+        ads.priority = "1"
+      end
+    end
+    adss
+  end
 
+
+  def self.priority_hash(ids, priorities)
+    results = []
+    if ids.present? && ids.length > 0
+      ids.each_with_index do |id, index|
+        results << {:id => id, :priority => priorities[index] }
+      end
+    end
+    results
+  end
 
   def self.fix_first_use
     my_count = 0

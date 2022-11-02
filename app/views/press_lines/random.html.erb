@@ -94,6 +94,7 @@
     <tr>
       <th></th>
       <th>Name</th>
+      <th>Priority</th>
       <th>Template</th>
       <th>Last Use</th>
       <th>Status</th>
@@ -108,6 +109,7 @@
     <tr>
       <td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, automated_dynamic_special.checked, {:class => 'checks', :onchange => 'this.form.submit()'}  %></td>
       <td><%=h automated_dynamic_special.name %></td>
+      <td><%= select_tag "priority_ids[]", options_for_select(@priorities, automated_dynamic_special.priority),{:onchange => 'this.form.submit()'} %><%= hidden_field_tag "ads_ids[]", automated_dynamic_special.id %></td>
       <td><%=h automated_dynamic_special.template_name %></td>
       <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
       <td><%=h automated_dynamic_special.short_ready_message[:message] %></td>
@@ -121,7 +123,7 @@
       <div id="random-message"><%=h @random_message[:message] %></div>
     <% else %>
       <%= link_to 'Do The Random Scheduling', special_random_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
-                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids]), :confirm => @random_message[:message] %>
+                                                                      params[:minimum_gap], params[:replace], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids]), :confirm => @random_message[:message] %>
     <% end %>                                                                      
   </div>
 </fieldset>
