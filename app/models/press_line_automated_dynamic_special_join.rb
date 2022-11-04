@@ -39,11 +39,6 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
     start_time = test_date + 6.hour
     end_time = start_time + 1.day
     channel = Channel.find_by_name(channel_name)
-    logger.debug '-=-=-=-=-=='
-    logger.debug test_date
-    logger.debug channel.name
-    logger.debug start_time
-    logger.debug end_time
     count_deleted = 0
     count_not_deleted = 0
     if channel && test_date

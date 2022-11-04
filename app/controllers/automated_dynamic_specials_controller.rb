@@ -51,7 +51,6 @@ class AutomatedDynamicSpecialsController < ApplicationController
       count += placing[:count]
     end
     @placing_message = "There are #{count} placings"
-    logger.debug @placing_message
   end
 
 

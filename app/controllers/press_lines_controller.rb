@@ -219,15 +219,9 @@ class PressLinesController < ApplicationController
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
     @filter_display = PressLine.schedule_filter
-    @programmes = PressLine.programme_list(@press_lines)
     @parts = Part.parts_display
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
-    logger.debug(params[:part])
     params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
-    logger.debug("============++++++++++++++++=============")
-    logger.debug(params[:part])
-    logger.debug(params[:programme])
-    logger.debug(params[:search])
     @available = AutomatedDynamicSpecial.available_for_schedule(params, false)
     @templates = DynamicSpecialTemplate.template_display_with_all
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
@@ -267,8 +261,6 @@ class PressLinesController < ApplicationController
       end
       @ads_all << ads.id.to_s
     end
-    logger.debug "&*&*&*&*&*&"
-    logger.debug @ads_available
     @templates = DynamicSpecialTemplate.template_display_with_all
     if params[:start_date].nil?
       params[:start_date] = params[:priority_date]
@@ -297,7 +289,6 @@ class PressLinesController < ApplicationController
       flash[:notice] = params[:short_message] + ". " + params[:notice]
     end
     @priorities = SpecialScheduleSetting.priority_options
-    logger.debug @priorities
   end
 
   def add_special

@@ -93,12 +93,7 @@ class Part < ActiveRecord::Base
 
   def self.special_start(duration_minutes, part)
     num_parts = num_parts(duration_minutes)
-    logger.debug "9009090909090"
-    logger.debug "============"
-    logger.debug num_parts
     part_duration = part_duration(duration_minutes)
-    logger.debug part_duration
-    logger.debug duration_minutes
     offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
     
     start_minutes = -1
