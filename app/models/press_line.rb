@@ -80,8 +80,6 @@ class PressLine < ActiveRecord::Base
       the_times = schedule_start_end_time(priority_date, "15:00", "23:59")
     end
     
-    logger.debug "*********"
-    logger.debug the_times[:end_time]
     results = nil
     if the_times[:valid]
       results = find :all, :conditions => ['start >= ? and start <= ? and channel_id =?', the_times[:start_time], the_times[:end_time], channel.id], :order => :start
@@ -131,16 +129,6 @@ class PressLine < ActiveRecord::Base
 
   def specials
     press_line_automated_dynamic_special_joins
-  end
-
-  def self.programme_list(press_lines)
-    result = []
-    selected_text = ''
-    press_lines.each do |press_line|
-      display = press_line.start.strftime("%H:%M") + " - " + press_line.display_title
-      result << [display, press_line.id.to_s]
-    end
-    result
   end
 
   def self.get_channel(channel_name)
