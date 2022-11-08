@@ -1,5 +1,7 @@
 class ComparisonsController < ApplicationController
-  
+
+  include ComparisonsHelper
+
   def calculate
     calc
     redirect_to(comparison_path_with_filter_and_filename)
@@ -42,7 +44,7 @@ class ComparisonsController < ApplicationController
   
   
   def add_title_series
-    stats = Title.add_series_and_house(params[:id], params[:source])
+    stats = Title.add_series_and_house(params[:id], params[:source], params[:eop])
     added = stats[:added]
     title_added = stats[:title_added]
     local_added = stats[:local_added]
@@ -111,6 +113,7 @@ class ComparisonsController < ApplicationController
       flash[:notice] = ""
       notice=""
       added = 0
+      created = 0
       title_added = 0
       local_added = 0
       house_added = 0
@@ -122,6 +125,7 @@ class ComparisonsController < ApplicationController
       house_issues = 0
       local_fix_added = 0
       local_fix_issues = 0
+      created_issues = 0
       params[:comparison_ids].each do |id|
         if params[:source] == 'schedule_comparison'
           c = ScheduleComparison.find_by_id(id)
@@ -135,7 +139,7 @@ class ComparisonsController < ApplicationController
           house_issues += stats[:issues]
           notice += stats[:notice]
         when *[:not_db_no_series, :not_db_no_match_contained, :not_db_no_match, :not_db_no_series_local_blank]
-          stats = Title.add_series_and_house(id, params[:source])
+          stats = Title.add_series_and_house(id, params[:source], nil)
           added = stats[:added]
           title_added += stats[:title_added]
           local_added += stats[:local_added]
@@ -167,16 +171,31 @@ class ComparisonsController < ApplicationController
 					house_issues = stats[:issues]
 					notice += stats[:notice]
 			    house_added = stats[:added]
+        when *[:not_db_no_series_multiple, :not_db_no_series_fix_local_multiple]
+          title = c.original_title||""
+          eidr = c.eidr||""
+          if is_sport?(eidr)
+            stats = Title.new_title_from_multiple(c)
+            created += stats[:created]
+            created_issues += stats[:issues]
+            title_issues += stats[:title_issues]
+            house_issues += stats[:house_issues]
+            notice += stats[:notice]
+          else
+            notice += "Cannot process: #{title} as the eidr is not sport. "
+          end
         else
           title = c.original_title||""
           notice += 'Cannot process title ' + title + '. '
         end
       end
+      flash[:notice] += @template.pluralize(created, 'New title') + ' added. ' if created > 0
       flash[:notice] += @template.pluralize(title_added, 'Original title') + ' added. ' if title_added > 0
       flash[:notice] += @template.pluralize(local_added, 'Local title') + ' added. ' if local_added > 0
       flash[:notice] += @template.pluralize(added, 'Series number') + ' added. ' if added > 0
       flash[:notice] += @template.pluralize(house_added, 'House Number') + ' added. ' if house_added > 0 
       flash[:notice] += @template.pluralize(promo_added, 'Promo') + ' added. ' if promo_added > 0 
+      flash[:notice] += @template.pluralize(created_issues, 'creating title issue') + '. ' if created_issues > 0
       flash[:notice] += @template.pluralize(title_issues, 'original title issue') + '. ' if title_issues > 0
       flash[:notice] += @template.pluralize(local_issues, 'local title issue') + '. ' if local_issues > 0
       flash[:notice] += @template.pluralize(issues, 'Series number issue') + '. ' if issues > 0
