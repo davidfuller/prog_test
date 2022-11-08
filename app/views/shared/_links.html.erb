@@ -17,7 +17,7 @@
 		<%= link_to 'Edit Titles', new_from_press_title_path(:id => comparison.press_id, :source => source, 
 															:channel => comparison.channel_name, :schedule_comparison_id => comparison.id), 
 															:title => 'Edit title and optionally add series' %><br />
-		<%= link_to 'Create New Title', { :controller => 'titles', :action => 'new_from_press', 
+		<%= link_to 'Create New Title (Use for sport fixtures)', { :controller => 'titles', :action => 'new_from_press', 
 											:id => comparison.press_id, :source => source, :channel => comparison.channel_name,
 											:schedule_comparison_id => comparison.id, :new_title => true }, 
 											:title => 'Create a new title for this programme' %>
@@ -121,6 +121,8 @@
 															:title => 'Look for title in press listings and possibly add it.' %><br/>
 		<%= link_to "Auto add", add_title_series_comparison_path(:id => comparison, :press_id => comparison.press_id, :source => source),
 									:title => 'Automatically add title, series and house number', :confirm => 'Are you sure?' %><br />
+    <%= link_to "Auto add with EOP", add_title_series_comparison_path(:id => comparison, :press_id => comparison.press_id, :source => source, :eop => true),
+									:title => 'Automatically add title, series and house number, with eop ticked', :confirm => 'Are you sure?' %><br />
 		<%= link_to 'Add to Titles', new_from_press_title_path(:id => comparison.press_id, :source => source, 
 																:channel => comparison.channel_name, :schedule_comparison_id => comparison.id), 
 																:title => 'Add title and optionally add series' %><br />
