@@ -125,7 +125,7 @@ class Title < ActiveRecord::Base
           
     
   
-  def self.add_series_and_house(comparison_id, comparison_type)
+  def self.add_series_and_house(comparison_id, comparison_type, eop)
     if comparison_type == 'schedule_comparison'
       comparison = ScheduleComparison.find_by_id(comparison_id)
     else
@@ -151,6 +151,11 @@ class Title < ActiveRecord::Base
       when *[:not_db_no_match_contained, :not_db_no_match]
         @title = Title.new
         @title.english = comparison.original_title
+        if eop
+          @title.eop = true
+        else
+          @title.eop = false
+        end
         if @title.save
           title_added += 1
         else
@@ -507,4 +512,103 @@ class Title < ActiveRecord::Base
   def self.find_eidr(eidr)
   	find(:all, :include => :series_idents, :conditions => ["series_idents.eidr = ?", eidr])  
 	end
+
+  def self.new_title_from_multiple(comparison)
+    press = PressLine.find(comparison.press_id)
+    channel = Channel.find_by_id(comparison.channel_id)
+    message = ''
+    created = 0
+    issues = 0
+    house_issues = 0
+    title_issues = 0
+    if !(press.nil?) && !(channel.nil?)
+      title = Title.new
+      title.english = press.original_title
+      title.local_title_for_multiple(channel, press.display_title)  
+      title.eop = true
+      if title.save
+        series_ident_stuff = title.new_series_ident_for_multiple(press.id)
+        message += series_ident_stuff[:message]
+        if series_ident_stuff[:success]
+          new_house_number_stuff = title.new_house_number_for_multiple(comparison, series_ident_stuff[:series_ident])
+          message += new_house_number_stuff[:message]
+          if new_house_number_stuff[:success]
+            created += 1
+          else
+            issues += 1
+            house_issues += 1
+          end
+        else
+          issues += 1
+        end
+      else
+        issues += 1
+        title_issues += 1
+        message += "Title error: #{title.english}. "
+        title.errors.each_full do |err|
+          message += err + ". "
+        end
+      end
+    end
+    {:created => created, :issues => issues, :house_issues => house_issues, :title_issues => title_issues, :notice => message }
+  end
+
+  def local_title_for_multiple(channel, local_title)
+    case channel.language.name
+    when 'Danish'
+      self.danish = local_title
+    when 'Swedish'
+      self.swedish = local_title
+    when 'Hungarian'
+      self.hungarian = local_title
+    when 'Norwegian'
+      self.norwegian = local_title
+    end
+  end
+
+  def new_series_ident_for_multiple(press_line_id)
+    message = ''
+    if press_line_id
+      s = SeriesIdent.new
+      s.update_info(self.id, press_line_id)
+      if s.save
+        success = true
+      else
+        message = "Unable to create series ident"
+        s.errors.each_full do |err|
+          message += err + ". "
+        end
+        success = false
+      end
+      {:series_ident => s, :success => success, :message => message}
+    end
+    
+  end
+
+  def new_house_number_for_multiple(comparison, series_ident)
+    h = House.find_or_create_by_house_number(comparison.house_number)
+		h.series_ident = series_ident
+		h.house_number = comparison.house_number
+		h.title = self
+    added = 0
+    issues = 0
+    message = ""
+		if h.save
+      added += 1
+      success = true
+		else
+      success = false
+      message += "House Number error. "
+      h.errors.each_full do |err|
+        if err.upcase != "HOUSE NUMBER  IS ALREADY IN THE SYSTEM"
+          logger.debug "============>" + err.upcase
+          issues += 1
+          message += err + ". "
+        end
+      end
+    end
+    {:house => h, :success => success, :message => message}
+  end
+
+
 end
