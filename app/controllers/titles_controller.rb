@@ -457,7 +457,7 @@ class TitlesController < ApplicationController
     @title.destroy
 
     respond_to do |format|
-      format.html { redirect_to titles_path_with_language }
+      format.html { redirect_to titles_path_with_language_and_and_search_and_show_eidr(params[:search], params[:show_eidr]) }
       format.xml  { head :ok }
     end
   end
