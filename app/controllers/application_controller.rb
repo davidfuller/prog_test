@@ -26,6 +26,9 @@ class ApplicationController < ActionController::Base
     {:controller => :titles, :action => :index, :language => session[:language]}
   end
   
+  def titles_path_with_language_and_and_search_and_show_eidr(search, show_eidr)
+    {:controller => :titles, :action => :index, :language => session[:language], :search => search, :show_eidr => show_eidr}
+  end
   def playlist_lines_path_with_show
     {:controller => :playlist_lines, :action => :index, :show => session[:show]}
   end
@@ -310,8 +313,8 @@ class ApplicationController < ActionController::Base
       :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :part_ids => part_ids, :minimum_gap => minimum_gap, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids }
   end
 
-  def remove_all_special_from_schedule(part_id, priority_date, channel, show, source)
-    {:controller => :press_lines, :action => :remove_all_specials, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show, :source => source }
+  def remove_all_special_from_schedule(part_id, priority_date, channel, show, source, all_week)
+    {:controller => :press_lines, :action => :remove_all_specials, :part_id => part_id, :priority_date => priority_date, :channel => channel, :show => show, :source => source, :all_week => all_week}
   end
 
   def special_schedule_with_date(priority_date, channel, show, template, part)
@@ -333,7 +336,7 @@ class ApplicationController < ActionController::Base
     {:controller => :automated_dynamic_specials, :action => :placing, :start_date => start_date, :end_date => end_date, :channel => channel}
   end
 
-  helper_method :titles_path_with_language, :playlist_lines_path_with_show, :comparison_path_with_filter, 
+  helper_method :titles_path_with_language, :titles_path_with_language_and_and_search_and_show_eidr, :playlist_lines_path_with_show, :comparison_path_with_filter, 
                 :playlist_lines_path_with_show_and_filename, :comparison_path_with_filter_and_filename,
                 :comparison_path_with_last_filename, :jpeg_with_folder, :press_lines_with_date,
                 :format_date_time, :schedule_comparison_path_with_last_filename, 
