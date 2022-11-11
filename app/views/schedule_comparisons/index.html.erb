@@ -74,7 +74,12 @@
 	</tr>
 	<% end %>
 <br/>
-	<%= submit_tag "Add all checked"%>
+  <% if ![:not_db_no_series_multiple, :not_db_no_series_fix_local_multiple, :not_db_no_series_fix_local].include? params[:show].to_sym %>
+	  <%= submit_tag "Add all checked" %>
+  <% end %>
+  <% if [:not_db_no_series, :not_db_no_match, :not_db_no_series_multiple, :not_db_no_series_fix_local_multiple, :not_db_no_series_fix_local, :not_db_no_series_local_blank_multiple].include? params[:show].to_sym %>
+    <%= submit_tag add_all_checked_sports_button %>
+  <% end %>
 	<span class = 'link_button'>
 	<%= link_to_function 'Check all', "$$('input.checks').each(function(checkbox) { checkbox.checked = true; });" %>
 	<%= link_to_function 'Uncheck all', "$$('input.checks').each(function(checkbox) { checkbox.checked = false; });" %>
