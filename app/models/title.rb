@@ -122,9 +122,7 @@ class Title < ActiveRecord::Base
       norwegian = danish_title
     end
   end
-          
-    
-  
+
   def self.add_series_and_house(comparison_id, comparison_type, eop)
     if comparison_type == 'schedule_comparison'
       comparison = ScheduleComparison.find_by_id(comparison_id)
@@ -143,81 +141,110 @@ class Title < ActiveRecord::Base
     house_issues = 0
     local_issues = 0
     success = false
-    
+    continue = false
+    create_title = false
     if comparison
       code = comparison.comparison_code.to_sym
       
       case code
       when *[:not_db_no_match_contained, :not_db_no_match]
-        @title = Title.new
-        @title.english = comparison.original_title
-        if eop
-          @title.eop = true
-        else
-          @title.eop = false
-        end
-        if @title.save
-          title_added += 1
-        else
-          @title.errors.each do |e|
-            notice += e.to_s.capitalize + ". "
-            title_issues += 1
+        #does house number already exist from other route
+        house = House.find_by_house_number(comparison.house_number)
+        if house.nil?
+          eidr = SeriesIdent.find_by_eidr(comparison.eidr)
+          if !eidr.nil?
+            #This has an already existing eidr
+            eidr_title = eidr.title
+            if eidr_title.english == comparison.original_title && eidr_title.local_title(comparison.channel.language.name) == comparison.local_title
+              #The eidr is the same title. No need to create a new one
+              continue = true
+            else
+              create_title = true
+            end
+          else
+            #eidr is null but lets see if the title already exists
+            if !find_by_english(comparison.original_title)
+              create_title = true
+            end
           end
-        end
-      end
-         
-      case code
-      when *[:not_db_no_series, :not_db_no_series_local_blank, :not_db_no_match_contained, :not_db_no_match, :not_db_local_blank]
-        @title = find_by_english(comparison.original_title)
-        case code
-        when *[:not_db_no_series_local_blank, :not_db_no_match_contained, :not_db_no_match, :not_db_local_blank]
-          stats = set_local_title(comparison.local_title, comparison.channel)
-          local_added += stats[:added]
-          local_issues += stats[:issues]
-          notice += stats[:notice]
-          if stats[:do_save]
-            @title.save
+          if create_title
+            continue = true
+            @title = Title.new
+            @title.english = comparison.original_title
+            if eop
+              @title.eop = true
+            else
+              @title.eop = false
+            end
+            if @title.save
+              title_added += 1
+            else
+              @title.errors.each do |e|
+                notice += e.to_s.capitalize + ". "
+                title_issues += 1
+              end
+            end
           end
-        end
-        press = PressLine.find(comparison.press_id)
-        logger.debug "1PPPP"
-        logger.debug press
-        s = SeriesIdent.find_by_title_id_and_year_number(@title.id, press.year_number)
-        logger.debug s
-        if s
-        	if s.eidr.blank? 
-        		s.eidr = press.eidr
-        	elsif s.eidr != press.eidr
-        		s = SeriesIdent.new
-						s.update_info(@title.id, comparison.press_id)
-					end
         else
-        	s = SeriesIdent.new
-        	s.update_info(@title.id, comparison.press_id)
-        end
-        if s.save
-          added += 1
-          stats = House.add_from_comparison(comparison_id, comparison_type)
-          success = stats[:success]
-          house_added += stats[:added]
-          house_issues += stats[:issues]
-          notice += stats[:notice]
-          promo_added += stats[:promo_added]
-        else
-          s.errors.each do |e|
-            notice += e.to_s.capitalize + ". "
-            issues += 1
-          end
+          notice += "Possible same programme ticked more than once as house number already present: #{comparison.house_number} - #{comparison.original_title}. "    
         end
       else
-        notice += 'Wrong type of add'
-        issues += 1
+        continue = true
+      end
+      
+      if continue
+        case code
+        when *[:not_db_no_series, :not_db_no_series_local_blank, :not_db_no_match_contained, :not_db_no_match, :not_db_local_blank]
+          @title = find_by_english(comparison.original_title)
+          case code
+          when *[:not_db_no_series_local_blank, :not_db_no_match_contained, :not_db_no_match, :not_db_local_blank]
+            stats = set_local_title(comparison.local_title, comparison.channel)
+            local_added += stats[:added]
+            local_issues += stats[:issues]
+            notice += stats[:notice]
+            if stats[:do_save]
+              @title.save
+            end
+          end
+          press = PressLine.find(comparison.press_id)
+          logger.debug "1PPPP"
+          logger.debug press
+          s = SeriesIdent.find_by_title_id_and_year_number(@title.id, press.year_number)
+          logger.debug s
+          if s
+            if s.eidr.blank? 
+              s.eidr = press.eidr
+            elsif s.eidr != press.eidr
+              s = SeriesIdent.new
+              s.update_info(@title.id, comparison.press_id)
+            end
+          else
+            s = SeriesIdent.new
+            s.update_info(@title.id, comparison.press_id)
+          end
+          if s.save
+            added += 1
+            stats = House.add_from_comparison(comparison_id, comparison_type)
+            success = stats[:success]
+            house_added += stats[:added]
+            house_issues += stats[:issues]
+            notice += stats[:notice]
+            promo_added += stats[:promo_added]
+          else
+            s.errors.each do |e|
+              notice += e.to_s.capitalize + ". "
+              issues += 1
+            end
+          end
+        else
+          notice += 'Wrong type of add'
+          issues += 1
+        end
       end
     end
     {:added => added, :house_added => house_added, :issues => issues, :house_issues => house_issues, :promo_added => promo_added,
       :local_added => local_added, :local_issues => local_issues, :title_added => title_added, :title_issues => title_issues,
       :notice => notice, :success => success}  
-    
   end  
   
   def self.add_local_title(comparison_id, source)
@@ -258,7 +285,57 @@ class Title < ActiveRecord::Base
       {:added => 0, :issues => 1, :notice => 'Cannot find title'}
     end
   end
-            
+
+  def self.add_local_title_and_house(comparison)
+    if comparison.eidr != ""
+      s = SeriesIdent.find_by_eidr(comparison.eidr)
+    else
+      if comparison.series_ident != ""
+        s = SeriesIdent.find_by_number(comparison.series_ident)
+      end
+    end
+    if s
+      code = comparison.comparison_code.to_sym 
+      case code
+      when *[:in_db_local_blank, :not_db_local_blank]
+      	if s.eidr.blank?
+      		s.eidr = comparison.eidr
+      		s.save
+				end
+        @title = s.title
+        if @title
+          stats = set_local_title(comparison.local_title, comparison.channel)
+          #{:added => added, :issues => issues, :notice => notice, :do_save => do_save}
+          if stats[:do_save]
+            @title.save
+            #Now add the house
+            house = House.find_or_create_by_house_number(comparison.house_number)
+            house.series_ident = s
+            house.house_number = comparison.house_number
+            house.title = s.title
+            if house.save
+              stats[:house_added] = 1
+            else
+              house.errors.each_full do |err|
+                if err.upcase != "HOUSE NUMBER  IS ALREADY IN THE SYSTEM"
+                  logger.debug "============>" + err.upcase
+                  stats[:issues] += 1
+                  stats[:notice] += err + ". "
+                end
+              end
+            end
+          end
+          stats
+        else
+          {:added => 0, :issues => 1, :notice => 'Cannot find title'}
+        end
+      else
+        {:added => 0, :issues => 1, :notice => 'Cannot find record'}
+      end
+    else
+      {:added => 0, :issues => 1, :notice => 'Cannot find title'}
+    end
+  end
 
   def self.add_from_comparison(comparison)
     notice = ''
@@ -403,7 +480,7 @@ class Title < ActiveRecord::Base
         end
       else
         @title.norwegian = local_title
-        added =1
+        added = 1
         do_save = true
       end
     end
