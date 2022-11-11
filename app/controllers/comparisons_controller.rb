@@ -132,46 +132,7 @@ class ComparisonsController < ApplicationController
         else
           c = Comparison.find_by_id(id)
         end
-        case c.comparison_code.to_sym
-        when :not_db_all_match
-          stats = House.add_from_comparison(id, params[:source])
-          house_added += stats[:added]
-          house_issues += stats[:issues]
-          notice += stats[:notice]
-        when *[:not_db_no_series, :not_db_no_match_contained, :not_db_no_match, :not_db_no_series_local_blank]
-          stats = Title.add_series_and_house(id, params[:source], nil)
-          added = stats[:added]
-          title_added += stats[:title_added]
-          local_added += stats[:local_added]
-          house_added += stats[:house_added]
-          promo_added += stats[:promo_added]
-          issues += stats[:issues]
-          title_issues += stats[:title_issues]
-          local_issues += stats[:local_issues]
-          house_issues += stats[:house_issues]
-          notice = stats[:notice]
-        when *[:in_db_local_blank, :not_db_local_blank]
-          stats = Title.add_local_title(id, params[:source])
-          local_added += stats[:added]
-          local_issues += stats[:issues]
-          notice = stats[:notice]
-        when *[:not_db_fix_local, :in_db_fix_local]
-          language = Channel.find(c.channel_id).language
-          stats = PressLine.update_press_title_with_stored(c.press_id, language.name)
-          local_fix_added += stats[:added]
-          local_fix_issues += stats[:issues]
-        when :in_db_no_eidr
-					series_ident = SeriesIdent.find_by_number(c.series_ident)
-					series_ident.add_eidr(c.press_id)
-					if series_ident.save
-						eidr_added += 1
-					end
-				when :in_db_fix_series
-					stats =	House.add_eidr_to_existing_house(id, params[:source])
-					house_issues = stats[:issues]
-					notice += stats[:notice]
-			    house_added = stats[:added]
-        when *[:not_db_no_series_multiple, :not_db_no_series_fix_local_multiple]
+        if params[:commit] == add_all_checked_sports_button 
           title = c.original_title||""
           eidr = c.eidr||""
           if is_sport?(eidr)
@@ -185,8 +146,49 @@ class ComparisonsController < ApplicationController
             notice += "Cannot process: #{title} as the eidr is not sport. "
           end
         else
-          title = c.original_title||""
-          notice += 'Cannot process title ' + title + '. '
+          case c.comparison_code.to_sym
+          when :not_db_all_match
+            stats = House.add_from_comparison(id, params[:source])
+            house_added += stats[:added]
+            house_issues += stats[:issues]
+            notice += stats[:notice]
+          when *[:not_db_no_series, :not_db_no_match_contained, :not_db_no_match, :not_db_no_series_local_blank]
+            stats = Title.add_series_and_house(id, params[:source], nil)
+            added = stats[:added]
+            title_added += stats[:title_added]
+            local_added += stats[:local_added]
+            house_added += stats[:house_added]
+            promo_added += stats[:promo_added]
+            issues += stats[:issues]
+            title_issues += stats[:title_issues]
+            local_issues += stats[:local_issues]
+            house_issues += stats[:house_issues]
+            notice = stats[:notice]
+          when *[:in_db_local_blank, :not_db_local_blank]
+            stats = Title.add_local_title_and_house(c)
+            local_added += stats[:added]
+            local_issues += stats[:issues]
+            notice = stats[:notice]
+          when *[:not_db_fix_local, :in_db_fix_local]
+            language = Channel.find(c.channel_id).language
+            stats = PressLine.update_press_title_with_stored(c.press_id, language.name)
+            local_fix_added += stats[:added]
+            local_fix_issues += stats[:issues]
+          when :in_db_no_eidr
+            series_ident = SeriesIdent.find_by_number(c.series_ident)
+            series_ident.add_eidr(c.press_id)
+            if series_ident.save
+              eidr_added += 1
+            end
+          when :in_db_fix_series
+            stats =	House.add_eidr_to_existing_house(id, params[:source])
+            house_issues = stats[:issues]
+            notice += stats[:notice]
+            house_added = stats[:added]
+          else
+            title = c.original_title||""
+            notice += 'Cannot process title ' + title + '. '
+          end
         end
       end
       flash[:notice] += @template.pluralize(created, 'New title') + ' added. ' if created > 0
