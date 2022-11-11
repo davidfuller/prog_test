@@ -736,18 +736,18 @@ class PressLine < ActiveRecord::Base
               if part_tx[:valid_part]
                 part_tx_time = part_tx[:time]
                 if part_tx_time && part_tx_time < the_times[:end_date_time] && part_tx_time >= the_times[:start_date_time]
-                  message << "Doing #{part.name}"
-                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
+                  message << "Doing #{part.name}. Actual Part ID #{part_tx[:actual_part_id]}"
+                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part_tx[:actual_part_id])
                   message << "There are currently #{specials.length} on this part"
                   if specials.length > 1
                     for index in (specials.length-1).downto(1) do
                       specials[index].destroy
                     end
                   end
-                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part.id)
+                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part_tx[:actual_part_id])
                   do_this_press_line = true
                   if specials.length == 1
-                    do_this_press_line = replace
+                    do_this_press_line = replace || part.name == 'Last Part'
                   end
                   message << "Are we doing this press line: #{do_this_press_line}"
                   if do_this_press_line
