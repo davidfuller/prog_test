@@ -87,7 +87,7 @@ class Part < ActiveRecord::Base
       tx_time = press_line.start + special_start_minutes[:start].minutes
     end
     
-    {:time => tx_time, :valid_part => special_start_minutes[:valid_part]}
+    {:time => tx_time, :valid_part => special_start_minutes[:valid_part], :actual_part_id => special_start_minutes[:actual_part_id]}
 
   end
 
@@ -101,10 +101,12 @@ class Part < ActiveRecord::Base
       if part.name == 'Last Part'
         start_minutes = duration_minutes.to_f + (offset/60)
         valid_part = true
+        actual_part_id = find_by_order_number(num_parts).id
       else  
         if part.order_number <= num_parts
           start_minutes = (part.order_number * part_duration) + (offset/60)
           valid_part = true
+          actual_part_id = part.id
         else
           start_minutes = duration_minutes - 1
           valid_part = false
@@ -112,7 +114,7 @@ class Part < ActiveRecord::Base
       end
     end
 
-    {:start => start_minutes, :valid_part => valid_part}
+    {:start => start_minutes, :valid_part => valid_part, :actual_part_id => actual_part_id}
     
   end
 
