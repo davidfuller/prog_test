@@ -41,13 +41,13 @@
     <% if @swedish %><th id = 'lang'>Swedish</th><% end %>
     <% if @norwegian %><th id = 'lang'>Norwegian</th><% end %>
     <% if @hungarian %><th id = 'lang'>Hungarian</th><% end %>
-    <% if @show_house && @show_series && @show_eidr %><th>House/Series Idents/EIDR</th>
+    <% if @show_house && @show_series && @show_eidr %><th>House/Series Idents/EIDR/Year</th>
     <% elsif @show_house && @show_series %><th>House/Series Idents</th>
-    <% elsif @show_house && @show_eidr %><th>House/EIDR</th>
-    <% elsif @show_series && @show_eidr %><th>Series Idents/EIDR</th>
+    <% elsif @show_house && @show_eidr %><th>House/EIDR/Year</th>
+    <% elsif @show_series && @show_eidr %><th>Series Idents/EIDR/Year</th>
     <% elsif @show_house %><th>House</th>
 		<% elsif @show_series %><th>Series Ident</th>
-		<% elsif @show_eidr %><th>EIDR</th><% end %>
+		<% elsif @show_eidr %><th>EIDR/Year</th><% end %>
 
 		<th>EOP</th>
   </tr>
@@ -82,6 +82,7 @@
 								<% else %>
 									<td><%= h s.eidr %></td>
 								<% end %>
+                <td><%= h s.year_number %></td>
 							<% end %>
 						</tr>
 					<% end %>
@@ -91,7 +92,7 @@
 		<td><%= h title.eop_display %></td>
 		<td><%= link_to 'Show', title %></td>
     <td><%= link_to 'Edit', edit_title_path(title) %></td>
-    <td><%= link_to 'Delete', title, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Delete', title_path(:id => title.id, :search => params[:search], :show_eidr => params[:show_eidr]), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
