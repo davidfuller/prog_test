@@ -23,7 +23,8 @@
 </fieldset>
 <br/>
 <label><%=h @message %></label><br/>
-<%= link_to 'Remove all', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :random), :confirm => 'Are you sure you want to remove all specials on this date?' %> |
+<%= link_to 'Remove all today', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :random, false), :confirm => 'Are you sure you want to remove all specials on this date?' %> |
+<%= link_to 'Remove all this week', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :random, true), :confirm => "Are you sure you want to remove all specials on this week, beginning #{monday_this_week(display_date)}" %> |
 <%= link_to 'Placings today', placing_with_date_and_channel(display_date, display_date, params[:channel])%> |
 <%= link_to 'Placings this week', placing_with_date_and_channel(monday_this_week(display_date), one_week(monday_this_week(display_date)), params[:channel])%> 
 <div id = 'random-schedule'>
