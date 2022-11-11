@@ -22,6 +22,7 @@ class ScheduleComparisonsController < ApplicationController
       @schedule_comparisons = ScheduleComparison.send(params[:show]).find_all_by_schedule_file_id(params[:schedule_filename])
       if @schedule_comparisons.size == 0
         @schedule_comparisons = ScheduleComparison.send('all').find_all_by_schedule_file_id(params[:schedule_filename])
+        params[:show] = 'all'
         if @schedule_comparisons.size == 0
           calc(params[:schedule_filename])
           @schedule_comparisons = ScheduleComparison.send('all').find_all_by_schedule_file_id(params[:schedule_filename])
@@ -29,8 +30,9 @@ class ScheduleComparisonsController < ApplicationController
       end
     else
       @schedule_comparisons = ScheduleComparison.send('all').find_all_by_schedule_file_id(params[:schedule_filename])
+      params[:show] = 'all'
     end
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @schedule_comparisons }
