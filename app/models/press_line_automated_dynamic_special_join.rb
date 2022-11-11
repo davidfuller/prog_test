@@ -34,10 +34,15 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
     results
   end
 
-  def self.delete_all_for_a_date_and_channel(date, channel_name)
+  def self.delete_all_for_a_date_and_channel(date, channel_name, all_week)
     test_date = Date.parse(date)
-    start_time = test_date + 6.hour
-    end_time = start_time + 1.day
+    if all_week
+      start_time = PressLinesController.helpers.monday_this_week_as_time(date) + 6.hour
+      end_time = start_time + 7.day
+    else
+      start_time = test_date + 6.hour
+      end_time = start_time + 1.day
+    end
     channel = Channel.find_by_name(channel_name)
     count_deleted = 0
     count_not_deleted = 0
