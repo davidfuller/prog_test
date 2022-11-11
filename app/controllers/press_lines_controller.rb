@@ -390,7 +390,7 @@ class PressLinesController < ApplicationController
   end
 
   def remove_all_specials
-    message = PressLineAutomatedDynamicSpecialJoin.delete_all_for_a_date_and_channel(params[:priority_date], params[:channel])
+    message = PressLineAutomatedDynamicSpecialJoin.delete_all_for_a_date_and_channel(params[:priority_date], params[:channel], params[:all_week])
     flash[:notice] = message
     respond_to do |format|
       format.html {
