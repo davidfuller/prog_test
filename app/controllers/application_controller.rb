@@ -326,9 +326,20 @@ class ApplicationController < ActionController::Base
       :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :notice => notice, :automated_dynamic_special_ids => automated_dynamic_special_ids }
   end
 
+  def special_part_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes, start_date, end_date, start_time, end_time, replace, notice, automated_dynamic_special_ids, ads_ids)
+    {:controller => :press_lines, :action => :part, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, :short_message => short_message, :notes => notes,
+      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :replace => replace, :notice => notice, :automated_dynamic_special_ids => automated_dynamic_special_ids, :ads_ids => ads_ids}
+  end
+
   def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids, priority_ids, ads_ids)
     {:controller => :press_lines, :action => :add_random, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, 
         :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :minimum_gap => minimum_gap, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids, 
+        :priority_ids => priority_ids, :ads_ids => ads_ids}
+  end
+
+  def special_part_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, replace, automated_dynamic_special_ids, priority_ids, ads_ids)
+    {:controller => :press_lines, :action => :add_part, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, 
+        :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :replace => replace, :automated_dynamic_special_ids => automated_dynamic_special_ids, 
         :priority_ids => priority_ids, :ads_ids => ads_ids}
   end
 
@@ -353,6 +364,6 @@ class ApplicationController < ActionController::Base
                 :toggle_channel_special_preview_enable, :special_preview_media_files_past_last_use_path, 
                 :generate_status_with_date, :add_special_to_schedule, :remove_special_from_schedule, 
                 :special_schedule_with_date, :special_random_with_date, :special_random_generate, :remove_all_special_from_schedule,
-                :placing_with_date_and_channel
+                :placing_with_date_and_channel, :special_part_with_date, :special_part_generate
   
 end
