@@ -222,7 +222,7 @@ class PressLinesController < ApplicationController
     @parts = Part.parts_display
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
     params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
-    @available = AutomatedDynamicSpecial.available_for_schedule(params, false)
+    @available = AutomatedDynamicSpecial.available_for_schedule(params, false, false, false)
     @templates = DynamicSpecialTemplate.template_display_with_all
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
   end
@@ -236,6 +236,12 @@ class PressLinesController < ApplicationController
       format.html { random_for_html }
     end
   end
+
+  def part
+    respond_to do |format|
+      format.html { part_scheduling_for_html }
+    end
+  end
   
   def add_random
     messages = PressLine.randomly_schedule(params)
@@ -246,13 +252,22 @@ class PressLinesController < ApplicationController
                                             params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, nil)
   end
 
+  def add_part
+    messages = PressLine.part_schedule(params)
+    notes = (messages[:notes].join("\n"))
+    special_schedule_log_id = SpecialScheduleLog.add_note(params, notes)
+    short_message = messages[:short_message]
+    redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, special_schedule_log_id, params[:start_date], params[:end_date], 
+                                            params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids])
+  end
+
   def random_for_html
     @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
     @filter_display = PressLine.schedule_filter
     @parts = Part.all_with_checked(params[:part_ids])
-    @available = AutomatedDynamicSpecial.available_for_schedule(params, true)
+    @available = AutomatedDynamicSpecial.available_for_schedule(params, true, true, false)
     @ads_available = []
     @ads_all = []
     @available.each do |ads|
@@ -290,6 +305,49 @@ class PressLinesController < ApplicationController
     end
     @priorities = SpecialScheduleSetting.priority_options
   end
+
+  def part_scheduling_for_html
+    @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     
+    remove_v4 = true
+    @channel_display = Channel.display(remove_v4)
+    @filter_display = PressLine.schedule_filter
+    @parts = Part.parts_display
+    @available = AutomatedDynamicSpecial.available_for_schedule(params, true, false, true)
+    @ads_available = []
+    @ads_all = []
+    @available.each do |ads|
+      if ads.checked
+        @ads_available << ads.id.to_s
+      end
+      @ads_all << ads.id.to_s
+    end
+    @templates = DynamicSpecialTemplate.template_display_with_all
+    if params[:start_date].nil?
+      params[:start_date] = params[:priority_date]
+    end
+    if params[:end_date].nil?
+      params[:end_date] = params[:priority_date]
+    end
+    if params[:start_time].nil?
+      params[:start_time] = '16:00'
+    end
+    if params[:end_time].nil?
+      params[:end_time] = '23:59'
+    end
+    
+    @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
+    @part_message = PressLine.part_generate_message(params)
+    @notes = params[:notes]
+    
+    if params[:short_message] && params[:notice].nil?
+      flash[:notice] = params[:short_message]
+    elsif params[:short_message].nil? && params[:notice]
+      flash[:notice] = params[:notice]
+    elsif params[:short_message] && params[:notice]
+      flash[:notice] = params[:short_message] + ". " + params[:notice]
+    end
+  end
+
 
   def add_special
     the_ids = params[:press_line_ids]
@@ -397,7 +455,10 @@ class PressLinesController < ApplicationController
         if params[:source] == 'random'
           redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
             params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids])
-        else
+          elsif params[:source] == 'part'
+            redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
+              params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids])
+          else
           redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show], :template => params[:template],
             :search => params[:search])
         end
