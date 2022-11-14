@@ -16,6 +16,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   PER_PAGE = 12
   attr_accessor :checked
   attr_accessor :priority
+  attr_accessor :schedule_part
 
   def self.search(params)
     channel_id = Channel.find_by_name(params[:channel])
@@ -925,7 +926,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 		output
 	end
 
-  def self.available_for_schedule(params, date_range)
+  def self.available_for_schedule(params, date_range, has_priorities, has_parts)
     channel_id = Channel.find_by_name(params[:channel])
     priority_date = params[:priority_date]
     template_id = DynamicSpecialTemplate.find_by_name(params[:template])
@@ -990,7 +991,13 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
       end
     end
 
-    results = calculate_priorities(results, params[:ads_ids], params[:priority_ids])
+    if has_priorities
+      results = calculate_priorities(results, params[:ads_ids], params[:priority_ids])
+    end
+
+    if has_parts
+      results = calculate_parts(results, params[:ads_ids], params[:part_ids])
+    end
     results
   end
 
@@ -1007,12 +1014,34 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     adss
   end
 
+  def self.calculate_parts(adss, ids, parts)
+    my_parts = parts_hash(ids, parts)
+    adss.each do |ads|
+      the_part = my_parts.select {|part| part[:id] == ads.id.to_s }
+      if the_part.present?
+        ads.schedule_part = the_part[0][:part]
+      else
+        ads.schedule_part = "1"
+      end
+    end
+    adss
+  end
 
   def self.priority_hash(ids, priorities)
     results = []
     if ids.present? && ids.length > 0
       ids.each_with_index do |id, index|
         results << {:id => id, :priority => priorities[index] }
+      end
+    end
+    results
+  end
+
+  def self.parts_hash(ids, parts)
+    results = []
+    if ids.present? && ids.length > 0
+      ids.each_with_index do |id, index|
+        results << {:id => id, :part => parts[index]}
       end
     end
     results
