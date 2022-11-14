@@ -1,0 +1,16 @@
+<fieldset>
+<legend>Dynamic Special Schedule</legend>
+
+<%= calendar_date_select_includes "custom", :locale=>'uk' %>
+
+<%- session[:priority_date] = display_date %>
+<%- session[:priority_channel] = params[:channel] %>
+<%- session[:priority_show] = params[:show] %>
+
+		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
+		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
+		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
+    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil, nil, nil, nil, nil, nil, @ads_available) %> | 
+		<%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil, nil, nil, nil, nil, nil, @ads_available) %>
+</fieldset>
+<br/>
