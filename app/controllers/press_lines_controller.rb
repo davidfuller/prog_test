@@ -249,7 +249,7 @@ class PressLinesController < ApplicationController
     special_schedule_log_id = SpecialScheduleLog.add_note(params, notes)
     short_message = messages[:short_message]
     redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, special_schedule_log_id, params[:start_date], params[:end_date], 
-                                            params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, nil)
+                                            params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, nil, params[:priority_ids], params[:ads_ids])
   end
 
   def add_part
@@ -437,7 +437,10 @@ class PressLinesController < ApplicationController
       format.html {
         if params[:source] == 'random'
           redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-                                                params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids])
+                                                params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids])
+        elsif params[:source] == 'part'
+          redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
+            params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids])
         else
           redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show], :template => params[:template],
                                                   :search => params[:search])
@@ -454,7 +457,7 @@ class PressLinesController < ApplicationController
       format.html {
         if params[:source] == 'random'
           redirect_to special_random_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-            params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids])
+            params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids])
           elsif params[:source] == 'part'
             redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
               params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids])
