@@ -964,21 +964,22 @@ class PressLine < ActiveRecord::Base
         if results 
           results.each do |result|
             message = []
-            message << "Press Line #{result.start.to_s(:broadcast_datetime)}: #{result.display_title}"
+            message << "Press Line #{result.start.to_s(:broadcast_datetime)}: #{result.display_title}. Press Line ID: #{result.id}"
             parts.each do |part|
               part_tx = Part.special_tx_time_from_ids(result.id, part.id)
               if part_tx[:valid_part]
                 part_tx_time = part_tx[:time]
                 if part_tx_time && part_tx_time < the_times[:end_date_time] && part_tx_time >= the_times[:start_date_time]
-                  message << "Doing #{part.name}. Actual Part ID #{part_tx[:actual_part_id]}"
-                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part_tx[:actual_part_id])
+                  message << "Doing #{part.name}. Actual Part ID #{part_tx[:actual_part_id]}. Last Part Actual ID #{part_tx[:last_part_actual_id]}"
+                 # specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part_tx[:actual_part_id])
+                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_for_actual_part(result.id, part.id, part_tx[:actual_part_id], part_tx[:last_actual_part_id])
                   message << "There are currently #{specials.length} on this part"
                   if specials.length > 1
                     for index in (specials.length-1).downto(1) do
                       specials[index].destroy
                     end
                   end
-                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_by_press_line_id_and_part_id(result.id , part_tx[:actual_part_id])
+                  specials = PressLineAutomatedDynamicSpecialJoin.find_all_for_actual_part(result.id, part.id, part_tx[:actual_part_id], part_tx[:last_actual_part_id])
                   do_this_press_line = true
                   if specials.length == 1
                     do_this_press_line = replace || part.name == 'Last Part'
@@ -995,7 +996,9 @@ class PressLine < ActiveRecord::Base
                       updated = false
                       if specials.length == 1
                         special_join = specials[0]
-                        updated = true
+                        if part.id == special_join.part_id
+                          updated = true
+                        end
                       else
                         special_join = PressLineAutomatedDynamicSpecialJoin.new
                       end
