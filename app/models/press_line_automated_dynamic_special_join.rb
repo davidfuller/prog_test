@@ -83,4 +83,25 @@ class PressLineAutomatedDynamicSpecialJoin < ActiveRecord::Base
     count
   end
 
+  def self.find_all_for_actual_part(press_line_id, scheduled_part_id, actual_part_id, last_actual_part_id)
+    last_part = Part.last_part
+    if scheduled_part_id != last_part.id
+    #if scheduled_part is not last part
+      if scheduled_part_id == last_actual_part_id
+      #if scheduled part is same part as last part
+        find :all, :conditions => ['(part_id = ? OR part_id =?) AND press_line_id = ?', scheduled_part_id, last_part.id, press_line_id]
+        #find all for scheduled part id and last_part
+      else
+      #else
+        find :all, :conditions => ['part_id = ? AND press_line_id = ?', scheduled_part_id, press_line_id]
+        #find all for scheduled part
+      end
+      #end
+    else
+    #else
+      find :all, :conditions => ['(part_id = ? OR part_id =?) AND press_line_id = ?', scheduled_part_id, actual_part_id, press_line_id]
+      # find all for scheduled part and actual part
+    end
+    #end
+  end
 end
