@@ -1,29 +1,11 @@
 <% content_for(:title) do%>
 	Dynamic Special Schedule for Random Scheduling
 <% end %>
-
-<h1>Random Scheduling Mode</h1>
-<fieldset>
-<legend>Dynamic Special Schedule</legend>
-
-<%= calendar_date_select_includes "custom", :locale=>'uk' %>
-
 <% display_date = params[:priority_date] || Time.new.to_s(:broadcast_date_full_month) %>
-<%- session[:priority_date] = display_date %>
-<%- session[:priority_channel] = params[:channel] %>
-<%- session[:priority_show] = params[:show] %>
-
 <% form_tag random_press_lines_path, :method =>'get' do %>
-	
-		<%= calendar_date_select_tag :priority_date, display_date, {:month_year => :label, :after_close => 'this.form.submit()'} %>
-		<%= select_tag :channel, options_for_select(@channel_display, params[:channel]),{:onchange => 'this.form.submit()'}%>
-		<%= select_tag :show, options_for_select(@filter_display, params[:show]),{:onchange => 'this.form.submit()'}%> <br/>
-    <%= link_to 'Previous day', special_random_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-                                                                      params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, @ads_available, params[:priority_ids], params[:ads_ids]) %> | 
-    <%= link_to 'Next day', special_random_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-                                                                      params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, @ads_available, params[:priority_ids], params[:ads_ids]) %> 
-</fieldset>
-<br/>
+<%= render :partial => 'schedule_top', :locals	=> {:params=> params, :display_date => display_date, :source => 'random'} %>
+  <div class = 'my-wrapper'>
+
 <label><%=h @message %></label><br/>
 <%= link_to 'Remove all today', remove_all_special_from_schedule(params[:part], display_date, params[:channel], params[:show], :random, false, params[:search], params[:template], params[:start_date], 
                                                                       params[:end_date], params[:start_time], params[:end_time], params[:part_ids], params[:minimum_gap], params[:replace], @ads_available, 
@@ -33,7 +15,7 @@
                                                                       @ads_all, params[:priority_ids]), :confirm => "Are you sure you want to remove all specials on this week, beginning #{monday_this_week(display_date)}" %> |
 <%= link_to 'Placings today', placing_with_date_and_channel(display_date, display_date, params[:channel])%> |
 <%= link_to 'Placings this week', placing_with_date_and_channel(monday_this_week(display_date), one_week(monday_this_week(display_date)), params[:channel])%> 
-<div id = 'random-schedule'>
+<div id = 'special-schedule'>
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
@@ -63,8 +45,8 @@
   <% end %>
 </table>
 </div>
-<fieldset>
-  <legend>Available Specials (Random Scheduling)</legend>  
+<fieldset class = 'available-specials'>
+  <legend>Available Specials: Random Scheduling</legend>  
   <div class = 'pretend-button'>
     <%= link_to 'Special Scheduling', special_schedule_with_date(display_date, params[:channel], params[:show], params[:template], params[:part], params[:search]) %>
     <%= link_to 'Scheduling by Part', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)%>
@@ -140,3 +122,4 @@
   <%= link_to "View Notes", special_schedule_log_path(@notes.to_i), {:target => '_blank'} %>
 <% end %>
 <% end %>
+</div>

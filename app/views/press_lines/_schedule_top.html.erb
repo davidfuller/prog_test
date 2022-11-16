@@ -1,5 +1,11 @@
 <fieldset>
-<legend>Dynamic Special Schedule</legend>
+<% if source == 'part'%>
+  <legend>Dynamic Special Schedule: Part Scheduling</legend>
+<% elsif source == 'random'%>
+  <legend>Dynamic Special Schedule: Random Scheduling</legend>
+<% else %>
+  <legend>Dynamic Special Schedule</legend>
+<% end %>
 
 <%= calendar_date_select_includes "custom", :locale=>'uk' %>
 
@@ -18,6 +24,9 @@
                       params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids]) %> |
       <%= link_to 'Next day', special_part_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
                       params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids]) %>
+    <% else %>
+      <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:part], params[:search]) %> | 
+      <%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:part], params[:search]) %> <br/>
     <% end %>
 </fieldset>
 <br/>
