@@ -690,16 +690,26 @@ fieldset.report{
   margin-top: 10px;
 }
 
-#random-schedule{
+#special-schedule{
   width: 80%;
-  max-height: 400px;
-  overflow-y: scroll;
+  max-height: 50%;
+  overflow-y: auto;
   margin-top: 10px;
   border-color: #007a00;
   border-width: 1px;
   border-style: solid;
   padding: 10px;
 }
+
+fieldset.available-specials{
+  max-height: 50%;
+  overflow-y: auto;
+}
+
+.my-wrapper{
+  height: 75vh;
+}
+
 #store .dynamic_special_title {
   font-weight: bold;
   font-size: 12px;
@@ -746,3 +756,4 @@ tr.selected_special{
 .placing-centred{
   text-align: center !important;
 }
+

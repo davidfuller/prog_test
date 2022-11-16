@@ -7,7 +7,7 @@
                                                                       @ads_all, params[:priority_ids]), :confirm => "Are you sure you want to remove all specials on this week, beginning #{monday_this_week(display_date)}" %> |
 <%= link_to 'Placings today', placing_with_date_and_channel(display_date, display_date, params[:channel])%> |
 <%= link_to 'Placings this week', placing_with_date_and_channel(monday_this_week(display_date), one_week(monday_this_week(display_date)), params[:channel])%> 
-<div id = 'random-schedule'>
+<div id = 'special-schedule'>
 <table>
   <%- this_day = day_header(Date.parse(display_date))%>
   <tr><td colspan = 3><div class ='day_heading'><%= h this_day %></div></td></tr>
