@@ -2,14 +2,14 @@
 	Dynamic Special Schedule for Part Scheduling
 <% end %>
 
-<h1>Part Scheduling Mode</h1>
 <% display_date = params[:priority_date] || Time.new.to_s(:broadcast_date_full_month) %>
 <% form_tag part_press_lines_path, :method =>'get' do %>
   <%= render :partial => 'schedule_top', :locals	=> {:params=> params, :display_date => display_date, :source => 'part'} %>
+  <div class = 'my-wrapper'>
   <%= render :partial => 'the_schedule', :locals	=> {:params=> params, :display_date => display_date, :source => :part} %>
 
-<fieldset>
-  <legend>Available Specials (Part Scheduling)</legend>  
+<fieldset class = 'available-specials'>
+  <legend>Available Specials: Part Scheduling</legend>  
   <div class = 'pretend-button'>
     <%= link_to 'Special Scheduling', special_schedule_with_date(display_date, params[:channel], params[:show], params[:template], params[:part], params[:search]) %>
     <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil) %>
@@ -35,6 +35,21 @@
   </table>
   <%= label_tag :replace, 'Replace existing scheduled specials', :class => 'random-template' %>
   <%= check_box_tag :replace, @replace, params[:replace], {:class => 'random-template', :onchange => 'this.form.submit()'} %><br/>
+  
+  <div class = 'pretend-button'>
+    <% if @part_message[:issue] %>
+      <div id="random-message"><%=h @part_message[:message] %></div>
+    <% else %>
+      <%= link_to 'Do The Part Scheduling', special_part_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
+                                                                      params[:replace], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids]), :confirm => @part_message[:message] %>
+    <% end %>                                                                      
+  </div>
+  <span class = 'link_button'>
+	<%= link_to 'Check all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids]) %> | 
+  <%= link_to 'Uncheck all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids]) %>
+  </span>
   <table>
     <tr>
       <th></th>
@@ -45,12 +60,6 @@
       <th>Last Use</th>
       <th>Status</th>
     </tr>
-  <span class = 'link_button'>
-	<%= link_to 'Check all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids]) %> | 
-  <%= link_to 'Uncheck all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids]) %>
-  </span>
   <% @available.each do |automated_dynamic_special| %>
     <tr>
       <td><%= check_box_tag "automated_dynamic_special_ids[]", automated_dynamic_special.id, automated_dynamic_special.checked, {:class => 'checks', :onchange => 'this.form.submit()'}  %></td>
@@ -64,18 +73,11 @@
     </tr>
   <% end %>
   </table>
-  <br/>
-  <div class = 'pretend-button'>
-    <% if @part_message[:issue] %>
-      <div id="random-message"><%=h @part_message[:message] %></div>
-    <% else %>
-      <%= link_to 'Do The Part Scheduling', special_part_generate(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], params[:start_date], params[:end_date], params[:start_time], params[:end_time], 
-                                                                      params[:replace], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids]), :confirm => @part_message[:message] %>
-    <% end %>                                                                      
-  </div>
+  
 </fieldset>
 
 <% if @notes.present? %>
   <%= link_to "View Notes", special_schedule_log_path(@notes.to_i), {:target => '_blank'} %>
 <% end %>
 <% end %>
+</div>
