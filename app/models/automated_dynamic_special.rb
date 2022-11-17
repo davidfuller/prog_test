@@ -1002,13 +1002,15 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   end
 
   def self.calculate_priorities(adss, ids, priorities)
-    my_priorities = priority_hash(ids, priorities)
-    adss.each do |ads|
-      the_priority = my_priorities.select {|priority| priority[:id] == ads.id.to_s}
-      if the_priority.present?
-        ads.priority = the_priority[0][:priority]
-      else
-        ads.priority = "1"
+    if priorities
+      my_priorities = priority_hash(ids, priorities)
+      adss.each do |ads|
+        the_priority = my_priorities.select {|priority| priority[:id] == ads.id.to_s}
+        if the_priority.present?
+          ads.priority = the_priority[0][:priority]
+        else
+          ads.priority = "1"
+        end
       end
     end
     adss
