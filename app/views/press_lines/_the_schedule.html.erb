@@ -28,7 +28,8 @@
             <td width = 80><%=h special.part.name unless special.part.nil? %></td>
             <td width = 200><%=h special.automated_dynamic_special.name unless special.automated_dynamic_special.nil?%></td>
             <td><%= link_to 'Remove', remove_special_from_schedule(special.id, params[:part], display_date, params[:channel], params[:show], source, params[:search], params[:template], params[:start_date], 
-                                                                      params[:end_date], params[:start_time], params[:end_time], params[:part_ids], params[:minimum_gap], params[:replace], @ads_available, @ads_all), :confirm => 'Are you sure?', :method => :delete %></td>
+                                                                      params[:end_date], params[:start_time], params[:end_time], params[:part_ids], params[:minimum_gap], params[:replace], @ads_available, @ads_all, params[:priority_ids]), :confirm => 'Are you sure?', :method => :delete %></td>
+            
           </tr>
         <% end %>
         </table>
