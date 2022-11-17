@@ -1129,11 +1129,7 @@ class PressLine < ActiveRecord::Base
     message =[]
     number_unique = 0
     automated_dynamic_specials.each do |ads|
-      logger.debug "This is the ads schedule part"
-      logger.debug ads.schedule_part
-      logger.debug part.id
       if ads.schedule_part == part.id.to_s
-        logger.debug "I have passed the id test"
         if ads.first_use <= press_line.start && ads.last_use >= press_line.start
           number_unique += 1
           results << ads
@@ -1141,7 +1137,6 @@ class PressLine < ActiveRecord::Base
           message << "#{ads.name} excluded for first/last use date"
         end
       else
-        logger.debug "I have BOT passed the id test"
         message << "#{ads.name} excluded for invalid part number"
       end
     end
