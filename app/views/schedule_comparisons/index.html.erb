@@ -10,20 +10,25 @@
 
 <% if @file %>
 	<%=h @file.channel.name %></h1>
+  <label><%=h @message %></label>
 	<table class = "comparison_date">
 		<tr><th>From</th><td><%=h @file.start.to_s(:broadcast_datetime) if @file.start%></td></tr>
 		<tr><th>To</th><td><%=h @file.end.to_s(:broadcast_datetime) if @file.end %></td></tr>
 	</table><br />
 <% else %>
 	</h1>
+  <label><%=h @message %></label>
 <% end %>
+
 
 	<% form_tag schedule_comparisons_path, :method =>'get' do %>	
 		<%= select_tag :show, options_for_select(@filter_display, params[:show]),
 													{:onchange => 'this.form.submit()'}%>
 		<%= select_tag :schedule_filename, options_for_select(@filenames, params[:schedule_filename]),
+		                      {:onchange => 'this.form.submit()'} %>
+    <%= select_tag :sport_filter, options_for_select(@sport_filter, params[:sport_filter]),
 		                      {:onchange => 'this.form.submit()'} %><br/>
-		<%= submit_tag "Recalculate" %>
+		<%= submit_tag "Recalculate" %><br/>
 		<span class = 'hint_link'><%= link_to_function 'Show/Hide Hint' do |page|
 				page.select('.hint').each { |a| a.toggle } 
 			end   %></span>
@@ -33,7 +38,7 @@
 <% session[:schedule_comparison_filename] = params[:schedule_filename] %>
 </div>
 
-<div class = 'hint' style = 'display:none;'><%= render :partial => 'shared/hint', :locals => {:show => params[:show]} %></div>
+<div class = 'hint' style = 'display:none;'><%= render :partial => 'shared/hint', :locals => {:show => params[:show]} %></div><br/>
 <div class = 'schedule_comparison'>
 <table>
   <tr>

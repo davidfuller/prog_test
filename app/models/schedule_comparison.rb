@@ -217,6 +217,10 @@ class ScheduleComparison < ActiveRecord::Base
   def channel_name
     channel.name||''
   end
+
+  def self.sport_programme_options
+    ["All", "Sport only", "Non sport only"]
+  end
   
   private
   

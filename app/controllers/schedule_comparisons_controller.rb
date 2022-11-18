@@ -1,4 +1,5 @@
 class ScheduleComparisonsController < ApplicationController
+  include ComparisonsHelper
   # GET /schedule_comparisons
   # GET /schedule_comparisons.xml
   def index
@@ -17,6 +18,7 @@ class ScheduleComparisonsController < ApplicationController
     @filters = ScheduleComparison::FILTERS
     @filenames = ScheduleFile.display
     @file = ScheduleFile.find_by_id(params[:schedule_filename])
+    @sport_filter = ScheduleComparison.sport_programme_options
 
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
       @schedule_comparisons = ScheduleComparison.send(params[:show]).find_all_by_schedule_file_id(params[:schedule_filename])
@@ -32,6 +34,23 @@ class ScheduleComparisonsController < ApplicationController
       @schedule_comparisons = ScheduleComparison.send('all').find_all_by_schedule_file_id(params[:schedule_filename])
       params[:show] = 'all'
     end
+
+    if params[:sport_filter]
+      logger.debug "Doing sports filter"
+      if params[:sport_filter] != 'All'
+        my_filtered_records = []
+        @schedule_comparisons.each do |s|
+          if is_sport?(s.eidr) && params[:sport_filter] == 'Sport only'
+            my_filtered_records << s
+          elsif !is_sport?(s.eidr) && params[:sport_filter] == 'Non sport only'
+            my_filtered_records << s
+          end
+        end
+        @schedule_comparisons = my_filtered_records
+      end
+    end
+
+    @message = "#{@schedule_comparisons.length} Items"
     
     respond_to do |format|
       format.html # index.html.erb
