@@ -8,7 +8,7 @@ class ScheduleFile < ActiveRecord::Base
   end
   
   def self.display
-    list = all
+    list = find(:all, :limit => 100, :order => 'created_at DESC').reverse
     files = []
     files << [['All'],'-1']
     
