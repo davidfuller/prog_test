@@ -1067,6 +1067,18 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     my_count
   end
 
+  def self.fix_offset
+    my_count = 0
+    adss = find :all, :conditions => ['offset is NULL']
+    adss.each do |ads|
+      ads.offset = -240
+      if ads.save
+        my_count +=1
+      end
+    end
+    my_count
+  end
+
   def self.scheduled_on_date_channel(channel_name, start, stop)
     channel = Channel.find_by_name(channel_name)
     result = []
