@@ -57,6 +57,7 @@
       <th>Name</th>
       <th>Channel</th>
       <th>Dynamic Special Template</th>
+      <th>First Use</th>
       <th>Last Use</th>
       <th>Status</th>
     </tr>
@@ -68,7 +69,8 @@
       <td><b><%=link_to automated_dynamic_special.name, automated_dynamic_special_path(automated_dynamic_special, :index_params => index_params) %></b></td>
       <td><%=h automated_dynamic_special.channel_name %></td>
       <td><%=h automated_dynamic_special.template_name %></td>
-      <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_date) %></td>
+      <td><%=h automated_dynamic_special.first_use.to_s(:broadcast_datetime) %></td>
+      <td><%=h automated_dynamic_special.last_use.to_s(:broadcast_datetime) %></td>
       <td><%=h automated_dynamic_special.short_ready_message[:message] %>
           <% if automated_dynamic_special.short_ready_message[:details].length > 1 %>
             <% div_id_text = "details_" + automated_dynamic_special.id.to_s%>
