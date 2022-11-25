@@ -43,7 +43,7 @@
           <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
           <%= link_to 'ADS Report', report_automated_dynamic_specials_path %><br/>
           <%= link_to 'Recent Special Preview', recent_media_files_path %><br/>
-          <%= link_to 'Specials Schedule', special_schedule_with_date(Time.new.to_s(:broadcast_date_full_month), "Puls", "15.00 - 23.59", "All", nil, nil) %><br/>
+          <%= link_to 'Specials Schedule', special_schedule_with_date(Time.new.to_s(:broadcast_date_full_month), "Puls", SpecialScheduleSetting.default_schedule_filter, "All", nil, nil) %><br/>
           <%= link_to 'Special Placements', placing_automated_dynamic_specials_path %><br/>
           <%= link_to 'Dynamic Special Media', dynamic_special_medias_path %><br/>
           <%= link_to 'Dynamic Special Logos', dynamic_special_logos_path %><br/>
