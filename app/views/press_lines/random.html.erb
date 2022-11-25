@@ -26,6 +26,7 @@
     <tr>
       <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
       <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
+      <td><%= link_to 'Sync to schedule date', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, display_date, display_date, params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, @ads_all, params[:priority_ids], params[:ads_ids]) %></td>
     </tr>
     <tr>
       <td><%= label_tag :start_time, 'Start Time', :class => 'date-time-table' %></td><td><%= text_field_tag :start_time, params[:start_time], :class => 'date-time-table', :onchange => 'this.form.submit()' %></td>
@@ -56,6 +57,11 @@
   <%= link_to 'Uncheck all specials', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
                       params[:end_date], params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], nil, nil, params[:priority_ids], params[:ads_ids]) %>
   </span>
+
+  <% if @available.length == 0 %>
+    <br/>
+    <label>No valid specials for this channel and date range</label><br/>
+  <% end %>
   <table>
     <tr>
       <th></th>
