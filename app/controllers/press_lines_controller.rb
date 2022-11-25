@@ -218,7 +218,7 @@ class PressLinesController < ApplicationController
     @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], params[:press_line_ids])     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
-    @filter_display = PressLine.schedule_filter
+    @filter_display = SpecialScheduleSetting.schedule_filter_labels
     @parts = Part.parts_display
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
     params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
@@ -265,7 +265,7 @@ class PressLinesController < ApplicationController
     @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
-    @filter_display = PressLine.schedule_filter
+    @filter_display = SpecialScheduleSetting.schedule_filter_labels
     @parts = Part.all_with_checked(params[:part_ids])
     @available = AutomatedDynamicSpecial.available_for_schedule(params, true, true, false)
     @ads_available = []
@@ -277,20 +277,9 @@ class PressLinesController < ApplicationController
       @ads_all << ads.id.to_s
     end
     @templates = DynamicSpecialTemplate.template_display_with_all
-    if params[:start_date].nil?
-      params[:start_date] = params[:priority_date]
-    end
-    if params[:end_date].nil?
-      params[:end_date] = params[:priority_date]
-    end
-    if params[:start_time].nil?
-      params[:start_time] = '16:00'
-    end
-    if params[:end_time].nil?
-      params[:end_time] = '23:59'
-    end
+    part_random_dates_times
     if params[:minimum_gap].nil?
-      params[:minimum_gap] = '60'
+      params[:minimum_gap] = SpecialScheduleSetting.default_random_gap
     end
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
     @random_message = PressLine.random_generate_message(params)
@@ -306,11 +295,26 @@ class PressLinesController < ApplicationController
     @priorities = SpecialScheduleSetting.priority_options
   end
 
+  def part_random_dates_times
+    if params[:start_date].nil?
+      params[:start_date] = params[:priority_date]
+    end
+    if params[:end_date].nil?
+      params[:end_date] = params[:priority_date]
+    end
+    if params[:start_time].nil?
+      params[:start_time] = SpecialScheduleSetting.part_random_start_time
+    end
+    if params[:end_time].nil?
+      params[:end_time] = SpecialScheduleSetting.part_random_end_time
+    end
+  end
+
   def part_scheduling_for_html
     @press_lines = PressLine.schedule_lines(params[:show], params[:priority_date], params[:channel], nil)     
     remove_v4 = true
     @channel_display = Channel.display(remove_v4)
-    @filter_display = PressLine.schedule_filter
+    @filter_display = SpecialScheduleSetting.schedule_filter_labels
     @parts = Part.parts_display
     @available = AutomatedDynamicSpecial.available_for_schedule(params, true, false, true)
     @ads_available = []
@@ -322,18 +326,7 @@ class PressLinesController < ApplicationController
       @ads_all << ads.id.to_s
     end
     @templates = DynamicSpecialTemplate.template_display_with_all
-    if params[:start_date].nil?
-      params[:start_date] = params[:priority_date]
-    end
-    if params[:end_date].nil?
-      params[:end_date] = params[:priority_date]
-    end
-    if params[:start_time].nil?
-      params[:start_time] = '16:00'
-    end
-    if params[:end_time].nil?
-      params[:end_time] = '23:59'
-    end
+    part_random_dates_times
     
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
     @part_message = PressLine.part_generate_message(params)
