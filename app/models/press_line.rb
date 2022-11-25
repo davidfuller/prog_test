@@ -74,10 +74,11 @@ class PressLine < ActiveRecord::Base
     
     channel = get_channel(channel_name)
 
-    if show == 'All'
-      the_times = schedule_start_end_time(priority_date, "06:00", "29:59")
+    show_times = SpecialScheduleSetting.times_for_label(show)
+    if show_times
+      the_times = schedule_start_end_time(priority_date, show_times[:start], show_times[:end])
     else
-      the_times = schedule_start_end_time(priority_date, "15:00", "23:59")
+      the_times = schedule_start_end_time(priority_date, "06:00", "29:59")
     end
     
     results = nil
