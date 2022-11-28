@@ -29,6 +29,11 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
     issues_only = params[:show_issues].present?
     hide_archive = !params[:include_archive].present?
     archive_only = params[:archive_only].present?
+
+    if params[:tx_date] && params[:tx_date] != ''
+      use_date_time = Date.parse(params[:tx_date]) + 12.hours
+      logger.debug "Use date/time: #{use_date_time}"
+    end
     
     if issues_only
       all_record_with_issues(page, channel_id, search, show_all, show_only, template_id)
@@ -39,38 +44,83 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
             if show_only # just the past
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive 
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 end
               else # any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+                  end
                 end
               end
             else #not just the past
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", template_id]
+                  end
                 else #include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", template_id]
+                  end
                 end
               else # any template
                 if archive_only #only archive
@@ -89,49 +139,109 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
             if show_only # just the past
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 end
               else # any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use < ?', channel_id, "%#{search}%", current_time]
+                  end
                 end
               end
             else # just the future
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, "%#{search}%", current_time, template_id]
+                  end
                 end
               else # any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = true', channel_id, "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND archive = false', channel_id, "%#{search}%", current_time]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ? AND first_use <= ? AND last_use >= ?', channel_id, "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['channel_id = ? AND name LIKE ? AND last_use >= ?', channel_id, "%#{search}%", current_time]
+                  end
                 end
               end
             end
@@ -161,49 +271,109 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
             if show_only # just the past
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  end
                 end
               else #any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND archive = true', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = true', "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND archive = false', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = false', "%#{search}%", current_time]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+                  end
                 end
               end
             else #not just the past
               if template_id #specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", template_id]
+                  end
                 else  #include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND dynamic_special_template_id = ?', "%#{search}%", template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', "%#{search}%", template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND dynamic_special_template_id = ?', "%#{search}%", template_id]
+                  end
                 end
               else #any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND archive = true', "%#{search}%"]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND archive = true', "%#{search}%"]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND archive = false', "%#{search}%"]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND archive = false', "%#{search}%"]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ?', "%#{search}%"]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND first_use <= ? AND last_use >= ?', "%#{search}%", use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ?', "%#{search}%"]
+                  end
                 end
               end
             end
@@ -211,49 +381,109 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
             if show_only # just the past
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  end
                 end
               else #any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND archive = true', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = true', "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ? AND archive = false', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND archive = false', "%#{search}%", current_time]
+                  end
                 else #include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use < ?', "%#{search}%", current_time]
+                  end
                 end
               end
             else # just the future
               if template_id # specific template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true', "%#{search}%", current_time, template_id]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false', "%#{search}%", current_time, template_id]
+                  end
                 else # include archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, template_id, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND dynamic_special_template_id = ?', "%#{search}%", current_time, template_id]
+                  end
                 end
               else #any template
                 if archive_only #only archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ? AND archive = true', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND archive = true AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND archive = true', "%#{search}%", current_time]
+                  end
                 elsif hide_archive #filter on archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ? AND archive = false', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND archive = false AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND archive = false', "%#{search}%", current_time]
+                  end
                 else # inclyde archive
-                  paginate  :all, :per_page => PER_PAGE , :page => page, 
-                            :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+                  if use_date_time
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ? AND first_use <= ? AND last_use >= ?', "%#{search}%", current_time, use_date_time, use_date_time]
+                  else
+                    paginate  :all, :per_page => PER_PAGE , :page => page, 
+                              :conditions => ['name LIKE ? AND last_use >= ?', "%#{search}%", current_time]
+                  end
                 end
               end
             end

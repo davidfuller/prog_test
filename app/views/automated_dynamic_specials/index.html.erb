@@ -3,10 +3,11 @@
 <% end %>
 
 <% show_delete = params[:show_only] == '1' %>
+<%= calendar_date_select_includes "custom", :locale=>'uk' %> 
 
 <fieldset>
 	<legend>Automated Dynamic Specials</legend>
-		<% form_tag automated_dynamic_specials_path, :method =>'get' do %>
+		<% form_tag automated_dynamic_specials_path, :method =>'get', :id => 'search-form' do %>
 			<p>
 				<%= text_field_tag :search, params[:search], :size => 45 %>
 				<%= submit_tag "Search", :name => nil %>
@@ -17,6 +18,9 @@
 							            						params[:channel]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td>
               <td><%= label_tag :template, 'Template', :id => 'check_label'%> 
               <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td></tr>
+      <tr><td><%= label_tag :tx_date, 'TX date', :id => 'check_label'%>
+        <%= calendar_date_select_tag :tx_date, params[:tx_date], {:month_year => :label, :after_close => 'this.form.submit()'} %>
+        <%= link_to_function 'Clear',  'document.getElementById("tx_date").value = ""; document.getElementById("search-form").submit()'%></td></tr>
       <tr><td><%= label_tag :show_all, "Show all (including past last use)", :id => 'check_label' %>
               <%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
           <td><%= label_tag :show_only, "Show only past last use", :id => 'check_label' %>
