@@ -27,7 +27,7 @@
     <tr>
       <td><%= label_tag :start_date, 'Start Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :start_date, params[:start_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
       <td><%= label_tag :end_date, 'End Date', :class => 'date-time-table' %></td><td><%= calendar_date_select_tag :end_date, params[:end_date], {:month_year => :label, :class => 'date-time-table', :onchange => 'this.form.submit()'} %></td>
-      <td><%= link_to 'Sync to schedule date', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, display_date, display_date, params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids]) %></td>
+      <td><%= link_to 'Sync to schedule date', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, display_date, display_date, params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids], params[:scroll_position]) %></td>
     </tr>
     <tr>
       <td><%= label_tag :start_time, 'Start Time', :class => 'date-time-table' %></td><td><%= text_field_tag :start_time, params[:start_time], :class => 'date-time-table', :onchange => 'this.form.submit()' %></td>
@@ -47,9 +47,9 @@
   </div>
   <span class = 'link_button'>
 	<%= link_to 'Check all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids]) %> | 
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, @ads_all, params[:ads_ids], params[:scroll_position]) %> | 
   <%= link_to 'Uncheck all specials', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids]) %>
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids], params[:scroll_position]) %>
   </span>
   <% if @available.length == 0 %>
     <br/>
@@ -78,7 +78,7 @@
     </tr>
   <% end %>
   </table>
-  
+  <%= hidden_field_tag "scroll_position", @scroll_position, {:id => 'hidden_scroll_position'}%>
 </fieldset>
 
 <% if @notes.present? %>
@@ -86,3 +86,16 @@
 <% end %>
 <% end %>
 </div>
+<script type="text/javascript">
+  window.onload = setMyScroll
+  window.addEventListener("scroll", (event) => {
+    let scroll = this.scrollY;
+    let myHiddenScroll = document.getElementById('hidden_scroll_position');
+    myHiddenScroll.value = scroll;
+  });
+
+  function setMyScroll(){
+    let myHiddenScroll = document.getElementById('hidden_scroll_position');
+    window.scrollTo(0, myHiddenScroll.value);
+  }
+</script>
