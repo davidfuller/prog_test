@@ -11,7 +11,7 @@
   <legend>Available Specials: Random Scheduling</legend>  
   <div class = 'pretend-button'>
     <%= link_to 'Special Scheduling', special_schedule_with_date(display_date, params[:channel], params[:show], params[:template], params[:part], params[:search]) %>
-    <%= link_to 'Scheduling by Part', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)%>
+    <%= link_to 'Scheduling by Part', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)%>
   </div>
   <p>
     <%= text_field_tag :search, params[:search], :size => 45 %>

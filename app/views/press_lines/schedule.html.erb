@@ -57,7 +57,7 @@
 <fieldset class = 'available-specials'>
   <legend>Available Specials</legend>  
   <div class = 'pretend-button'>
-    <%= link_to 'Scheduling by Part', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)%>
+    <%= link_to 'Scheduling by Part', special_part_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)%>
     <%= link_to 'Random Scheduling', special_random_with_date(display_date, params[:channel], params[:show], params[:template], params[:search], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil) %>
   </div>
   <p>
@@ -91,6 +91,20 @@
     </tr>
   <% end %>
   </table>
+  <%= hidden_field_tag "scroll_position", @scroll_position, {:id => 'hidden_scroll_position'}%>
 </fieldset>
 <% end %>
 </div>
+<script type="text/javascript">
+  window.onload = setMyScroll
+  window.addEventListener("scroll", (event) => {
+    let scroll = this.scrollY;
+    let myHiddenScroll = document.getElementById('hidden_scroll_position');
+    myHiddenScroll.value = scroll;
+  });
+
+  function setMyScroll(){
+    let myHiddenScroll = document.getElementById('hidden_scroll_position');
+    window.scrollTo(0, myHiddenScroll.value);
+  }
+</script>
