@@ -22,11 +22,11 @@
       <%= link_to 'Sync to start date', special_random_with_date(params[:start_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, nil, nil, nil, nil, nil, nil, nil, @ads_available, params[:priority_ids], params[:ads_ids])%>
     <% elsif source == 'part' %>
       <%= link_to 'Previous day', special_part_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids]) %> |
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids], params[:scroll_position]) %> |
       <%= link_to 'Next day', special_part_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids]) %> |
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids], params[:scroll_position]) %> |
       <%= link_to 'Sync to start date', special_part_with_date(params[:start_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], 
-                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids]) %>
+                      params[:end_date], params[:start_time], params[:end_time], params[:replace], nil, params[:automated_dynamic_special_ids], params[:ads_ids], params[:scroll_position]) %>
     <% else %>
       <%= link_to 'Previous day', special_schedule_with_date(previous_day(display_date), params[:channel], params[:show], params[:template], params[:part], params[:search]) %> | 
       <%= link_to 'Next day', special_schedule_with_date(next_day(display_date), params[:channel], params[:show], params[:template], params[:part], params[:search]) %> <br/>
