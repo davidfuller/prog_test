@@ -29,4 +29,9 @@ module PressLinesHelper
       monday = the_date - (the_date.wday - 1).days
     end
   end
+
+  def next_monday(date)
+    (monday_this_week_as_time(date) + 7.days).to_s(:broadcast_date_full_month)
+  end
+  
 end
