@@ -16,7 +16,7 @@
 		</div> 
 		<div id="columns">
 			<div id="side">
-				<p>Version 3.7 LIVE</p>
+				<p>Version 3.8 LIVE</p>
         <%= link_to 'Home', root_url%><br /> 
 				
 				<h4>Titles Database</h4>
@@ -43,7 +43,10 @@
           <%= link_to 'Automated Dynamic Specials', automated_dynamic_specials_path %><br/>
           <%= link_to 'ADS Report', report_automated_dynamic_specials_path %><br/>
           <%= link_to 'Recent Special Preview', recent_media_files_path %><br/>
-          <%= link_to 'Specials Schedule', special_schedule_with_date(Time.new.to_s(:broadcast_date_full_month), "Puls", SpecialScheduleSetting.default_schedule_filter, "All", nil, nil) %><br/>
+          <% parts_start_date = PressLinesController.helpers.next_monday(Time.new.to_s(:broadcast_date_full_month))
+             parts_end_date = PressLinesController.helpers.one_week(parts_start_date) %>
+          <%= link_to 'Special Schedule', special_part_with_date(parts_start_date, "Puls", SpecialScheduleSetting.default_schedule_filter, "All", nil, nil, nil, nil, parts_start_date, parts_end_date, 
+                                                    SpecialScheduleSetting.part_random_start_time, SpecialScheduleSetting.part_random_end_time, nil, nil, nil, nil, nil)%><br/>
           <%= link_to 'Special Placements', placing_automated_dynamic_specials_path %><br/>
           <%= link_to 'Dynamic Special Media', dynamic_special_medias_path %><br/>
           <%= link_to 'Dynamic Special Logos', dynamic_special_logos_path %><br/>
