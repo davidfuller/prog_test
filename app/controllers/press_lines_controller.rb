@@ -221,10 +221,11 @@ class PressLinesController < ApplicationController
     @filter_display = SpecialScheduleSetting.schedule_filter_labels
     @parts = Part.parts_display
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
-    params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
+    #params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
     @available = AutomatedDynamicSpecial.available_for_schedule(params, false, false, false)
     @templates = DynamicSpecialTemplate.template_display_with_all
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
+    @scroll_position = params[:scroll_position]
   end
 
   def schedule_for_xml
@@ -258,7 +259,7 @@ class PressLinesController < ApplicationController
     special_schedule_log_id = SpecialScheduleLog.add_note(params, notes)
     short_message = messages[:short_message]
     redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], short_message, special_schedule_log_id, params[:start_date], params[:end_date], 
-                                            params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids])
+                                            params[:start_time], params[:end_time], params[:replace], nil, nil, params[:ads_ids], params[:scroll_position])
   end
 
   def random_for_html
@@ -331,6 +332,8 @@ class PressLinesController < ApplicationController
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
     @part_message = PressLine.part_generate_message(params)
     @notes = params[:notes]
+
+    @scroll_position = params[:scroll_position]
     
     if params[:short_message] && params[:notice].nil?
       flash[:notice] = params[:short_message]
@@ -433,7 +436,7 @@ class PressLinesController < ApplicationController
                                                 params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids])
         elsif params[:source] == 'part'
           redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-            params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids])
+            params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids], params[:scroll_position])
         else
           redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show], :template => params[:template],
                                                   :search => params[:search])
@@ -453,7 +456,7 @@ class PressLinesController < ApplicationController
             params[:start_time], params[:end_time], params[:minimum_gap], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:priority_ids], params[:ads_ids])
           elsif params[:source] == 'part'
             redirect_to special_part_with_date(params[:priority_date], params[:channel], params[:show], params[:template], params[:search], params[:part_ids], nil, nil, params[:start_date], params[:end_date], 
-              params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids])
+              params[:start_time], params[:end_time], params[:replace], flash[:notice], params[:automated_dynamic_special_ids], params[:ads_ids], params[:scroll_position])
           else
           redirect_to schedule_press_lines_path(:priority_date => params[:priority_date], :channel => params[:channel], :programme => params[:programme], :part => params[:part_id], :show => params[:show], :template => params[:template],
             :search => params[:search])
