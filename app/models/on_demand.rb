@@ -418,26 +418,53 @@ class OnDemand < ActiveRecord::Base
           else
             current = self.updatable(od)
             if current
+              do_not_save_current = false
               logger.debug "Updatable"
               logger.debug od.name
               current_start = current.start_date
               current_end = current.end_date
               current_promo_id = current.promo_id
-              current.update_attributes(od.attributes)
-              current.promo_id = current_promo_id
-              if current_start < current.start_date
-                current.start_date = current_start
-              elsif current_start > current.start_date
-                message += od.name + " has had it's start date changed from: " + current_start.to_s(:broadcast_date) + " to " + current.start_date.to_s(:broadcast_date) + ". "
+              date_diff = current_end - od.start_date
+              if date_diff >= 0.0
+                logger.debug "Concurrent or overlap. Do not change start date"
+                change_start_date = false
+              else
+                diff_to_now = Time.new - current_end
+                if diff_to_now >= 0.0
+                  logger.debug "Not current so we should change the start date"
+                  change_start_date = true
+                else
+                  logger.debug "Currently running but with a gap. So we should create new record"
+                  od.promo_id = current_promo_id
+                  if od.save
+                    logger.debug "Saved"
+                    result = :saved
+                  else
+                    logger.debug "Not saved"
+                    result = :not_saved
+                  end
+                  do_not_save_current = true
+                end
               end
-              if current_end > current.end_date
-                current.end_date = current_end
-              elsif current_end < current.end_date
-                message += od.name + " has had it's end date changed from: " + current_end.to_s(:broadcast_date) + " to " + current.end_date.to_s(:broadcast_date) + ". "
+              if !do_not_save_current
+                current.update_attributes(od.attributes)
+                current.promo_id = current_promo_id
+                if (current_start < current.start_date) && !change_start_date
+                  current.start_date = current_start
+                  logger.debug "Start date kept"
+                elsif (current_start > current.start_date) || change_start_date
+                  message += od.name + " has had it's start date changed from: " + current_start.to_s(:broadcast_date) + " to " + current.start_date.to_s(:broadcast_date) + ". "
+                  logger.debug "Start date changed to new value"
+                end
+                if current_end > current.end_date
+                  current.end_date = current_end
+                elsif current_end < current.end_date
+                  message += od.name + " has had it's end date changed from: " + current_end.to_s(:broadcast_date) + " to " + current.end_date.to_s(:broadcast_date) + ". "
+                end
+                current.save
+                od = current
+                result = :updated
               end
-              current.save
-              od = current
-              result = :updated
             else
               if od.save
                 result = :saved
