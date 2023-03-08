@@ -330,9 +330,10 @@ class ApplicationController < ActionController::Base
       :priority_ids => priority_ids, :ads_ids => ads_ids}
   end
 
-  def special_part_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes, start_date, end_date, start_time, end_time, replace, notice, automated_dynamic_special_ids, ads_ids)
+  def special_part_with_date(priority_date, channel, show, template, search, part_ids, short_message, notes, start_date, end_date, start_time, end_time, replace, notice, automated_dynamic_special_ids, ads_ids, scroll_position)
     {:controller => :press_lines, :action => :part, :priority_date => priority_date, :channel => channel, :show => show, :template => template, :search => search, :part_ids => part_ids, :short_message => short_message, :notes => notes,
-      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :replace => replace, :notice => notice, :automated_dynamic_special_ids => automated_dynamic_special_ids, :ads_ids => ads_ids}
+      :start_date => start_date, :end_date => end_date, :start_time => start_time, :end_time => end_time, :replace => replace, :notice => notice, :automated_dynamic_special_ids => automated_dynamic_special_ids, :ads_ids => ads_ids, 
+      :scroll_position => scroll_position}
   end
 
   def special_random_generate(priority_date, channel, show, template, search, part_ids, start_date, end_date, start_time, end_time, minimum_gap, replace, automated_dynamic_special_ids, priority_ids, ads_ids)
