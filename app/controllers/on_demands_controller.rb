@@ -46,7 +46,7 @@ class OnDemandsController < ApplicationController
     if params[:search].nil?
       params[:search] = @on_demand.title unless @on_demand.nil?
     end
-    @promos = Promo.search(params[:search], params[:page])
+    @promos = Promo.search_portrait(params[:search], params[:page])
   end
 
   # POST /on_demands
