@@ -698,7 +698,6 @@ fieldset.report{
 
 #special-schedule{
   width: 80%;
-  max-height: 50%;
   overflow-y: auto;
   margin-top: 10px;
   border-color: #00367C;
@@ -708,7 +707,6 @@ fieldset.report{
 }
 
 fieldset.available-specials{
-  max-height: 50%;
   overflow-y: auto;
 }
 
