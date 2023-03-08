@@ -1271,9 +1271,11 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
 
   def self.parts_hash(ids, parts)
     results = []
-    if ids.present? && ids.length > 0
-      ids.each_with_index do |id, index|
-        results << {:id => id, :part => parts[index]}
+    if parts.present?
+      if ids.present? && ids.length > 0
+        ids.each_with_index do |id, index|
+          results << {:id => id, :part => parts[index]}
+        end
       end
     end
     results
