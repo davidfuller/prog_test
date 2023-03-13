@@ -3,6 +3,7 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
   belongs_to :channel
   belongs_to :dynamic_special_template
   belongs_to :special_preview
+  belongs_to :sports_ipp
   has_many :automated_dynamic_special_fields, :dependent => :destroy
   has_many :press_line_automated_dynamic_special_join
 
@@ -1008,7 +1009,31 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
       :not_requested
     end
   end
-  
+
+  def sports_ipp_status
+    if sports_ipp
+      media_status = ''
+      preview_status = ''
+      if sports_ipp.sports_ipp_media && sports_ipp.sports_ipp_media.sports_ipp_status
+        media_status = sports_ipp.sports_ipp_media.sports_ipp_status.message
+      end
+      if sports_ipp.media_file && sports_ipp.media_file.status
+        preview_status = sports_ipp.media_file.status.message
+      end
+      if (media_status == 'Ready') && (preview_status == 'Ready')
+        :available
+      elsif preview_status == 'Ready'
+        :preview_available
+      elsif media_status == 'Ready'
+        :media_available
+      else
+        :requested
+      end
+    else
+      :not_requested
+    end
+  end
+
   def self.xml_data(channel)
     channel_id = Channel.find_by_name(channel)
     if channel_id
