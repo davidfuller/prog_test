@@ -4,8 +4,8 @@ class MediaFolder < ActiveRecord::Base
   belongs_to :aspect
   has_many :media_files
   has_many :dynamic_special_image_specs
-  
-  
+  has_many :sports_ipp_medias
+    
   def self.find_by_name_and_channel(name, channel)
     
     find( :first, 
