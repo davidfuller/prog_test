@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :sports_ipps
+
+  map.resources :sports_ipp_medias
+
+  map.resources :sports_ipp_statuses
+
   map.resources :special_schedule_logs
 
   map.resources :parts

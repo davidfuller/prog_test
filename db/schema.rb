@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20221028150908) do
+ActiveRecord::Schema.define(:version => 20230310174749) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20221028150908) do
     t.boolean  "archive"
     t.integer  "offset"
     t.datetime "first_use"
+    t.integer  "sports_ipp_id"
   end
 
   create_table "bugs", :force => true do |t|
@@ -686,6 +687,30 @@ ActiveRecord::Schema.define(:version => 20221028150908) do
     t.datetime "start"
     t.integer  "press_filename_id"
     t.integer  "join_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sports_ipp_medias", :force => true do |t|
+    t.string   "filename"
+    t.integer  "sports_ipp_status_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "media_folder_id"
+    t.string   "original_filename"
+  end
+
+  create_table "sports_ipp_statuses", :force => true do |t|
+    t.integer  "position"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sports_ipps", :force => true do |t|
+    t.string   "name"
+    t.integer  "media_file_id"
+    t.integer  "sports_ipp_media_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
