@@ -68,6 +68,26 @@
   | <%= link_to 'Remove special preview', special_preview_path(@automated_dynamic_special.special_preview, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
 <% end %>
 
+<% if @automated_dynamic_special.sports_ipp_status == :not_requested %>
+  | <%= link_to 'Request Sports IPP',  :controller => :sports_ipps, :action => :create_from_automated_dynamic_special, 
+                                          :id => @automated_dynamic_special, :automated_dynamic_special_id => @automated_dynamic_special.id, 
+                                          :index_params => @index_params %>
+<% elsif @automated_dynamic_special.sports_ipp_status == :requested %>
+  <h2>Sports IPP</h2>
+  The preview has been requested. It will appear here within a few hours.<br/>
+  <%= link_to 'Remove request', sports_ipp_path(@automated_dynamic_special.sports_ipp, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
+<% elsif @automated_dynamic_special.sports_ipp_status == :preview_available %>
+  <h2>Sports IPP</h2>
+  <b>Preview available.</b>
+  <% if @automated_dynamic_special.sports_ipp && @automated_dynamic_special.sports_ipp.sports_ipp_media && @automated_dynamic_special.sports_ipp.sports_ipp_media.sports_ipp_status %>
+    <b>  Media: </b>
+    <%= @automated_dynamic_special.sports_ipp.sports_ipp_media.sports_ipp_status.message %><br/>
+  <% else %>
+    <b> Media unavailable </b><br/>
+  <% end %>
+  <%= render :partial => 'sports_ipp', :locals => {:media_file => @automated_dynamic_special.sports_ipp.media_file } %>
+  | <%= link_to 'Remove Sports IPP', sports_ipp_path(@automated_dynamic_special.sports_ipp, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
+<% end %>
 
 
 <%= render :partial => 'demo', :locals => {:dynamic_special_template => @automated_dynamic_special.dynamic_special_template, :message => ''} %>
