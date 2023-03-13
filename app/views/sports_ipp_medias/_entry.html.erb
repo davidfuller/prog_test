@@ -1,0 +1,9 @@
+<p>
+    <%= f.label :filename %><br />
+    <%= f.text_field :filename %>
+  </p>
+  <p>
+    <%= f.label :status_id %><br />
+    <%= f.collection_select (:sports_ipp_status_id, @statuses, :id, :message, :prompt => 'Select status')   %>
+  </p>
+  

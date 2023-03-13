@@ -1,0 +1,17 @@
+
+<% if media_file %>
+  <% if media_file.media_type %>
+    <% if media_file.media_type.name == 'Sports IPP Preview' %>
+      <% if media_file.jpeg_exist? %>
+        <% if media_file.mp4_exist? %>
+            <%= link_to image_tag(media_file.jpeg_url, :size => "640x360"), media_file.clip_mp4_url %><br/>
+            <%= link_to 'Play Video', media_file.clip_mp4_url %>
+        <% else %>	  	
+          <% if media_file.jpeg_exist? %>
+            <%= image_tag (media_file.jpeg_url, :size => "640 x 360") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>		
+  <% end %>
+<% end %>

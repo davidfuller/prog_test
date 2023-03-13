@@ -1,0 +1,23 @@
+<h1>New sports_ipp</h1>
+
+<% form_for(@sports_ipp) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :media_file_id %><br />
+    <%= f.text_field :media_file_id %>
+  </p>
+  <p>
+    <%= f.label :sports_ipp_media_id %><br />
+    <%= f.text_field :sports_ipp_media_id %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', sports_ipps_path %>

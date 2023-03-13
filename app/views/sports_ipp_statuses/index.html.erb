@@ -1,0 +1,22 @@
+<h1>Listing Sports IPP Status Message</h1>
+
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Message</th>
+  </tr>
+
+<% @sports_ipp_statuses.each do |sports_ipp_status| %>
+  <tr>
+    <td><%=h sports_ipp_status.position %></td>
+    <td><%=h sports_ipp_status.message %></td>
+    <td><%= link_to 'Show', sports_ipp_status %></td>
+    <td><%= link_to 'Edit', edit_sports_ipp_status_path(sports_ipp_status) %></td>
+    <td><%= link_to 'Destroy', sports_ipp_status, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sports IPP Status Message', new_sports_ipp_status_path %>

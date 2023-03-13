@@ -1,0 +1,20 @@
+<h1>Editing sports_ipp_status</h1>
+
+<% form_for(@sports_ipp_status) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :order %><br />
+    <%= f.text_field :order %>
+  </p>
+  <p>
+    <%= f.label :message %><br />
+    <%= f.text_field :message %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @sports_ipp_status %> |
+<%= link_to 'Back', sports_ipp_statuses_path %>

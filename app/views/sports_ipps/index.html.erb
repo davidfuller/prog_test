@@ -1,0 +1,38 @@
+<% content_for(:title) do%>
+	Sports IPPs: MuVi2 Database
+<% end %>
+<h1>Listing Sports IPPs</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Image</th>
+    <th>Media</th>
+    <th>Status</th>
+  </tr>
+
+<% @sports_ipps.each do |sports_ipp| %>
+  <tr>
+    <td><b><%= link_to(h(sports_ipp.name), sports_ipp) %></b></td>
+    <% if sports_ipp.media_file && sports_ipp.media_file.jpeg_exist? %>
+      <td><%= link_to image_tag(sports_ipp.media_file.jpeg_url, :size => "160x90"), sports_ipp %></td>
+    <% else %>
+      <td>Media not loaded</td>
+    <% end %>
+    <% if sports_ipp.sports_ipp_media%>
+      <td><%=h sports_ipp.sports_ipp_media.filename %></td>
+      <td><%=h sports_ipp.sports_ipp_media.sports_ipp_status.message if sports_ipp.sports_ipp_media.sports_ipp_status.present? %></td>
+    <% else %>
+      <td></td>
+      <td></td>
+    <% end %>
+    <td><%= link_to 'Show', sports_ipp %></td>
+    <td><%= link_to 'Edit', edit_sports_ipp_path(sports_ipp) %></td>
+    <td><%= link_to 'Destroy', sports_ipp, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sports IPP', new_sports_ipp_path %>

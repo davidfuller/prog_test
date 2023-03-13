@@ -1,0 +1,2 @@
+module SportsIppStatusesHelper
+end

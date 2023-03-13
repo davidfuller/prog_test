@@ -1,0 +1,13 @@
+<p>
+  <b>Filename:</b>
+  <%=h @sports_ipp_media.filename %>
+</p>
+
+<p>
+  <b>Sports IPP Status:</b>
+  <%=h @sports_ipp_media.sports_ipp_status.message if @sports_ipp_media.sports_ipp_status.present? %>
+</p>
+
+
+<%= link_to 'Edit', edit_sports_ipp_media_path(@sports_ipp_media) %> |
+<%= link_to 'Back', :back %>

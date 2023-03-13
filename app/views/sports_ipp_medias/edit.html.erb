@@ -1,0 +1,12 @@
+<h1>Editing sports_ipp_media</h1>
+
+<% form_for(@sports_ipp_media) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'entry', :locals	=> {:f => f } %>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @sports_ipp_media %> |
+<%= link_to 'Back', :back %>

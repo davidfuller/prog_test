@@ -1,0 +1,22 @@
+<h1>Listing Sports IPP Media</h1>
+
+<table>
+  <tr>
+    <th>Filename</th>
+    <th>Status</th>
+  </tr>
+
+<% @sports_ipp_medias.each do |sports_ipp_media| %>
+  <tr>
+    <td><%=h sports_ipp_media.filename %></td>
+    <td><%=h sports_ipp_media.sports_ipp_status.message if sports_ipp_media.sports_ipp_status.present? %></td>
+    <td><%= link_to 'Show', sports_ipp_media %></td>
+    <td><%= link_to 'Edit', edit_sports_ipp_media_path(sports_ipp_media) %></td>
+    <td><%= link_to 'Destroy', sports_ipp_media, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sports IPP Media', new_sports_ipp_media_path %>
