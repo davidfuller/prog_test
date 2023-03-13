@@ -7,6 +7,7 @@ class MediaFile < ActiveRecord::Base
   belongs_to :status
   has_one :trailer
   has_one :special_preview
+  has_one :sports_ipp
   has_one :dynamic_special_media
   
   default_scope :order => 'first_use, media_type_id, filename'
@@ -445,7 +446,7 @@ class MediaFile < ActiveRecord::Base
           media.issue = true
           do_it = false
         end
-      when 'Special Preview'
+      when 'Special Preview', 'Sports IPP Preview'
         case upload_file.content_type 
         when 'video/quicktime'
           dest_filename = media.quicktime_filename
@@ -514,7 +515,7 @@ class MediaFile < ActiveRecord::Base
             when 'application/octet-stream'
               wd_copy(media.original_filename, filename)
             end
-          when 'Special Preview'
+          when 'Special Preview', 'Sports IPP Preview'
             media.first_use = Time.current
             media.last_use = Time.current + 3.months
           end
@@ -632,7 +633,7 @@ def self.wd_copy(original_filename, filename)
   
   def clip_mp4_url
     case media_type.name
-    when 'Special Preview'
+    when 'Special Preview', 'Sports IPP Preview'
       clip_special_proxy_path + mp4_filename
     else
       clip_quicktime_proxy_path + mp4_filename
@@ -659,7 +660,7 @@ def self.wd_copy(original_filename, filename)
       still_jpeg_url
     when 'Trailer ECP'
       clip_jpeg_url
-    when 'Special Preview'
+    when 'Special Preview', 'Sports IPP Preview'
       clip_special_jpeg_url
     when 'Special Media'
       dynamic_special_proxy_jpeg_url
@@ -680,7 +681,7 @@ def self.wd_copy(original_filename, filename)
       File.exist?(still_jpeg_proxy_folder.join(jpeg_filename))
     when 'Trailer ECP'
       File.exist?(clip_jpeg_proxy_folder.join(jpeg_filename))
-    when 'Special Preview'
+    when 'Special Preview', 'Sports IPP Preview'
       File.exist?(clip_special_jpeg_proxy_folder.join(jpeg_filename))
     when 'Special Media'
       dsp_folder = dynamic_special_proxy_folder
@@ -716,7 +717,7 @@ def self.wd_copy(original_filename, filename)
     case media_type.name
     when 'Promo Clip', 'Promo Clip Audio', 'Trailer ECP'
       File.exist?(clip_quicktime_proxy_folder.join(mp4_filename))
-    when 'Special Preview'
+    when 'Special Preview', 'Sports IPP Preview'
       File.exist?(clip_special_quicktime_proxy_folder.join(mp4_filename))
     else
       false
@@ -1234,4 +1235,48 @@ def self.wd_copy(original_filename, filename)
     portrait = MediaType.find_by_name('Portrait Still')
     media_type_id != portrait.id
   end
+
+  def self.find_sports_ipp_previews(filename)
+    sports_ipp_preview_type = MediaType.find_by_name('Sports IPP Preview')
+    find :all, :conditions => ['media_type_id = ? AND filename = ?', sports_ipp_preview_type.id, filename ]
+  end
+
+  def deal_with_sports_ipp_status
+    sports_ipp_preview_type = MediaType.find_by_name('Sports IPP Preview')
+    ready_status = Status.find_by_message('Ready')
+    preview_ready_status = SportsIppStatus.find_by_message('Preview Ready')
+    sports_ipp_ready_status = SportsIppStatus.find_by_message('Ready')
+    logger.debug "In deal_with_sports_ipp_status"
+    if status == ready_status && media_type == sports_ipp_preview_type
+      logger.debug "In deal_with_sports_ipp_status - it's ready and it's a sports ipp"
+      if sports_ipp && sports_ipp.sports_ipp_media && sports_ipp.sports_ipp_media.sports_ipp_status
+        if sports_ipp.sports_ipp_media.sports_ipp_status.message == "Not Loaded"
+          the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
+          logger.debug "In deal_with_sports_ipp_status - I should have the_media:"
+          logger.debug the_media.id.to_s
+          the_media.sports_ipp_status_id = preview_ready_status.id
+          if the_media.save
+            logger.debug "In deal_with_sports_ipp_status - saved preview ready"
+          else
+            logger.debug "In deal_with_sports_ipp_status - NOT NOT saved preview ready"
+          end
+        elsif sports_ipp.sports_ipp_media.sports_ipp_status.message == "Package Ready"
+          the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
+          logger.debug "In deal_with_sports_ipp_status - I should have the_media:"
+          logger.debug the_media.id.to_s
+          the_media.sports_ipp_status_id = sports_ipp_ready_status.id
+          if the_media.save
+            logger.debug "In deal_with_sports_ipp_status - saved sports ipp ready"
+          else
+            logger.debug "In deal_with_sports_ipp_status - NOT NOT saved sports ipp ready"
+          end
+        end
+      else
+        logger.debug "In deal_with_sports_ipp_status - doesn't have media or status"
+      end
+    else
+      logger.debug "In deal_with_sports_ipp_status - it's either not ready or it's not a sports ipp"
+    end
+  end
+
 end
