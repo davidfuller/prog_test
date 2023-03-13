@@ -63,6 +63,8 @@
 					<%= link_to 'Media Folders', media_folders_path %><br/>
           <%= link_to 'Trailer Import Files', trailer_files_path %><br/>
           <%= link_to 'Diva Data', diva_datas_path %><br/>
+          <%= link_to 'Sports IPPs', sports_ipps_path %><br/>
+          <%= link_to 'Sports IPP Media', sports_ipp_medias_path %><br/>
           <br/>
 				<div class = "my-header"><h4>Settings</h4>
           <span><div id = 'show-settings'><%= link_to_function ('Show') {|page| page['the-settings'].toggle(); page['show-settings'].toggle; page['hide-settings'].toggle}%></div>
@@ -92,6 +94,7 @@
             <%= link_to 'Viaplay Scheduling Messages', on_demand_schedulings_path %><br/>
             <%= link_to 'Clipsource EIDR Replacements', clipsources_path %><br/>
             <%= link_to 'Generate Status Settings', generate_status_settings_path %><br/>
+            <%= link_to 'Sports IPP Status Messages', sports_ipp_statuses_path %> 
             
           </div><br/>
         <div class = "my-header"><h4>ADS Settings</h4>
