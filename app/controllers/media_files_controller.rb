@@ -111,6 +111,7 @@ class MediaFilesController < ApplicationController
 
     respond_to do |format|
       if @media_file.update_attributes(params[:media_file])
+        @media_file.deal_with_sports_ipp_status
         flash[:notice] = 'Media File was successfully updated.'
 
         if @media_file.source == 'promo'
