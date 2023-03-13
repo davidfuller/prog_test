@@ -1,6 +1,6 @@
 <% if media_file%>
   <% if media_file.media_type %>
-    <% if media_file.media_type.name == 'Promo Clip Audio' || media_file.media_type.name == 'Promo Clip' || media_file.media_type.name == 'Trailer ECP' || media_file.media_type.name == 'Special Preview' %>
+    <% if media_file.media_type.name == 'Promo Clip Audio' || media_file.media_type.name == 'Promo Clip' || media_file.media_type.name == 'Trailer ECP' || media_file.media_type.name == 'Special Preview'|| media_file.media_type.name == 'Sports IPP Preview' %>
       <% if media_file.jpeg_exist? %>
         <% if media_file.mp4_exist? %>
             <%= link_to image_tag(media_file.jpeg_url, :size => "640x360"), media_file.clip_mp4_url %><br/>
