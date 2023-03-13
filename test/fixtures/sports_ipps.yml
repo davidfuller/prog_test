@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  media_file_id: 1
+  sports_ipp_media_id: 1
+
+two:
+  name: MyString
+  media_file_id: 1
+  sports_ipp_media_id: 1
