@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :sports_ipps
+  map.resources :sports_ipps, :collection => { :recent => :get }
 
   map.resources :sports_ipp_medias
 
