@@ -1208,7 +1208,8 @@ def self.wd_copy(original_filename, filename)
   end
 
   def self.recent_special_previews(params)
-    type = MediaType.find_by_name('Special Preview')
+    type_special_preview = MediaType.find_by_name('Special Preview')
+    type_sports_ipp_preview = MediaType.find_by_name('Sports IPP Preview')
     if params[:not_loaded]
       status = Status.find_by_message("Not loaded")
       position = params[:pos].to_i
@@ -1216,10 +1217,10 @@ def self.wd_copy(original_filename, filename)
         position = 1
       end
       paginate  :per_page => 1, :page => position,
-                :conditions => ['media_type_id = ? AND status_id = ?', type.id, status.id], :order => 'created_at DESC'
+                :conditions => ['(media_type_id = ? OR media_type_id = ?) AND status_id = ?', type_special_preview.id, type_sports_ipp_preview, status.id], :order => 'created_at DESC'
     else
       paginate  :per_page => 5, :page =>params[:page],
-                :conditions => ['media_type_id = ?', type.id], :order => 'created_at DESC'
+                :conditions => ['media_type_id = ?', type_special_preview.id], :order => 'created_at DESC'
     end
   end 
 
@@ -1246,36 +1247,16 @@ def self.wd_copy(original_filename, filename)
     ready_status = Status.find_by_message('Ready')
     preview_ready_status = SportsIppStatus.find_by_message('Preview Ready')
     sports_ipp_ready_status = SportsIppStatus.find_by_message('Ready')
-    logger.debug "In deal_with_sports_ipp_status"
     if status == ready_status && media_type == sports_ipp_preview_type
-      logger.debug "In deal_with_sports_ipp_status - it's ready and it's a sports ipp"
       if sports_ipp && sports_ipp.sports_ipp_media && sports_ipp.sports_ipp_media.sports_ipp_status
         if sports_ipp.sports_ipp_media.sports_ipp_status.message == "Not Loaded"
           the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
-          logger.debug "In deal_with_sports_ipp_status - I should have the_media:"
-          logger.debug the_media.id.to_s
           the_media.sports_ipp_status_id = preview_ready_status.id
-          if the_media.save
-            logger.debug "In deal_with_sports_ipp_status - saved preview ready"
-          else
-            logger.debug "In deal_with_sports_ipp_status - NOT NOT saved preview ready"
-          end
         elsif sports_ipp.sports_ipp_media.sports_ipp_status.message == "Package Ready"
           the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
-          logger.debug "In deal_with_sports_ipp_status - I should have the_media:"
-          logger.debug the_media.id.to_s
           the_media.sports_ipp_status_id = sports_ipp_ready_status.id
-          if the_media.save
-            logger.debug "In deal_with_sports_ipp_status - saved sports ipp ready"
-          else
-            logger.debug "In deal_with_sports_ipp_status - NOT NOT saved sports ipp ready"
-          end
         end
-      else
-        logger.debug "In deal_with_sports_ipp_status - doesn't have media or status"
       end
-    else
-      logger.debug "In deal_with_sports_ipp_status - it's either not ready or it's not a sports ipp"
     end
   end
 
