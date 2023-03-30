@@ -19,8 +19,28 @@ class DynamicSpecialTemplate < ActiveRecord::Base
     end
   end
 
-  def self.template_display_with_all
-    list = find(:all, :select =>:name).map{|m| m.name}
+  def self.all_with_ads_sports_ipp_select(ads, sports_ipp)
+    if ads && sports_ipp
+      find(:all, :conditions => ['ads = ? OR sports_ipp = ?', true, true])
+    elsif ads
+      find(:all, :conditions => ['ads = ?', true], :select =>:name)
+    elsif sports_ipp
+      find(:all, :conditions => ['sports_ipp = ?', true])
+    else
+      find(:all)
+    end
+  end
+  
+  def self.template_display_with_all(ads, sports_ipp)
+    if ads && sports_ipp
+      list = find(:all, :conditions => ['ads = ? OR sports_ipp = ?', true, true], :select =>:name).map{|m| m.name}
+    elsif ads
+      list = find(:all, :conditions => ['ads = ?', true], :select =>:name).map{|m| m.name}
+    elsif sports_ipp
+      list = find(:all, :conditions => ['sports_ipp = ?', true], :select =>:name).map{|m| m.name}
+    else
+      list = []
+    end
     list.unshift('All')
   end
   
