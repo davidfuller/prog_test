@@ -1,0 +1,59 @@
+<% content_for(:title) do%>
+	Recent Sports IPPs: MuVi2 Database
+<% end %>
+
+<h1>Recent Sports IPP</h1>
+<br/>
+
+<%= will_paginate @sports_ipps %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Created</th>
+    <th>Template<th>
+  </tr>
+
+<% @sports_ipps.each do |sports_ipp| %>
+  <tr>
+    <td><b>
+      <% if sports_ipp.media_file %>
+        <% if sports_ipp.media_file.mp4_exist? && sports_ipp.media_file.status_display == 'Ready' %>
+          <%= link_to sports_ipp.name, sports_ipp.media_file.clip_mp4_url %><br/>
+        <% else %>
+          <%=h sports_ipp.name %>
+        <% end %>
+      <% else %>
+        <%=h sports_ipp.name %>
+      <% end %> 
+      </b>
+    </td>
+    <td><%=h sports_ipp.sports_ipp_media.sports_ipp_status.message if sports_ipp.sports_ipp_media.sports_ipp_status.present? %></td>
+    <td><%=h sports_ipp.created_at.to_s(:broadcast_date) %></td>
+    <td><%= h sports_ipp.template_name %></td>
+  </tr>
+  <tr>
+    <td colspan= "3">
+      <% if sports_ipp.media_file.mp4_exist? && sports_ipp.media_file.status_display == 'Ready' %>
+        <%= link_to image_tag(sports_ipp.media_file.jpeg_url, :size => "320x180"), sports_ipp.media_file.clip_mp4_url %><br/>
+        <%= link_to 'Play Video', sports_ipp.media_file.clip_mp4_url %>
+      <% end %>
+      <% if sports_ipp.sports_ipp_media.sports_ipp_status.message == 'Ready' && sports_ipp.sports_ipp_media.download_file_exists? %>
+         | 
+        <%= link_to 'Download file', sports_ipp.sports_ipp_media.download_path %><br/>
+      <% end %>
+    </td>
+    <td><%= link_to 'Show Sports IPP', sports_ipp %><br/>
+        <% if sports_ipp.media_file %>
+          <%= link_to 'Show Media', media_file_path(sports_ipp.media_file, :upload => 'true')%><br/>
+        <% end %>
+        <% if sports_ipp.automated_dynamic_special %>
+          <%= link_to 'Show Special', sports_ipp.automated_dynamic_special %>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @sports_ipps %>
+
+
