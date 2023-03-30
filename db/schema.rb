@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230310174749) do
+ActiveRecord::Schema.define(:version => 20230327100319) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -287,6 +287,8 @@ ActiveRecord::Schema.define(:version => 20230310174749) do
     t.datetime "updated_at"
     t.string   "demo"
     t.string   "help_message"
+    t.boolean  "ads"
+    t.boolean  "sports_ipp"
   end
 
   create_table "dynamic_specials", :force => true do |t|
