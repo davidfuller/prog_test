@@ -8,7 +8,7 @@
             <%= link_to 'Play Video', media_file.clip_mp4_url %>
         <% else %>	  	
           <% if media_file.jpeg_exist? %>
-            <%= image_tag (media_file.jpeg_url, :size => "640 x 360") %>
+            <%= image_tag(media_file.jpeg_url, :size => "640 x 360") %>
           <% end %>
         <% end %>
       <% end %>
