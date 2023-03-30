@@ -67,7 +67,7 @@
           <% field_type = template.dynamic_special_field.dynamic_special_image_spec %>
         <% end %>
       <% end %>
-      <td><%= link_to (image_tag(field.dynamic_special_logo_url, :size => field_type.preview_size), dynamic_special_media_path(field.the_id)) if field.dynamic_special_logo_url %></td>
+      <td><%= link_to(image_tag(field.dynamic_special_logo_url, :size => field_type.preview_size), dynamic_special_media_path(field.the_id)) if field.dynamic_special_logo_url %></td>
       <% if template.fixed %>
         <td>
           <% if field_type.name == 'Switcher'%>
@@ -100,7 +100,7 @@
           <%= link_to_function ('Choose Media') {|page| page['search_media'].toggle} %> | 
           <%= link_to 'New Media',  :controller => :dynamic_special_medias, :action => :create_from_automated_dynamic_special, :id => @automated_dynamic_special, 
                                     :automated_dynamic_special_id => @automated_dynamic_special.id, :field_type_name => promo_field.field_type_name,
-                                    :field_id => promo_field %></div><br/>
+                                    :field_id => promo_field, :index_params => @index_params %></div><br/>
 
         </td>
       <% else %>
