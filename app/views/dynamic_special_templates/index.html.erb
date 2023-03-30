@@ -7,11 +7,10 @@
   <tr>
     <th>Name</th>
     <th>Page 16:9</th>
-    <th>Clear Down 16:9</th>
     <th>Page 4:3</th>
-    <th>Clear Down 4:3</th>
     <th>Duration (s)</th>
-    <th>Num Fields</th>
+    <th>Use ADS</th>
+    <th>Use Sports IPP</th>
     <th>Demo Image</th>
   </tr>
 
@@ -19,15 +18,13 @@
   <tr>
     <td><%=h dynamic_special_template.name %></td>
     <td><%=h dynamic_special_template.page_169 %></td>
-    <td><%=h dynamic_special_template.clear_down_169 %></td>
     <td><%=h dynamic_special_template.page_43 %></td>
-    <td><%=h dynamic_special_template.clear_down_43 %></td>
     <td><%=h dynamic_special_template.duration %></td>
-    <td><%=h dynamic_special_template.template_field_joins.count %></td>
+    <td><%=h dynamic_special_template.ads %></td>
+    <td><%=h dynamic_special_template.sports_ipp %></td>
     <td>
       <%=h dynamic_special_template.help_message %><br/>
       <% if dynamic_special_template.demo %>
-        <%=h dynamic_special_template.demo %><br/>
         <%= image_tag(dynamic_special_template.demo, :size => '210x150') %>
       <% end %> 
     </td>
