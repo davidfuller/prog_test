@@ -87,6 +87,24 @@
   <% end %>
   <%= render :partial => 'sports_ipp', :locals => {:media_file => @automated_dynamic_special.sports_ipp.media_file } %>
   | <%= link_to 'Remove Sports IPP', sports_ipp_path(@automated_dynamic_special.sports_ipp, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
+<% elsif @automated_dynamic_special.sports_ipp_status == :available %>
+  <h2>Sports IPP</h2>
+  <b>Preview available.</b>
+  <% if @automated_dynamic_special.sports_ipp && @automated_dynamic_special.sports_ipp.sports_ipp_media && @automated_dynamic_special.sports_ipp.sports_ipp_media.sports_ipp_status %>
+    <b>  Media: </b>
+    <%= @automated_dynamic_special.sports_ipp.sports_ipp_media.sports_ipp_status.message %>
+    <% if @automated_dynamic_special.sports_ipp.sports_ipp_media.sports_ipp_status.message = 'Ready' && @automated_dynamic_special.sports_ipp.sports_ipp_media.download_file_exists? %>
+      <%= link_to 'Download file', @automated_dynamic_special.sports_ipp.sports_ipp_media.download_path %><br/>
+    <% else %>
+      - Download file missing<br/>
+    <% end %>
+
+  <% else %>
+    <b> Media unavailable </b><br/>
+  <% end %>
+  <%= render :partial => 'sports_ipp', :locals => {:media_file => @automated_dynamic_special.sports_ipp.media_file } %>
+  | <%= link_to 'Remove Sports IPP', sports_ipp_path(@automated_dynamic_special.sports_ipp, :automated_dynamic_special_id => @automated_dynamic_special.id), :confirm => 'Are you sure?', :method => :delete %>
+
 <% end %>
 
 
