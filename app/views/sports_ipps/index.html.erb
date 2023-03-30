@@ -1,12 +1,34 @@
 <% content_for(:title) do%>
 	Sports IPPs: MuVi2 Database
 <% end %>
-<h1>Listing Sports IPPs</h1>
+
+<fieldset>
+	<legend>Sports IPPs</legend>
+		<% form_tag sports_ipps_path, :method =>'get', :id => 'search-form' do %>
+			<p>
+				<%= text_field_tag :search, params[:search], :size => 45 %>
+				<%= submit_tag "Search", :name => nil %>
+			</p>
+    <table>
+      <tr><td><%= label_tag :template, 'Template', :id => 'check_label'%> 
+          <%= select_tag :template, options_for_select(@templates, params[:template]),{:onchange => 'this.form.submit()', :id => 'check_label'}%></td></tr>
+          <td><%= label_tag :show_all, "Show all (including past last use)", :id => 'check_label' %>
+          <%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+          <td><%= label_tag :show_only, "Show only past last use", :id => 'check_label' %>
+              <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+      </tr>
+    </table>
+		<% end %>
+</fieldset>
+
+<br/>
+<%= will_paginate @dynamic_specials %>
+<br/>
 
 <table>
   <tr>
     <th>Name</th>
-    <th>Image</th>
+    <th>Template</th>
     <th>Media</th>
     <th>Status</th>
   </tr>
@@ -14,13 +36,9 @@
 <% @sports_ipps.each do |sports_ipp| %>
   <tr>
     <td><b><%= link_to(h(sports_ipp.name), sports_ipp) %></b></td>
-    <% if sports_ipp.media_file && sports_ipp.media_file.jpeg_exist? %>
-      <td><%= link_to image_tag(sports_ipp.media_file.jpeg_url, :size => "160x90"), sports_ipp %></td>
-    <% else %>
-      <td>Media not loaded</td>
-    <% end %>
+    <td><%= h sports_ipp.template_name %>
     <% if sports_ipp.sports_ipp_media%>
-      <td><%=h sports_ipp.sports_ipp_media.filename %></td>
+      <td><%=h sports_ipp.sports_ipp_media.filename %>
       <td><%=h sports_ipp.sports_ipp_media.sports_ipp_status.message if sports_ipp.sports_ipp_media.sports_ipp_status.present? %></td>
     <% else %>
       <td></td>
@@ -29,6 +47,26 @@
     <td><%= link_to 'Show', sports_ipp %></td>
     <td><%= link_to 'Edit', edit_sports_ipp_path(sports_ipp) %></td>
     <td><%= link_to 'Destroy', sports_ipp, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+  <tr>
+    <td colspan = "2">
+    <% if sports_ipp.media_file && sports_ipp.media_file.jpeg_exist? %>
+      <%= link_to image_tag(sports_ipp.media_file.jpeg_url, :size => "320x180"), sports_ipp %>
+    <% else %>
+      Media not loaded
+    <% end %>
+    </td>
+    <td>
+     <% if sports_ipp.sports_ipp_media.sports_ipp_status.message == 'Ready' && sports_ipp.sports_ipp_media.download_file_exists? %>
+            <%= link_to 'Download file', sports_ipp.sports_ipp_media.download_path %><br/>
+        <% end %>
+        <% if sports_ipp.media_file %>
+          <%= link_to 'Show Media', media_file_path(sports_ipp.media_file, :upload => 'true')%><br/>
+        <% end %>
+        <% if sports_ipp.automated_dynamic_special %>
+          <%= link_to 'Show Special', sports_ipp.automated_dynamic_special %>
+        <% end %>
+    </td>
   </tr>
 <% end %>
 </table>
