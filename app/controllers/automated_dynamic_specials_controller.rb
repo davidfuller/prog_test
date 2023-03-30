@@ -7,7 +7,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
         @automated_dynamic_specials = AutomatedDynamicSpecial.search(params)
         remove_v4 = true
         @channel_display = Channel.display(remove_v4)
-        @templates = DynamicSpecialTemplate.template_display_with_all
+        @templates = DynamicSpecialTemplate.template_display_with_all(true, true) #List of all the templates ads/sports_ipp
       end# index.html.erb
       format.xml  { @automated_dynamic_specials = AutomatedDynamicSpecial.xml_data(params[:channel]) }
     end
@@ -23,7 +23,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
 
     @automated_dynamic_specials = AutomatedDynamicSpecial.report_search(params)
     @channel_display = Channel.display
-    @templates = DynamicSpecialTemplate.template_display_with_all
+    @templates = DynamicSpecialTemplate.template_display_with_all(true, true) #List of all the templates ads/sports_ipp
   end
 
   def placing
@@ -96,7 +96,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
     @automated_dynamic_special.fix_nil_first_last_use
     @automated_dynamic_special.offset = SpecialScheduleSetting.find_by_name("Offset").value.to_i
     @channels = Channel.all
-    @templates = DynamicSpecialTemplate.all
+    @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
     @index_params = clean_params(params[:index_params])
 
     respond_to do |format|
@@ -108,7 +108,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
   # GET /automated_dynamic_specials/1/edit
   def edit
     @channels = Channel.all
-    @templates = DynamicSpecialTemplate.all
+    @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
     @automated_dynamic_special = AutomatedDynamicSpecial.find(params[:id])
     @automated_dynamic_special.fix_nil_first_last_use
     @index_params = clean_params(params[:index_params])
@@ -129,7 +129,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
         else
           format.html do
             @channels = Channel.all
-            @templates = DynamicSpecialTemplate.all
+            @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
             render :action => "new" 
           end 
           format.xml  { render :xml => @automated_dynamic_special.errors, :status => :unprocessable_entity }
@@ -137,7 +137,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
       else
         format.html do
           @channels = Channel.all
-          @templates = DynamicSpecialTemplate.all
+          @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
           render :action => "new"
         end 
         format.xml  { render :xml => @automated_dynamic_special.errors, :status => :unprocessable_entity }
@@ -159,7 +159,7 @@ class AutomatedDynamicSpecialsController < ApplicationController
       else
         format.html do 
           @channels = Channel.all
-          @templates = DynamicSpecialTemplate.all
+          @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
           render :action => "edit" 
         end
         format.xml  { render :xml => @automated_dynamic_special.errors, :status => :unprocessable_entity }
@@ -217,10 +217,11 @@ class AutomatedDynamicSpecialsController < ApplicationController
     @automated_dynamic_special = original.clone
     @automated_dynamic_special.name = AutomatedDynamicSpecial.duplicate_name(original.name)
     @automated_dynamic_special.special_preview_id = nil
+    @automated_dynamic_special.sports_ipp_id = nil #clears the sports_ipp from the duplicate
     @automated_dynamic_special.save
     @automated_dynamic_special.add_special_fields(original)
     @channels = Channel.all
-    @templates = DynamicSpecialTemplate.all
+    @templates = DynamicSpecialTemplate.all_with_ads_sports_ipp_select(true, true) #List of all the templates ads/sports_ipp
     @index_params = clean_params(params[:index_params])
     flash[:notice] = "Duplicate Special created. You may want to change any details, then click Update"
   
