@@ -223,7 +223,7 @@ class PressLinesController < ApplicationController
     params[:programme] = PressLine.selected_programme(@press_lines, params[:programme])
     #params[:part] = Part.selected_part(params[:part], params[:press_line_ids]!= params[:previous_press_line_ids])
     @available = AutomatedDynamicSpecial.available_for_schedule(params, false, false, false)
-    @templates = DynamicSpecialTemplate.template_display_with_all
+    @templates = DynamicSpecialTemplate.template_display_with_all(true, false) #List of all the templates ads/sports_ipp
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
     @scroll_position = params[:scroll_position]
   end
@@ -277,7 +277,7 @@ class PressLinesController < ApplicationController
       end
       @ads_all << ads.id.to_s
     end
-    @templates = DynamicSpecialTemplate.template_display_with_all
+    @templates = DynamicSpecialTemplate.template_display_with_all(true, false) #List of all the templates ads/sports_ipp
     part_random_dates_times
     if params[:minimum_gap].nil?
       params[:minimum_gap] = SpecialScheduleSetting.default_random_gap
@@ -326,7 +326,7 @@ class PressLinesController < ApplicationController
       end
       @ads_all << ads.id.to_s
     end
-    @templates = DynamicSpecialTemplate.template_display_with_all
+    @templates = DynamicSpecialTemplate.template_display_with_all(true, false) #List of all the templates ads/sports_ipp
     part_random_dates_times
     
     @message = PressLine.count_message(@press_lines, params[:priority_date], params[:channel])
