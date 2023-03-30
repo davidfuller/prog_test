@@ -2,7 +2,8 @@ class SportsIppsController < ApplicationController
   # GET /sports_ipps
   # GET /sports_ipps.xml
   def index
-    @sports_ipps = SportsIpp.all
+    @sports_ipps = SportsIpp.search(params, :name)
+    @templates = DynamicSpecialTemplate.template_display_with_all(false, true)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -122,4 +123,13 @@ class SportsIppsController < ApplicationController
       redirect_to automated_dynamic_specials_url
     end
   end
+
+  def recent
+    @sports_ipps = SportsIpp.search(params, :recent)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  #_{ render :xml => @media_files }
+    end
+  end
+
 end
