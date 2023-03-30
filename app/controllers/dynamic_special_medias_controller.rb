@@ -110,7 +110,7 @@ class DynamicSpecialMediasController < ApplicationController
     if @dynamic_special_media.save
       flash[:notice] = 'Dynamic Special Media created. Now add the details for the image.'
       redirect_to new_media_file_path(:dynamic_special_media_id => @dynamic_special_media.id, :spec_id => @dynamic_special_media.dynamic_special_image_spec_id, 
-                                      :automated_dynamic_special_id => params[:automated_dynamic_special_id], :field_id => params[:field_id]) 
+                                      :automated_dynamic_special_id => params[:automated_dynamic_special_id], :field_id => params[:field_id], :index_params => params[:index_params]) 
     else
       render :action => "new" 
     end
