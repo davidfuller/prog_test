@@ -257,12 +257,58 @@ class AutomatedDynamicSpecial < ActiveRecord::Base
                         :conditions => ['channel_id = ? AND last_use < ?', channel_id, current_time]
             end
           else
-            if template_id
-              paginate  :all, :per_page => PER_PAGE , :page => page, 
-                        :conditions => ['channel_id = ? AND dynamic_special_template_id = ?', channel_id, template_id]
-            else
-              paginate  :all, :per_page => PER_PAGE , :page => page, 
-                        :conditions => ['channel_id = ?', channel_id]
+            if template_id #specific template
+              if archive_only #only archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, current_time, template_id, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = true', channel_id, current_time, template_id]
+                end
+              elsif hide_archive #filter on archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, current_time, template_id, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ? AND archive = false', channel_id, current_time, template_id]
+                end
+              else # include archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND dynamic_special_template_id = ? AND first_use <= ? AND last_use >= ?', channel_id, current_time, template_id, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ?  AND last_use >= ? AND dynamic_special_template_id = ?', channel_id, current_time, template_id]
+                end
+              end
+            else #any tamplate
+              if archive_only #only archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND archive = true AND first_use <= ? AND last_use >= ?', channel_id, current_time, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND archive = true', channel_id, current_time]
+                end
+              elsif hide_archive #filter on archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND archive = false AND first_use <= ? AND last_use >= ?', channel_id, current_time, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND archive = false', channel_id, current_time]
+                end
+              else # include archive
+                if use_date_time
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ? AND first_use <= ? AND last_use >= ?', channel_id, current_time, use_date_time, use_date_time]
+                else
+                  paginate  :all, :per_page => PER_PAGE , :page => page, 
+                            :conditions => ['channel_id = ? AND last_use >= ?', channel_id, current_time]
+                end
+              end
             end
           end
         end
