@@ -57,5 +57,9 @@ class SportsIppMedia < ActiveRecord::Base
     '/data/special/Sports_IPP/' + filename
   end
 
+  def download_file_exists?
+    File.file?(Rails.public_path + download_path)
+  end
+
 
 end
