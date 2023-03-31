@@ -38,7 +38,7 @@
     </td>
     <td><%=h media_file.status_display %></td>
     <td><%=h media_file.created_at.to_s(:broadcast_date) %></td>
-    <td class = 'admin-show', style = 'display:none;'><%= link_to 'Show Media',  media_file_path(media_file, :upload => 'true')%></td>
+    <td><%= link_to 'Show Media',  media_file_path(media_file, :upload => 'true')%></td>
     <td>
       <% if media_file.automated_dynamic_special %>
         <%= link_to 'Show Special', media_file.automated_dynamic_special %>
