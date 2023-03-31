@@ -4,7 +4,7 @@ class SportsIpp < ActiveRecord::Base
   belongs_to :sports_ipp_media, :dependent => :destroy
   has_one :automated_dynamic_special
 
-  PER_PAGE = 5
+  PER_PAGE = 4
 
   def self.search(params, order)
     page = params[:page]
@@ -212,6 +212,10 @@ class SportsIpp < ActiveRecord::Base
     else
       'No template'
     end
+  end
+
+  def preview_ready_with_jpeg
+    media_file && media_file.jpeg_exist? && media_file.status && media_file.status.message == "Ready"
   end
 
 end
