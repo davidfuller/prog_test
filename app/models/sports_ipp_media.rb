@@ -21,7 +21,7 @@ class SportsIppMedia < ActiveRecord::Base
         filename = Rails.root.join('public','data','special','Sports_IPP', dest_filename)
         do_it = true
       else
-        media.notice = "Invalid file type. Expected: 'application/zip' or 'application/x-zip-compressed'. Uploaded: " + upload_file.content_type
+        sports_ipp_media.notice = "Invalid file type. Expected: 'application/zip' or 'application/x-zip-compressed'. Uploaded: " + upload_file.content_type
         sports_ipp_media.issue = true
         do_it = false
       end
