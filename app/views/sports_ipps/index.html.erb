@@ -50,7 +50,7 @@
   </tr>
   <tr>
     <td colspan = "2">
-    <% if sports_ipp.media_file && sports_ipp.media_file.jpeg_exist? %>
+    <% if sports_ipp.preview_ready_with_jpeg %>
       <%= link_to image_tag(sports_ipp.media_file.jpeg_url, :size => "320x180"), sports_ipp %>
     <% else %>
       Media not loaded
@@ -70,7 +70,7 @@
   </tr>
 <% end %>
 </table>
-
+<%= will_paginate @sports_ipps %>
 <br />
 
 <%= link_to 'New Sports IPP', new_sports_ipp_path %>
