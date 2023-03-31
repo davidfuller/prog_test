@@ -23,10 +23,14 @@
     <% if media_file.trailer %>
       <td><%= link_to 'Show', trailer_path(media_file.trailer) %></td>
     <% elsif media_file.special_preview %>
-      <td><%= link_to 'Show', special_preview_path(media_file.special_preview) %></td>
+      <td><%= link_to 'Show', media_file_path(media_file, :upload => 'true') %></td>
       <td><%= link_to 'Special', automated_dynamic_special_path(media_file.special_preview.automated_dynamic_special) if media_file.special_preview.automated_dynamic_special %></td>
     <% elsif media_file.dynamic_special_media %>
       <td><%= link_to 'Show', dynamic_special_media_path(media_file.dynamic_special_media) %></td>
+    <% elsif media_file.sports_ipp%>
+      <td><%= link_to 'Show', media_file_path(media_file, :upload => 'true') %></td>
+      <td><%= link_to 'Special', automated_dynamic_special_path(media_file.sports_ipp.automated_dynamic_special) if media_file.sports_ipp.automated_dynamic_special %></td>
+      <td><%= link_to 'Sport IPP', sports_ipp_path(media_file.sports_ipp) %></td>
     <% else %>
 		  <td><%= link_to 'Show', promo_path(media_file.first_promo_id) unless media_file.first_promo_id == 0 %></td>
     <% end %>
