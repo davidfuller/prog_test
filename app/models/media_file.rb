@@ -1252,9 +1252,11 @@ def self.wd_copy(original_filename, filename)
         if sports_ipp.sports_ipp_media.sports_ipp_status.message == "Not Loaded"
           the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
           the_media.sports_ipp_status_id = preview_ready_status.id
+          the_media.save
         elsif sports_ipp.sports_ipp_media.sports_ipp_status.message == "Package Ready"
           the_media = SportsIppMedia.find(sports_ipp.sports_ipp_media_id)
           the_media.sports_ipp_status_id = sports_ipp_ready_status.id
+          the_media.save
         end
       end
     end
