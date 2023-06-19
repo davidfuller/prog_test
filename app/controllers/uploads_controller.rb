@@ -274,7 +274,6 @@ include REXML
           uri =URI.parse("https://" + channel.clipsource_domain + url)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = true
-          
           begin
             resp = http.get(uri.request_uri)
           rescue Exception => exc
@@ -283,6 +282,12 @@ include REXML
             redirect_to(uploads_path)
             return
           end
+          if resp.code != "200"
+            flash[:notice] = "Unexpected error getting file. " + resp.code + ": " + resp.message + ". Please contact MuVi2."
+            redirect_to(uploads_path)
+            return
+          end
+
           File.open(local_filename, 'w') do |file|
             file.write(Iconv.iconv("UTF-8//IGNORE", channel.encoding, resp.body))
           end
