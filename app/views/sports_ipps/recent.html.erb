@@ -3,8 +3,11 @@
 <% end %>
 
 <h1>Recent Sports IPP</h1>
+<% form_tag recent_sports_ipps_path, :method =>'get', :id => 'search-form' do %>
+			<%= label_tag :include_archive, "Include archived", :id => 'check_label' %>
+      <%= check_box_tag :include_archive, value ="1", params[:include_archive],{:onchange => 'this.form.submit()', :class => 'check_box'} %>
+		<% end %>
 <br/>
-
 <%= will_paginate @sports_ipps %>
 <table>
   <tr>
