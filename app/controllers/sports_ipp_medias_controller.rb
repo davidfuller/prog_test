@@ -99,4 +99,17 @@ class SportsIppMediasController < ApplicationController
       end
     end
   end
+
+  def package_uploaded
+    if params[:id]
+      @sports_ipp_media = SportsIppMedia.package_uploaded(params[:id])
+      if @sports_ipp_media
+        respond_to do |format|
+          format.html
+          format.xml 
+        end
+      end
+    end
+  end
+
 end
