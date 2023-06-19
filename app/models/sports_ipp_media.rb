@@ -61,5 +61,28 @@ class SportsIppMedia < ActiveRecord::Base
     File.file?(Rails.public_path + download_path)
   end
 
+  def self.package_uploaded(media_file_id)
+    media_file = MediaFile.find(media_file_id)
+    if media_file && media_file.sports_ipp && media_file.sports_ipp.sports_ipp_media
+      sports_ipp_media = media_file.sports_ipp.sports_ipp_media
+      status_not_loaded = SportsIppStatus.find_by_message('Not Loaded')
+      status_preview_ready = SportsIppStatus.find_by_message('Preview Ready')
+      status_package_ready = SportsIppStatus.find_by_message('Package Ready')
+      status_ready = SportsIppStatus.find_by_message('Ready')
+      if sports_ipp_media.sports_ipp_status == status_not_loaded
+        sports_ipp_media.sports_ipp_status = status_package_ready
+      elsif sports_ipp_media.sports_ipp_status == status_preview_ready
+        sports_ipp_media.sports_ipp_status = status_ready
+      end
+      if sports_ipp_media.save
+        sports_ipp_media
+      else
+        nil
+      end
+    else
+      nil
+    end
+  end
+
 
 end
