@@ -10,4 +10,5 @@ Time::DATE_FORMATS[:broadcast_datetime_seconds] = "%d/%m/%Y %H:%M:%S"   #05/06/2
 Time::DATE_FORMATS[:broadcast_calendar_date_only] = "%B %-d, %Y"        #June 5, 2019PM
 Time::DATE_FORMATS[:broadcast_filename_datetime] = "%Y%m%d-%H%M%S"      #201906-171523
 Time::DATE_FORMATS[:broadcast_xml_datetime] = "%Y-%m-%d %H:%M:%S"       #2022-06-17 15:23:00
+Time::DATE_FORMATS[:broadcast_weekday_day_month] = "%A %d %B"           #Monday 7 June
 # Need to restart server
