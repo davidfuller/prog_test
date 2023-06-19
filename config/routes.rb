@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :sports_ipps, :collection => { :recent => :get }
 
-  map.resources :sports_ipp_medias
+  map.resources :sports_ipp_medias, :member => {:package_uploaded => :get}
 
   map.resources :sports_ipp_statuses
 
@@ -45,7 +45,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :channel_special_previews
 
-  map.resources :special_previews
+  map.resources :special_previews, :collection => { :recent => :get }
 
   map.resources :diva_polls
 
