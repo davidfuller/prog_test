@@ -123,4 +123,16 @@ class SpecialPreview < ActiveRecord::Base
       ads_name
     end
   end
+
+  def self.recent(params)
+    if params[:include_archive]
+      paginate  :per_page => 5, :page =>params[:page], 
+                :joins => [:media_file, :automated_dynamic_special], 
+                :order => 'media_files.created_at DESC'
+    else
+      paginate  :per_page => 5, :page =>params[:page], 
+                :joins => [:media_file, :automated_dynamic_special], :conditions => ['automated_dynamic_specials.archive = false'],
+                :order => 'media_files.created_at DESC'
+    end
+  end
 end
