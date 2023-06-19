@@ -49,8 +49,13 @@ class SportsIpp < ActiveRecord::Base
             paginate  :all, :per_page => PER_PAGE , :page => page, 
                       :conditions => ['automated_dynamic_specials.last_use < ?', current_time], :order => order, :joins => [:automated_dynamic_special]
           else
-            paginate  :all, :per_page => PER_PAGE , :page => page, 
-                      :conditions => ['automated_dynamic_specials.last_use > ?', current_time], :order => order, :joins => [:automated_dynamic_special]
+            if params[:include_archive]
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['automated_dynamic_specials.last_use > ?', current_time], :order => order, :joins => [:automated_dynamic_special]
+            else
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['automated_dynamic_specials.last_use > ? AND automated_dynamic_specials.archive = false', current_time], :order => order, :joins => [:automated_dynamic_special]
+            end
           end
         end
       end
