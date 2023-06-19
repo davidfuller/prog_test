@@ -16,6 +16,9 @@ xml.instruct! :xml, :version => "1.0"
             xml.page data[:page]
             if media_file.sports_ipp && media_file.sports_ipp.sports_ipp_media
               xml.package_filename media_file.sports_ipp.sports_ipp_media.filename
+              xml.sports_ipp true
+            else
+              xml.sports_ipp false
             end
             for i in 1..10 do
               if data[:fields][i].present?
