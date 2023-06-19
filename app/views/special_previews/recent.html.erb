@@ -1,0 +1,67 @@
+<% content_for(:title) do%>
+	Recent Special Previews: MuVi2 Database
+<% end %>
+
+	<h1>Recent Special Previews</h1>
+		<% form_tag recent_special_previews_path, :method =>'get', :id => 'search-form' do %>
+			<%= label_tag :include_archive, "Include archived", :id => 'check_label' %>
+      <%= check_box_tag :include_archive, value ="1", params[:include_archive],{:onchange => 'this.form.submit()', :class => 'check_box'} %>
+		<% end %>
+
+<div id = 'admin_link'>
+	<%= link_to_function 'Admin' do |page|
+			page.select('.admin-show').each { |a| a.toggle }
+		end %>
+</div>
+
+<%= will_paginate @special_previews %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Created</th>
+  </tr>
+
+<% @special_previews.each do |special_preview| %>
+  <% if special_preview.media_file %>
+  <% media_file = special_preview.media_file %>
+  <tr>
+    <td><b>
+      <% if special_preview.media_file %>
+        <% media_file = special_preview.media_file %>
+        <% if media_file.mp4_exist? && media_file.status_display == 'Ready' %>
+          <%= link_to media_file.automated_dynamic_special.name, media_file.clip_mp4_url %><br/>
+        <% else %>
+          <%=h media_file.automated_dynamic_special.name %>
+        <% end %>
+      <% end %> 
+      </b>
+    </td>
+    <td><%=h media_file.status_display %></td>
+    <td><%=h media_file.created_at.to_s(:broadcast_date) %></td>
+    <td><%= link_to 'Show Media',  media_file_path(media_file, :upload => 'true')%></td>
+    <td>
+      <% if media_file.automated_dynamic_special %>
+        <%= link_to 'Show Special', media_file.automated_dynamic_special %>
+      <% end %>
+    </td>
+    <td class = 'admin-show', style = 'display:none;'>
+      <% if media_file.automated_dynamic_special %>
+        <%= link_to 'Export to CSV', export_automated_dynamic_special_path(media_file.automated_dynamic_special) %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan= "4">
+      <% if media_file.mp4_exist? && media_file.status_display == 'Ready' %>
+        <%= link_to image_tag(media_file.jpeg_url, :size => "320x180"), media_file.clip_mp4_url %><br/>
+        <%= link_to 'Play Video', media_file.clip_mp4_url %>
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+<%= will_paginate @special_previews %>
+
+
