@@ -171,6 +171,14 @@ class SpecialPreviewsController < ApplicationController
     end
   end
 
+  def recent
+    @special_previews = SpecialPreview.recent(params)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  #_{ render :xml => @media_files }
+    end
+  end
+
   protected
   
   def index_html(params)
