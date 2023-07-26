@@ -4,9 +4,17 @@
 
 <h1>Recent Sports IPP</h1>
 <% form_tag recent_sports_ipps_path, :method =>'get', :id => 'search-form' do %>
-			<%= label_tag :include_archive, "Include archived", :id => 'check_label' %>
-      <%= check_box_tag :include_archive, value ="1", params[:include_archive],{:onchange => 'this.form.submit()', :class => 'check_box'} %>
-		<% end %>
+  <table>
+    <tr>
+			<td><%= label_tag :include_archive, "Include archived", :id => 'check_label' %>
+          <%= check_box_tag :include_archive, value ="1", params[:include_archive],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+      <td><%= label_tag :show_all, "Show all (including past last use)", :id => 'check_label' %>
+          <%= check_box_tag :show_all, value ="1", params[:show_all],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+      <td><%= label_tag :show_only, "Show only past last use", :id => 'check_label' %>
+          <%= check_box_tag :show_only, value ="1", params[:show_only],{:onchange => 'this.form.submit()', :class => 'check_box'} %></td>
+    </tr>
+  </table>
+<% end %>
 <br/>
 <%= will_paginate @sports_ipps %>
 <table>
