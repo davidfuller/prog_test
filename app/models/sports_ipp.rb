@@ -16,6 +16,7 @@ class SportsIpp < ActiveRecord::Base
     current_time = Time.current
     show_all = params[:show_all].present?
     show_only = params[:show_only].present?
+    hide_archive = !params[:include_archive].present?
     
     if !template_name.present? || template_name == 'All'
       if search
@@ -32,8 +33,13 @@ class SportsIpp < ActiveRecord::Base
             paginate  :all, :per_page => PER_PAGE , :page => page,
                       :conditions => ['sports_ipps.name LIKE ? AND automated_dynamic_specials.last_use < ?', "%#{search}%", current_time], :order => order, :joins => [:automated_dynamic_special]
           else
-            paginate  :all, :per_page => PER_PAGE , :page => page,
-                    :conditions => ['sports_ipps.name LIKE ? AND automated_dynamic_specials.last_use > ?', "%#{search}%", current_time], :order => order, :joins => [:automated_dynamic_special]
+            if hide_archive
+              paginate  :all, :per_page => PER_PAGE , :page => page,
+                        :conditions => ['sports_ipps.name LIKE ? AND automated_dynamic_specials.last_use > ? AND automated_dynamic_specials.archive = false', "%#{search}%", current_time], :order => order, :joins => [:automated_dynamic_special]
+            else
+              paginate  :all, :per_page => PER_PAGE , :page => page,
+                        :conditions => ['sports_ipps.name LIKE ? AND automated_dynamic_specials.last_use > ?', "%#{search}%", current_time], :order => order, :joins => [:automated_dynamic_special]
+            end
           end
         end
       else # not search
@@ -49,12 +55,12 @@ class SportsIpp < ActiveRecord::Base
             paginate  :all, :per_page => PER_PAGE , :page => page, 
                       :conditions => ['automated_dynamic_specials.last_use < ?', current_time], :order => order, :joins => [:automated_dynamic_special]
           else
-            if params[:include_archive]
-              paginate  :all, :per_page => PER_PAGE , :page => page, 
-                        :conditions => ['automated_dynamic_specials.last_use > ?', current_time], :order => order, :joins => [:automated_dynamic_special]
-            else
+            if hide_archive
               paginate  :all, :per_page => PER_PAGE , :page => page, 
                         :conditions => ['automated_dynamic_specials.last_use > ? AND automated_dynamic_specials.archive = false', current_time], :order => order, :joins => [:automated_dynamic_special]
+            else
+              paginate  :all, :per_page => PER_PAGE , :page => page, 
+                        :conditions => ['automated_dynamic_specials.last_use > ?', current_time], :order => order, :joins => [:automated_dynamic_special]              
             end
           end
         end
