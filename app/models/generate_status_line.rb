@@ -114,31 +114,104 @@ class GenerateStatusLine < ActiveRecord::Base
       sheet_short_filename = sheet_full_filename[sheet_full_filename.rindex('\\') + 1..-1]
       my_setting = GenerateStatusSetting.find_prefix(sheet_short_filename)
       if my_setting
-        sheet_date = Date.parse(sheet_short_filename[-12..-7], true) rescue nil
-        if sheet_date
-          new_array << sheet_date
-          my_line = GenerateStatusLine.find_by_short_filename(sheet_short_filename)
-          if !my_line
-            my_line = GenerateStatusLine.new
+        if sheet_short_filename.length == my_setting.prefix.length + 12
+          sheet_date = Date.parse(sheet_short_filename[-12..-7], true) rescue nil
+          if sheet_date
+            new_array << sheet_date
+            my_line = GenerateStatusLine.find_by_short_filename(sheet_short_filename)
+            if !my_line
+              my_line = GenerateStatusLine.new
+            end
+            my_line.short_filename = sheet_short_filename
+            my_line.full_filename = sheet_full_filename
+            my_line.channel_id = my_setting.channel_id
+            my_line.poll_date_time = poll_date_time
+            my_line.status = line['Status']
+            my_line.generate_date_time = line['Creation_Timestamp']
+            my_line.file_modified_date_time = modified_time
+            my_line.tx_version = sheet_short_filename[-6..-6]
+            my_line.tx_date = sheet_date
+            my_line.channel_order = my_setting.channel_order
+            my_line.save
           end
-          my_line.short_filename = sheet_short_filename
-          my_line.full_filename = sheet_full_filename
-          my_line.channel_id = my_setting.channel_id
-          my_line.poll_date_time = poll_date_time
-          my_line.status = line['Status']
-          my_line.generate_date_time = line['Creation_Timestamp']
-          my_line.file_modified_date_time = modified_time
-          my_line.tx_version = sheet_short_filename[-6..-6]
-          my_line.tx_date = sheet_date
-          my_line.channel_order = my_setting.channel_order
-          my_line.save
         end
       end
     end
-    
+    spreadsheet
     new_array
-
-    
   end
 
+  def self.spreadsheet
+    poll_date_time = Time.current
+    channels = GenerateStatusSetting.all(:conditions => { :enabled => true})
+    filename = ''
+    rails_filename = ''
+    xml_string = ''
+    modified_time = Time.current
+    channels.each do |channel|
+      if filename != channel.spreadsheet_filename
+        filename = channel.spreadsheet_filename
+        rails_filename = Rails.root.join(filename)
+        xml_string = ''
+        if File.file?(rails_filename)
+          file = File.open(rails_filename, "r")
+          modified_time = File.mtime(rails_filename)
+          file.each_line do |line|
+            xml_string += line
+          end
+          file.close
+        else
+          xml_string = nil
+        end
+      end
+    end
+    if xml_string
+      hash_data = Hash.from_xml(xml_string)
+      lines = hash_data["results"]['result']
+      new_array = []
+      lines.each do |line|
+        sheet_short_filename = line['filename']
+        category = line['category']
+        tx_version = line['version']
+        sheet_date = line['date']
+        if category != 'notTx'
+          my_line = GenerateStatusLine.find_by_short_filename(sheet_short_filename)
+          if my_line && my_line.status == "Complete"
+          else
+            if my_line
+              if category == "txAndPrep"
+                my_line.status = "Prep queue"
+                my_line.save
+              elsif category == "txAndNeither"
+                my_line.status = "TX queue but not Prep queue"
+                my_line.save
+              end
+            else
+              my_setting = GenerateStatusSetting.find_prefix(sheet_short_filename)
+              if my_setting
+                my_line = GenerateStatusLine.new
+                my_line.short_filename = sheet_short_filename
+                my_line.full_filename = my_setting.folder + sheet_short_filename
+                my_line.channel_id = my_setting.channel_id
+                my_line.poll_date_time = poll_date_time
+                if category == "txAndPrep"
+                  my_line.status = "Prep queue"
+                elsif category == "txAndNeither"
+                  my_line.status = "TX queue but not Prep queue"
+                elsif category == "txAndDone"
+                  my_line.status = "Prep done"
+                end
+                my_line.tx_version = tx_version
+                my_line.tx_date = sheet_date
+                my_line.channel_order = my_setting.channel_order
+                my_line.save            
+              end
+            end
+            new_array << {:filename => sheet_short_filename, :category => category, :status => my_line.status }
+          end
+        end
+      end
+      new_array
+    end
+  end
 end
