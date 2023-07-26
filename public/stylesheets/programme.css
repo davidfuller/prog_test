@@ -644,6 +644,9 @@ fieldset.report{
   background: #D7E4EC;	
 }
 
+#store #generate_issue_major {
+  background: #ecd7d7;	
+}
 #store #title-text {
   font-size: 14px;
 }
