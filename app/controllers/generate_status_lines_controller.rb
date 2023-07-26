@@ -85,7 +85,7 @@ class GenerateStatusLinesController < ApplicationController
     @generate_status_line.destroy
 
     respond_to do |format|
-      format.html { redirect_to(generate_status_lines_url) }
+      format.html { redirect_to(generate_status_lines_url(:on_air_date => params[:on_air_date], :repoll => '1')) }
       format.xml  { head :ok }
     end
   end
