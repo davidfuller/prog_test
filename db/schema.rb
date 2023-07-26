@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20230327100319) do
+ActiveRecord::Schema.define(:version => 20230724103654) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -342,6 +342,7 @@ ActiveRecord::Schema.define(:version => 20230327100319) do
     t.datetime "updated_at"
     t.string   "filename"
     t.integer  "channel_order"
+    t.string   "spreadsheet_filename"
   end
 
   create_table "houses", :force => true do |t|
