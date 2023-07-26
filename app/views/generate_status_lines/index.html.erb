@@ -43,7 +43,7 @@
   </tr>
 </table>
 </p>
-<h3><%= Time.parse(display_date).to_s(:broadcast_weekday_day_month) %></h3>
+<h3><%= Time.parse(display_date).to_s(:broadcast_weekday_day_month) unless display_date.nil? %></h3>
 <table>
   <tr>
     <th>Channel</th>
@@ -52,7 +52,9 @@
   </tr>
 
 <% @generate_status_lines.each do |generate_status_line| %>
-  <% if generate_status_line.status != 'Complete' %>
+  <% if generate_status_line.status == 'TX queue but not Prep queue' %>
+    <tr id = 'generate_issue_major'>
+  <% elsif generate_status_line.status != 'Complete' %>
     <tr id = 'generate_issue'>
   <% else %>
     <tr>
@@ -62,7 +64,7 @@
     <td><%=h generate_status_line.status %></td>
     <td><%= link_to 'Show', generate_status_line %></td>
     <td><%= link_to 'Edit', edit_generate_status_line_path(generate_status_line) %></td>
-    <td><%= link_to 'Destroy', generate_status_line, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', generate_status_line_path(generate_status_line, :on_air_date => params[:on_air_date]), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
