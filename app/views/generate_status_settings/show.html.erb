@@ -29,6 +29,9 @@
   <b>Source Filename</b>
   <%=h @generate_status_setting.filename %>
 </p>
-
+<p>
+  <b>Spreadsheet Filename</b>
+  <%=h @generate_status_setting.spreadsheet_filename %>
+</p>
 <%= link_to 'Edit', edit_generate_status_setting_path(@generate_status_setting) %> |
 <%= link_to 'Back', generate_status_settings_path %>
